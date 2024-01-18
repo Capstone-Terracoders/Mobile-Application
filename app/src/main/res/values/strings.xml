@@ -1,0 +1,95 @@
+<resources>
+    <string name="app_name">RoomUp</string>
+    <string name="title_activity_logout">LogoutActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_profile_setings">Profile_Setings</string>
+
+    <!-- Strings used for profile settings UI-->
+    <string name="profile_pic">Profile Picture</string>
+    <string name="full_name_txt">FULL NAME</string>
+    <string name="first_name_txt">First Name</string>
+    <string name="last_name_txt">Last Name</string>
+    <string-array name="accountTypes">
+        <item>Account Type</item>
+        <item>On Campus</item>
+        <item>Off Campus</item>
+    </string-array>
+    <string name="acc_txt">Acc Txt</string>
+    <string name="bday_txt">Birthday</string>
+    <string name="email_txt">Email</string>
+    <string name="phone_txt">Phone</string>
+    <string name="gender_txt">Gender</string>
+    <string-array name="genderTypes">
+        <item>Gender</item>
+        <item>Female</item>
+        <item>Male</item>
+        <item>Prefer not to respond</item>
+    </string-array>
+    <string name="bio_txt">Biography</string>
+    <string name="save_button">Save</string>
+
+    <!-- Strings used for Signin, SignUp, and Start Screen UI-->
+    <string name="Icon">SignIn or SignUp Icon</string>
+    <string name="SignIn_txt1">Welcome</string>
+    <string name="SignIn_txt2">Login to your account</string>
+    <string name="SignUp_txt1">Register</string>
+    <string name="SignUp_txt2">Create your account</string>
+    <string name="SignIn_email">Type your Email</string>
+    <string name="SignIn_password">Type your Password</string>
+    <string name="SignIn_confirm_password">Retype your Password</string>
+    <string name="Register_txtButton">Not Registered Yet , Sign Up !</string>
+    <string name="SignIn_txtButton">Already Registered , Sign In !</string>
+    <string name="SignUp_Button">Sign Up</string>
+    <string name="SignIn_Button">Sign In</string>
+    <string name="StartScreenIcon">Start Screen Icon</string>
+    <string name="StartScreenTxt">Need help finding a roommate?\nSign in or sign up!</string>
+    <string name="StartScreenPplWaving">Start Screen Person Waving</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name="Info">This is the swiping screen. To match with someone
+        swipe up. If you want to decline someone, swipe down.</string>
+
+    <string-array name="yesNo">
+        <item>Yes</item>
+        <item>No</item>
+    </string-array>
+
+    <string-array name="grades">
+        <item>Freshman</item>
+        <item>Sophomore</item>
+        <item>Junior</item>
+        <item>Senior</item>
+        <item>Graduate</item>
+    </string-array>
+
+    <string-array name="religions">
+        <item>Prefer not to say</item>
+        <item>Christian</item>
+        <item>Islam</item>
+        <item>Hindu</item>
+        <item>Buddhist</item>
+        <item>Sikhism</item>
+        <item>Judaism</item>
+        <item>Atheist</item>
+        <item>Agnostic</item>
+    </string-array>
+
+
+</resources>

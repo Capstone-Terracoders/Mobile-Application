@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1530877348",
+    "project_id": "roomup-73825",
+    "storage_bucket": "roomup-73825.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1530877348:android:f0c823b4ca8a9bcb1f5d31",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1530877348-mfsutrbbh596uj87u8r1k6hj2v9imkti.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.myapplication",
+            "certificate_hash": "661cab76e2c54b79f15df04900f904f40cd28984"
+          }
+        },
+        {
+          "client_id": "1530877348-ucel1b5v1tjsl4cl3iobh9vho86rd04u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB7KNIHHMbZI2iL3GrPmOOc7uNbSM8-734"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1530877348-485v0mvgfd1lh5lmehgau98oq9qpqiil.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

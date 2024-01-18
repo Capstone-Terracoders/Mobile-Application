@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/homeContainer"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/BottomNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:menu="@menu/bottom_menu"/>
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/HomeToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/BlueGrey"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:logo="@drawable/baseline_home_24"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        app:title="RoomUp"
+        app:titleMarginStart="30dp"
+        app:menu="@menu/top_menu"/>
+
+    <include
+        android:id="@+id/ProfileCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/HomeToolbar"
+        layout="@layout/card_layout"/>
+
+
+</RelativeLayout>
