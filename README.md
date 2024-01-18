@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Terracoders
 <br>Main repo for COS 497 project.
 
@@ -40,3 +41,7 @@ Sign In & Set Up: https:<br>www.youtube.com/watch?v=idbxxkF1l6k
 
 
  
+=======
+# Application
+Repository for the user display application.
+>>>>>>> origin/main
