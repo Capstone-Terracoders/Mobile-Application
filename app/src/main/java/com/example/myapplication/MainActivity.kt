@@ -4,12 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.content.Intent
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity() {
     private lateinit var bottomNavigationView: BottomNavigationView
 
+    //Setting view for start of activity (Main)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -17,10 +16,13 @@ class MainActivity : AppCompatActivity() {
         bottomNavigationView = findViewById(R.id.BottomNav)
 
         //This will show how many messages a user has on read once we figure out that number:
+        //@Dharani - Use this for notifications as start?
 //        val badgeDrawable = bottomNavigationView.getOrCreateBadge(R.id.Chat)
 //        badgeDrawable.isVisible = true
 //        badgeDrawable.number = 10
 
+
+        //Code for bottom navigation.
         val home = Intent(this, HomeActivity::class.java)
         startActivity(home)
         bottomNavigationView.setOnItemSelectedListener { item ->
