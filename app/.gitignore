@@ -1,11 +1,25 @@
-# content of .gitignore
+# Ignore local configuration files
+compiler.xml
+fileHashes.bin
+fileHashes.lock
+local.properties
+misc.xml
+
+# Ignore unversioned files
+Unversioned Files
+
+# Ignore Android Studio specific files
+.idea/
 *.iml
+*.ipr
+*.iws
+kotlinc.xml
+
+# Additional common patterns
 .gradle/*
-/local.properties
-*.idea/
 .DS_Store
 build/
-/captures
-.externalNativeBuild    
-.cxx
+captures/
+.externalNativeBuild/
+.cxx/
 .lock/
