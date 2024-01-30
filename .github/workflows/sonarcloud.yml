@@ -24,7 +24,7 @@ jobs:
       with:
         fetch-depth: 0
     - uses: actions/download-artifact@v3.0.1
-      if: ${{ inouts.compiler == 'gradle'}}
+      if: ${{ inputs.compiler == 'gradle'}}
       with:
         name: "${{ github.sha }}"
         path: build
