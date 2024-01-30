@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  call-workflow-buildgradle:
+  call-workflow-android:
     uses: ./.github/workflows/android.yml  # Update with the correct file path
     with:
       compiler: gradle
@@ -15,7 +15,7 @@ jobs:
     secrets: inherit
 
   call-workflow-sonarcloud:
-    needs: call-workflow-buildgradle
+    needs: call-workflow-android
     uses: ./.github/workflows/sonarcloud.yml  # Update with the correct file path
     with:
       compiler: gradle
