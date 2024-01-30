@@ -43,18 +43,6 @@
             android:name=".SwipeActivity"
             android:exported="true" />
 
-        <activity
-            android:name=".ProfileActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".OnCampusUserProfileActivity"
-            android:exported="true" />
-
-        <activity
-            android:name=".OffCampusUserProfileActivity"
-            android:exported="true" />
-
     </application>
 
 </manifest>
