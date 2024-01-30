@@ -2,12 +2,13 @@ name: caller workflow
 
 on: 
   push:
-    branches: [ "*" ]
+    branches:
+      - '*'
   workflow_dispatch:
 
 jobs:
   call-workflow-buildgradle:
-    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/android.yml@main  # Update with the correct branch and path
+    uses: ./.github/workflows/android.yml  # Update with the correct file path
     with:
       compiler: gradle
       allowfailure: false
@@ -15,7 +16,7 @@ jobs:
 
   call-workflow-sonarcloud:
     needs: call-workflow-buildgradle
-    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/sonarcloud.yml@main  # Update with the correct branch and path
+    uses: ./.github/workflows/sonarcloud.yml  # Update with the correct file path
     with:
       compiler: gradle
       allowfailure: false
