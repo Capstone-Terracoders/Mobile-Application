@@ -1,0 +1,20 @@
+name: caller workflow
+
+on: 
+  push:
+  workflow_dispatch:
+
+jobs:
+  call-workflow-buildgradle:
+    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/android.yml@master
+    with:
+      compiler: gradle
+      allowfailure: false
+    secrets: inherit
+  call-workflow-sonarcloud:
+    needs: call-workflow-buildgradle
+    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/sonarcloud.yml@master
+    with:
+      compiler: gradle
+      allowfailure: false
+    secrets: inherit
