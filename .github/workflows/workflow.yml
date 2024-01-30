@@ -6,14 +6,15 @@ on:
 
 jobs:
   call-workflow-buildgradle:
-    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/android.yml@master
+    uses: ./android.yml  # Update with the correct file name
     with:
       compiler: gradle
       allowfailure: false
     secrets: inherit
+
   call-workflow-sonarcloud:
     needs: call-workflow-buildgradle
-    uses: Capstone-Terracoders/Mobile-Application/.github/workflows/sonarcloud.yml@master
+    uses: ./sonarcloud.yml  # Update with the correct file name
     with:
       compiler: gradle
       allowfailure: false
