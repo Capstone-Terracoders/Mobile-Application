@@ -34,3 +34,4 @@ jobs:
       if: success()
       with:
         name: "${{ github.sha }}"
+        path: app/build
