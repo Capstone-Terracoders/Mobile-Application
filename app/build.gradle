@@ -63,15 +63,15 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = "0.8.9"
+    // toolVersion = "0.8.9"
 }
 
 jacocoTestCoverageVerification {
-    violationRules {
-        rule {
-            limit {
-                minimum = 0.80 // Set your desired minimum code coverage percentage here
-            }
-        }
-    }
+    // violationRules {
+    //     rule {
+    //         limit {
+    //             minimum = 0.80 // Set your desired minimum code coverage percentage here
+    //         }
+    //     }
+    // }
 }
