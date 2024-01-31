@@ -1,26 +1,43 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      compiler:
+        required: true
+        type: string
+      allowfailure:
+        required: false
+        type: boolean
+        default: false
 
 jobs:
-  build:
-
+  buildGradle:
     runs-on: ubuntu-latest
-
     steps:
-    - uses: actions/checkout@v3
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
+    - uses: actions/checkout@v3.3.0
+    - uses: actions/setup-java@v3
       with:
-        java-version: '11'
+        java-version: '17'
         distribution: 'temurin'
         cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
     - name: Build with Gradle
-      run: ./gradlew build
+      run: |
+        chmod +x gradlew
+        ./gradlew build
+      if: inputs.compiler == 'gradle'
+
+    - name: Run Tests with Gradle
+      run: |
+        chmod +x gradlew
+        ./gradlew test
+      if: inputs.compiler == 'gradle' && success()
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v3.1.1
+      if: success()
+      with:
+        name: "${{ github.sha }}"
+        path: app/build
