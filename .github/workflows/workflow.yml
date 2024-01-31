@@ -16,11 +16,3 @@ jobs:
       compiler: gradle
       allowfailure: false
     secrets: inherit
-
-  call-workflow-sonarcloud:
-    needs: call-workflow-android
-    uses: ./.github/workflows/sonarcloud.yml  # Update with the correct file path
-    with:
-      compiler: gradle
-      allowfailure: false
-    secrets: inherit
