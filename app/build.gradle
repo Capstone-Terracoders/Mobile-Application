@@ -62,6 +62,10 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
 
+jacoco {
+    toolVersion = "0.8.7"
+}
+
 jacocoTestReport {
     reports {
         xml.enabled true
@@ -76,6 +80,8 @@ test {
     }
 }
 
-plugins.withType(JacocoPlugin) {
-    tasks["test"].finalizedBy 'jacocoTestReport'
+afterEvaluate {
+    tasks.withType(Test) {
+        finalizedBy 'jacocoTestReport'
+    }
 }
