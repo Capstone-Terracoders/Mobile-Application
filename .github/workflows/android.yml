@@ -29,6 +29,12 @@ jobs:
         ./gradlew build
       if: inputs.compiler == 'gradle'
 
+    - name: Run Tests with Gradle
+      run: |
+        chmod +x gradlew
+        ./gradlew test
+      if: inputs.compiler == 'gradle' && success()
+
     - name: Upload Artifact
       uses: actions/upload-artifact@v3.1.1
       if: success()
