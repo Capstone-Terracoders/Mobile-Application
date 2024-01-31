@@ -37,9 +37,9 @@ android {
     }
     
     jacoco {
-        version = '0.8.7'
+        version = "0.8.7"
     }
-    
+
     testOptions {
         unitTests.includeAndroidResources = true
         unitTests.all {
@@ -49,7 +49,18 @@ android {
             }
         }
     }
-    
+
+    tasks.withType(Test) {
+        useJUnitPlatform()
+    }
+
+    // Configuration for JacocoTestReport
+    afterEvaluate {
+        tasks.named("testDebugUnitTest") {
+            finalizedBy("jacocoTestReport")
+        }
+    }
+
     jacocoTestReport {
         reports {
             xml.enabled true
