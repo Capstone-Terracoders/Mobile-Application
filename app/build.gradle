@@ -37,7 +37,7 @@ android {
     }
     
     jacoco {
-        version = "0.8.7"
+        toolVersion = "0.8.7"
     }
 
     testOptions {
@@ -47,24 +47,6 @@ android {
                 junitXml.enabled = true
                 html.enabled = false
             }
-        }
-    }
-
-    tasks.withType(Test) {
-        useJUnitPlatform()
-    }
-
-    // Configuration for JacocoTestReport
-    afterEvaluate {
-        tasks.named("testDebugUnitTest") {
-            finalizedBy("jacocoTestReport")
-        }
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.enabled true
-            html.enabled true
         }
     }
 }
