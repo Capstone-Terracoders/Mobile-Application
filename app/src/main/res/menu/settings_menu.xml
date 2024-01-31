@@ -3,11 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/Info"
-        android:title="Notifications"
-        android:icon="@drawable/baseline_info_24"
+        android:id="@+id/BackButton"
+        android:title="BackButton"
+        android:icon="@drawable/back_arrow_fill"
         app:showAsAction="always" />
-
-
 
 </menu>

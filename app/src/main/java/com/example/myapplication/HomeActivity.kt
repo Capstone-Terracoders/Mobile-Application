@@ -4,15 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 @Suppress("DEPRECATION")
 class HomeActivity : AppCompatActivity() {
-
-    private lateinit var bottomNavigationView: BottomNavigationView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,26 +17,6 @@ class HomeActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.HomeToolbar)
         setSupportActionBar(toolbar)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.ProfileCard, ProfileCardFragment())
-            .commit()
-
-        bottomNavigationView = findViewById(R.id.BottomNav)
-        bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.Home -> {
-                    val home = Intent(this, HomeActivity::class.java)
-                    startActivity(home)
-                    true
-                }
-                R.id.Swipe -> {
-                    val swipe = Intent(this, SwipeActivity::class.java)
-                    startActivity(swipe)
-                    true
-                }
-                else -> false
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -50,15 +26,18 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            //This needs to be changed to include a card for notifications
             R.id.Notifications -> {
-                Toast.makeText(this, "Notifications feature coming soon.", Toast.LENGTH_LONG).show()
+                val home = Intent(this, HomeActivity::class.java)
+                startActivity(home)
                 true
             }
             R.id.Settings -> {
-                Toast.makeText(this, "Settings feature coming soon.", Toast.LENGTH_LONG).show()
+                val swipe = Intent(this, SettingsActivity::class.java)
+                startActivity(swipe)
                 true
             }
-            else -> super.onOptionsItemSelected(item)
+            else -> false
         }
     }
 }
