@@ -16,6 +16,6 @@
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Record"
         app:titleMarginStart="30dp"
-        app:menu="@menu/top_menu"/>
+        app:menu="@menu/home_menu"/>
 
 </RelativeLayout>
