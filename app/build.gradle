@@ -2,7 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
-    id 'jacoco'
+    apply plugin: 'jacoco'
 }
 
 android {
@@ -35,19 +35,9 @@ android {
     buildFeatures {
         viewBinding = true
     }
-    
-    jacoco {
-        toolVersion = "0.8.7"
-    }
 
-    testOptions {
-        unitTests.includeAndroidResources = true
-        unitTests.all {
-            reports {
-                junitXml.enabled = true
-                html.enabled = false
-            }
-        }
+    test {
+      useJUnitPlatform()
     }
 }
 
