@@ -35,6 +35,27 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    
+    jacoco {
+        toolVersion = '0.8.7'
+    }
+    
+    testOptions {
+        unitTests.includeAndroidResources = true
+        unitTests.all {
+            reports {
+                junitXml.enabled = true
+                html.enabled = false
+            }
+        }
+    }
+    
+    jacocoTestReport {
+        reports {
+            xml.enabled true
+            html.enabled true
+        }
+    }
 }
 
 dependencies {
@@ -49,19 +70,4 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
-}
-
-jacoco {
-    toolVersion = '0.8.7'
-}
-
-androidTest {
-    useJUnitPlatform()
-}
-
-jacocoTestReport {
-    reports {
-        xml.enabled true
-        html.enabled true
-    }
 }
