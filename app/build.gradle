@@ -66,22 +66,17 @@ jacoco {
     toolVersion = "0.8.7"
 }
 
-jacocoTestReport {
-    reports {
-        xml.enabled true
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.80 // Set your desired minimum code coverage percentage here
+            }
+        }
     }
 }
 
 test {
     useJUnitPlatform()
-    reports {
-        junitXml.enabled = true
-        html.enabled = false 
-    }
-}
-
-afterEvaluate {
-    tasks.withType(Test) {
-        finalizedBy 'jacocoTestReport'
-    }
+    finalizedBy jacocoTestReport
 }
