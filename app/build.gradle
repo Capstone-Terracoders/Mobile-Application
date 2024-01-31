@@ -76,6 +76,8 @@ jacocoTestCoverageVerification {
     }
 }
 
+tasks.test.finalizedBy 'jacocoTestReport'
+
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
