@@ -7,15 +7,14 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/HomeToolbar"
+        android:id="@+id/SettingsToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/BlueGrey"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:logo="@drawable/record_circle"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Record"
+        app:title="Settings"
         app:titleMarginStart="30dp"
-        app:menu="@menu/home_menu"/>
+        app:menu="@menu/settings_menu"/>
 
 </RelativeLayout>

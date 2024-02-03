@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.terracode.blueharvest
 
 import org.junit.Test
 
