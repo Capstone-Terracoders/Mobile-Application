@@ -2,8 +2,8 @@ name: PMD Code Analysis
 
 on:
   push:
-    branches: 
-    - '*' 
+    branches-ignore:
+      - '*'
   pull_request:
     branches:
       - main
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
+          distribution: 'adopt'
 
       - name: Run PMD Code Analysis
         uses: pmd/pmd-github-action@v1
