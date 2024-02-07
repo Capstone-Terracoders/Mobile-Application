@@ -18,6 +18,7 @@ jobs:
     secrets: inherit
 
   call-workflow-pmd:
+      needs: call-workflow-android
       uses: ./.github/workflows/pmd.yml
       with:
         compiler: gradle
