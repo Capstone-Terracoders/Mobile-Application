@@ -25,6 +25,8 @@ jobs:
       - name: Run PMD Code Analysis
         uses: pmd/pmd-github-action@v1
         with:
+          rulesets: 'kotlin-basic,kotlin-errorprone'
+          sourcePath: 'src/main/kotlin'
           analyzeModifiedFilesOnly: false
 
       - name: Upload PMD Report
