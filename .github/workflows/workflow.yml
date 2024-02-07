@@ -11,8 +11,15 @@ on:
 
 jobs:
   call-workflow-android:
-    uses: ./.github/workflows/android.yml  # Update with the correct file path
+    uses: ./.github/workflows/android.yml
     with:
       compiler: gradle
       allowfailure: false
     secrets: inherit
+
+  call-workflow-pmd:
+      uses: ./.github/workflows/pmd.yml
+      with:
+        compiler: gradle
+        allowfailure: false
+      secrets: inherit
