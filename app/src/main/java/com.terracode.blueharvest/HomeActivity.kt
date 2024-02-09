@@ -34,8 +34,6 @@ class HomeActivity : AppCompatActivity() {
                 true
             }
             R.id.Settings -> {
-                val swipe = Intent(this, SettingsActivity::class.java)
-                startActivity(swipe)
                 true
             }
             else -> false
