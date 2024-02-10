@@ -8,4 +8,24 @@
         android:icon="@drawable/back_arrow_fill"
         app:showAsAction="always" />
 
+    <item
+        android:id="@+id/Settings"
+        android:icon="@drawable/gear"
+        android:title="Settings"
+        app:showAsAction="always">
+
+        <menu>
+            <item
+                android:id="@+id/Operation_Settings"
+                android:title="Operation Settings"
+                android:orderInCategory="1"/>
+
+            <item
+                android:id="@+id/Accessibility_Settings"
+                android:title="Accessibility Settings"
+                android:orderInCategory="2"/>
+        </menu>
+
+    </item>
+
 </menu>

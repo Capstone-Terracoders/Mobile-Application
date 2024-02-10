@@ -13,7 +13,7 @@
         android:background="@color/BlueGrey"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="Settings"
+        app:title="Accessibility Settings"
         app:titleMarginStart="30dp"
         app:menu="@menu/settings_menu"/>
 

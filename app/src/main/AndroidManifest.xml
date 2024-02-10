@@ -37,7 +37,7 @@
         </activity>
 
         <activity
-            android:name="com.terracode.blueharvest.SettingsActivity"
+            android:name="com.terracode.blueharvest.OperationSettingsActivity"
             android:exported="true" />
 
     </application>
