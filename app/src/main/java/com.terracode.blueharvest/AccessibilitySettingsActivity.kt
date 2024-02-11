@@ -12,7 +12,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_operation_settings)
+        setContentView(R.layout.activity_accessibility_settings)
 
         val toolbar: Toolbar = findViewById(R.id.SettingsToolbar)
         setSupportActionBar(toolbar)

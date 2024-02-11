@@ -40,6 +40,10 @@
             android:name="com.terracode.blueharvest.OperationSettingsActivity"
             android:exported="true" />
 
+        <activity
+            android:name="com.terracode.blueharvest.AccessibilitySettingsActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>
