@@ -6,14 +6,13 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.R
 
 @Suppress("DEPRECATION")
-class SettingsActivity : AppCompatActivity() {
+class OperationSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_settings)
+        setContentView(R.layout.activity_operation_settings)
 
         val toolbar: Toolbar = findViewById(R.id.SettingsToolbar)
         setSupportActionBar(toolbar)
@@ -31,6 +30,16 @@ class SettingsActivity : AppCompatActivity() {
             R.id.BackButton -> {
                 val home = Intent(this, HomeActivity::class.java)
                 startActivity(home)
+                true
+            }
+            R.id.Operation_Settings -> {
+                val operationSettings = Intent(this, OperationSettingsActivity::class.java)
+                startActivity(operationSettings)
+                true
+            }
+            R.id.Accessibility_Settings -> {
+                val accessibilitySettings = Intent(this, AccessibilitySettingsActivity::class.java)
+                startActivity(accessibilitySettings)
                 true
             }
             else -> false
