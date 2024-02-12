@@ -1,19 +1,25 @@
 <resources>
     <string name="app_name">BlueHarvest</string>
 
+    <!-- Strings used for Home Page -->
 
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
+    <string name="recordTitle">Record</string>
+
+
+    <!-- Strings used for Home Page -->
+
+    <string name="operationPageTitle">Operation Parameter Settings</string>
+
+
+    <!-- Strings used for Accessibility Settings Page-->
+
+    <string name="accessibilityPageTitle">Accessibility Settings</string>
+    <string name="textSizeTitle">Text Size</string>
+    <string name="languageTitle">Language</string>
+    <string name="unitSystemTitle">Unit System</string>
+    <string name="colorSchemeTitle">Color Scheme</string>
     <string name="metric">Metric</string>
     <string name="imperial">Imperial</string>
-
-    <string-array name="yesNo">
-        <item>Yes</item>
-        <item>No</item>
-    </string-array>
 
     <string-array name="languageArray">
         <item>English</item>
@@ -21,10 +27,17 @@
         <item>Spanish</item>
     </string-array>
 
-    <string-array name="ColorSchemeArray">
+    <string-array name="colorSchemeArray">
         <item>Light</item>
         <item>Dark</item>
         <item>Color Blind</item>
     </string-array>
+
+
+    <!-- Strings used for Menus -->
+
+    <string name="backButtonTitle">Back Button</string>
+    <string name="settingsTitle">Settings</string>
+    <string name="notificationTitle">Notifications</string>
 
 </resources>

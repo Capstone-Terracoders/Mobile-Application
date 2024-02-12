@@ -7,14 +7,13 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-@Suppress("DEPRECATION")
 class OperationSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_operation_settings)
 
-        val toolbar: Toolbar = findViewById(R.id.SettingsToolbar)
+        val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
         setSupportActionBar(toolbar)
 
     }
@@ -27,17 +26,17 @@ class OperationSettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             //This needs to be changed to include a card for notifications
-            R.id.BackButton -> {
+            R.id.backButton -> {
                 val home = Intent(this, HomeActivity::class.java)
                 startActivity(home)
                 true
             }
-            R.id.Operation_Settings -> {
+            R.id.operationSettings -> {
                 val operationSettings = Intent(this, OperationSettingsActivity::class.java)
                 startActivity(operationSettings)
                 true
             }
-            R.id.Accessibility_Settings -> {
+            R.id.accessibilitySettings -> {
                 val accessibilitySettings = Intent(this, AccessibilitySettingsActivity::class.java)
                 startActivity(accessibilitySettings)
                 true
