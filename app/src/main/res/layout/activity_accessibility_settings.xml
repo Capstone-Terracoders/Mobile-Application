@@ -55,7 +55,6 @@
                 android:id="@+id/Text_Size_SeekBar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/Text_Size_Title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp" />
@@ -64,7 +63,6 @@
                 android:id="@+id/Language_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/Text_Size_SeekBar"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text="Language"
@@ -75,8 +73,6 @@
                 android:id="@+id/Language_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/Language_Title"
-                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
@@ -88,7 +84,6 @@
                 android:id="@+id/Unit_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/Language_Spinner"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text="Unit System"
@@ -99,7 +94,6 @@
                 android:id="@+id/Unit_Linear_Layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/Unit_Title"
                 android:layout_marginTop="30dp"
                 android:gravity="center"
                 android:orientation="horizontal">
@@ -113,7 +107,7 @@
                     android:textAllCaps="true"
                     android:textStyle="bold" />
 
-                <androidx.appcompat.widget.SwitchCompat
+                <Switch
                     android:id="@+id/Unit_Switch"
                     android:layout_width="50dp"
                     android:layout_height="50dp" />
@@ -133,7 +127,6 @@
                 android:id="@+id/Color_Scheme_Title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/Unit_Linear_Layout"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
                 android:text="Color Scheme"
@@ -144,8 +137,6 @@
                 android:id="@+id/Color_Scheme_Spinner"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:layout_below="@id/Color_Scheme_Title"
-                android:layout_centerHorizontal="true"
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="30dp"
                 android:layout_marginRight="20dp"
