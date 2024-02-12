@@ -21,4 +21,10 @@
         <item>Spanish</item>
     </string-array>
 
+    <string-array name="ColorSchemeArray">
+        <item>Light</item>
+        <item>Dark</item>
+        <item>Color Blind</item>
+    </string-array>
+
 </resources>
