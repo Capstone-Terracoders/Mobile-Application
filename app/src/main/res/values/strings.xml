@@ -8,7 +8,7 @@
 
     <!-- Strings used for Home Page -->
 
-    <string name="operationPageTitle">Operation Parameter Settings</string>
+    <string name="configurationPageTitle">Configuration Settings</string>
 
 
     <!-- Strings used for Accessibility Settings Page-->
@@ -39,5 +39,4 @@
     <string name="backButtonTitle">Back Button</string>
     <string name="settingsTitle">Settings</string>
     <string name="notificationTitle">Notifications</string>
-
 </resources>

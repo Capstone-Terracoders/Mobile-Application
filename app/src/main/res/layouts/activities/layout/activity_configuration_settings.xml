@@ -12,7 +12,7 @@
         android:background="@color/blueGrey"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        app:title="@string/operationPageTitle"
+        app:title="@string/configurationPageTitle"
         app:titleMarginStart="30dp"
         app:menu="@menu/settings_menu"/>
 

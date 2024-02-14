@@ -31,8 +31,8 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(home)
                 true
             }
-            R.id.operationSettings -> {
-                val operationSettings = Intent(this, OperationSettingsActivity::class.java)
+            R.id.configurationSettings -> {
+                val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
                 startActivity(operationSettings)
                 true
             }

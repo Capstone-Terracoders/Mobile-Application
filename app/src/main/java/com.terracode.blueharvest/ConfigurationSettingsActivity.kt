@@ -7,11 +7,11 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 
-class OperationSettingsActivity : AppCompatActivity() {
+class ConfigurationSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_operation_settings)
+        setContentView(R.layout.activity_configuration_settings)
 
         val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
         setSupportActionBar(toolbar)
@@ -31,8 +31,8 @@ class OperationSettingsActivity : AppCompatActivity() {
                 startActivity(home)
                 true
             }
-            R.id.operationSettings -> {
-                val operationSettings = Intent(this, OperationSettingsActivity::class.java)
+            R.id.configurationSettings -> {
+                val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
                 startActivity(operationSettings)
                 true
             }
