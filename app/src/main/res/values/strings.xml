@@ -7,7 +7,7 @@
     <string name="accessibilityPageTitle">Accessibility Settings</string>
     <string name="configurationPageTitle">Configuration Settings</string>
     <string name="displayedValuesCardTitle">Display Values</string>
-    <string name="configurationSettingsCardTitle">Configuration Settings</string>
+    <string name="safetyOperationalSettingsCardTitle">Safety and Operational Settings</string>
 
 
     <!-- Strings used for Home Page -->

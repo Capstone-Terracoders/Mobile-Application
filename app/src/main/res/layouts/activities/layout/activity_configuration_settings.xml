@@ -42,7 +42,7 @@
                 <!-- Displayed Values Card -->
                 <include
                     android:id="@+id/displayValuesCard"
-                    layout="@layout/displayed_values_card"
+                    layout="@layout/displayed_value_settings_card"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="25dp"
@@ -53,7 +53,7 @@
                 <!-- Operation Parameter Card -->
                 <include
                     android:id="@+id/operationParameterCard"
-                    layout="@layout/operation_parameters_card"
+                    layout="@layout/safety_operational_settings_card"
                     android:layout_width="300dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="50dp"
