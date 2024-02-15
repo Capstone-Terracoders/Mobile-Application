@@ -1,19 +1,22 @@
 <resources>
+    <!-- Strings used for App Name -->
     <string name="app_name">BlueHarvest</string>
+
+
+    <!-- Strings used for Page Titles -->
+    <string name="accessibilityPageTitle">Accessibility Settings</string>
+    <string name="configurationPageTitle">Configuration Settings</string>
+    <string name="displayedValuesCardTitle">Display Values</string>
+    <string name="operationParameterCardTitle">Operation Parameters</string>
+
 
     <!-- Strings used for Home Page -->
 
     <string name="recordTitle">Record</string>
 
 
-    <!-- Strings used for Home Page -->
+    <!-- Strings used for Accessibility Settings Card-->
 
-    <string name="operationPageTitle">Operation Parameter Settings</string>
-
-
-    <!-- Strings used for Accessibility Settings Page-->
-
-    <string name="accessibilityPageTitle">Accessibility Settings</string>
     <string name="textSizeTitle">Text Size</string>
     <string name="languageTitle">Language</string>
     <string name="unitSystemTitle">Unit System</string>
@@ -34,10 +37,40 @@
     </string-array>
 
 
+    <!-- Strings used for Displayed Values Settings Card-->
+
+    <string name="maxRPMDisplayedTitle">Maximum RPM Displayed</string>
+    <string name="maxHeightDisplayedTitle">Maximum Height Displayed</string>
+    <string name="optimalRPMRangeTitle">Optimal RPM Range</string>
+    <string name="optimalHeightRangeTitle">Optimal Height Range</string>
+    <string name="connectedSensorTitle">Connected Sensors</string>
+    <string name="plusMinusSign">+/-</string>
+
+    <string-array name="connectedSensors">
+        <item>Sensor 1</item>
+        <item>Sensor 2</item>
+        <item>Sensor 3</item>
+    </string-array>
+
+
+    <!-- Strings used for Operation Parameters Settings Card-->
+
+    <string name="minRakeRPMTitle">Maximum Rake Height</string>
+    <string name="minRakeHeightTitle">Maximum Rake RPM</string>
+    <string name="coefficientRPMTitle">RPM Coefficient</string>
+    <string name="coefficientHeightTitle">Height Coefficient</string>
+    <string name="safetyParametersTitle">Safety Parameters</string>
+    <string name="optimizationParametersTitle">Operation Parameters</string>
+
+
     <!-- Strings used for Menus -->
 
     <string name="backButtonTitle">Back Button</string>
     <string name="settingsTitle">Settings</string>
     <string name="notificationTitle">Notifications</string>
+
+
+    <!-- Extra Strings -->
+    <string name="numberHint">Enter a number</string>
 
 </resources>

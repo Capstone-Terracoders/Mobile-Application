@@ -16,8 +16,8 @@
 
         <menu>
             <item
-                android:id="@+id/operationSettings"
-                android:title="@string/operationPageTitle"
+                android:id="@+id/configurationSettings"
+                android:title="@string/configurationPageTitle"
                 android:orderInCategory="1"/>
 
             <item
