@@ -13,16 +13,14 @@
         android:background="@color/white">
 
     <TextView
-            android:id="@+id/displayedValuesCardTitle"
+            android:id="@+id/configurationCardTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="50dp"
             android:layout_marginBottom="20dp"
             android:gravity="center"
-            android:text="@string/displayedValuesCardTitle"
+            android:text="@string/safetyOperationalSettingsCardTitle"
             android:textColor="@color/black" />
 
         <LinearLayout
@@ -32,17 +30,29 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/maxRPMDisplayedTitle"
+                android:id="@+id/safetyParametersTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text="@string/maxRPMDisplayedTitle"
+                android:text="@string/safetyParametersTitle"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/minRakeRPMTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="@string/minRakeRPMTitle"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/maxRPMDisplayedLayout"
+                android:id="@+id/minRakeRPMLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -59,10 +69,10 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/maxRPMDisplayedNumber"
+                    android:id="@+id/minRakeRPMNumber"
                     android:layout_width="125dp"
                     android:layout_height="48dp"
-                    android:autofillHints="maxRPMDisplayedNumber"
+                    android:autofillHints="minRakeRPMNumber"
                     android:background="@color/white"
                     android:ems="10"
                     android:gravity="center"
@@ -73,18 +83,18 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/maxHeightDisplayedTitle"
+                android:id="@+id/minHeightDisplayedTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text="@string/maxHeightDisplayedTitle"
+                android:text="@string/minRakeHeightTitle"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
 
             <LinearLayout
-                android:id="@+id/maxHeightDisplayedLayout"
+                android:id="@+id/minHeightDisplayedLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -101,10 +111,10 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/maxHeightDisplayedNumber"
+                    android:id="@+id/minHeightDisplayedNumber"
                     android:layout_width="125dp"
                     android:layout_height="48dp"
-                    android:autofillHints="maxHeightDisplayedNumber"
+                    android:autofillHints="minHeightDisplayedNumber"
                     android:background="@color/white"
                     android:ems="10"
                     android:gravity="center"
@@ -115,17 +125,29 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/optimalRPMRangeTitle"
+                android:id="@+id/optimizationParametersTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text="@string/optimalRPMRangeTitle"
+                android:text="@string/optimizationParametersTitle"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/coefficientRPMTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="@string/coefficientRPMTitle"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/optimalRPMRangeLayout"
+                android:id="@+id/coefficientRPMLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -142,10 +164,10 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/optimalRPMRangeNumber"
+                    android:id="@+id/coefficientRPMNumber"
                     android:layout_width="125dp"
                     android:layout_height="48dp"
-                    android:autofillHints="optimalRPMRangeNumber"
+                    android:autofillHints="coefficientRPMNumber"
                     android:background="@color/white"
                     android:ems="10"
                     android:gravity="center"
@@ -156,17 +178,17 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/optimalHeightRangeTitle"
+                android:id="@+id/coefficientHeightTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text="@string/optimalHeightRangeTitle"
+                android:text="@string/coefficientHeightTitle"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
             <LinearLayout
-                android:id="@+id/optimalHeightRangeLayout"
+                android:id="@+id/coefficientHeightLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="30dp"
@@ -183,10 +205,10 @@
                     android:textStyle="bold" />
 
                 <EditText
-                    android:id="@+id/optimalHeightRangeNumber"
+                    android:id="@+id/coefficientHeightNumber"
                     android:layout_width="125dp"
                     android:layout_height="48dp"
-                    android:autofillHints="optimalHeightRangeNumber"
+                    android:autofillHints="coefficientHeightNumber"
                     android:background="@color/white"
                     android:ems="10"
                     android:gravity="center"
@@ -196,29 +218,8 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/connectedSensorTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:gravity="center"
-                android:text="@string/connectedSensorTitle"
-                android:textAllCaps="true"
-                android:textStyle="bold" />
-
-            <Spinner
-                android:id="@+id/connectedSensorsSpinner"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="50dp"
-                android:background="@color/white"
-                android:entries="@array/connectedSensors"
-                android:textSize="18sp" />
-
         </LinearLayout>
+
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>
