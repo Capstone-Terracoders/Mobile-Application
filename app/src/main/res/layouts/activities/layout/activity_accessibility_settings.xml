@@ -22,7 +22,7 @@
 
 
         <TextView
-            android:id="@+id/accessibilitySettingsTitle"
+            android:id="@+id/accessibilityPageTitle"
             style="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
             android:textColor="@color/black" />
 
         <include
-            android:id="@+id/ProfileCard"
+            android:id="@+id/accessibilitySettingsCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="50dp"
