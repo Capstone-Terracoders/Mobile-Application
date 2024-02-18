@@ -59,7 +59,7 @@
             android:label="@string/app_name"/>
 
 
-        <!--todo add bluetooth activity here-->
+
     </application>
 
 </manifest>
