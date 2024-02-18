@@ -8,8 +8,16 @@
     app:cardUseCompatPadding="true">
 
     <LinearLayout
+        android:id="@+id/BoxLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/card1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#2A416F"
         android:orientation="vertical">
 
@@ -41,10 +49,13 @@
             android:textColor="@color/white" />
 
     </LinearLayout>
+
     <LinearLayout
+        android:id="@+id/card2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#2A416F"
+        android:layout_marginTop="50dp"
         android:orientation="vertical">
 
         <TextView
@@ -73,5 +84,6 @@
             android:gravity="center"
             android:text="@string/currentBushHeight"
             android:textColor="@color/white" />
+    </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
