@@ -6,6 +6,7 @@ import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 
 class HomeActivity : AppCompatActivity() {
 
@@ -41,6 +42,13 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(accessibilitySettings)
                 true
             }
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
+                true
+            }
+
+
             else -> false
         }
     }

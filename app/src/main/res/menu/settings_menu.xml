@@ -24,6 +24,11 @@
                 android:id="@+id/accessibilitySettings"
                 android:title="@string/accessibilityPageTitle"
                 android:orderInCategory="2"/>
+
+            <item
+                android:id="@+id/bluetoothBLE"
+                android:title="@string/Bluetooth_Functionality"
+                android:orderInCategory="3"/>
         </menu>
 
     </item>
