@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
@@ -127,6 +128,13 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(accessibilitySettings)
                 true
             }
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
+                true
+            }
+
+
             else -> false
         }
     }
