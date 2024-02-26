@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/optimalOperationCard"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardUseCompatPadding="true">
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/optimalOperationCard"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:cardUseCompatPadding="true">
 
-    <LinearLayout
-        android:id="@+id/BoxLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:orientation="vertical">
+<LinearLayout
+    android:id="@+id/BoxLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/card1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2A416F"
+        android:background="@drawable/rounded_corner"
         android:orientation="vertical">
 
         <TextView
@@ -28,7 +28,14 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/optimalOperationTitle"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" />
 
         <TextView
             android:id="@+id/optimalRakeHeight"
@@ -40,12 +47,27 @@
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/optimalRakeHeightValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
+
+        <TextView
             android:id="@+id/optimalRakeRPM"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
+            android:paddingBottom="20dp"
             android:text="@string/optimalRakeRPM"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/optimalRakeRPMValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
             android:textColor="@color/white" />
 
     </LinearLayout>
@@ -54,7 +76,7 @@
         android:id="@+id/card2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2A416F"
+        android:background="@drawable/rounded_corner"
         android:layout_marginTop="50dp"
         android:orientation="vertical">
 
@@ -65,7 +87,15 @@
             android:layout_marginTop="20dp"
             android:gravity="center"
             android:text="@string/currentOperationTitle"
-            android:textColor="@color/white" />
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" />
+
 
         <TextView
             android:id="@+id/currentSpeed"
@@ -77,13 +107,28 @@
             android:textColor="@color/white" />
 
         <TextView
+            android:id="@+id/currentSpeedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
+
+        <TextView
             android:id="@+id/currentBushHeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:gravity="center"
+            android:paddingBottom="20dp"
             android:text="@string/currentBushHeight"
             android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/currentBushHeightValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
     </LinearLayout>
-    </LinearLayout>
+</LinearLayout>
 </androidx.cardview.widget.CardView>
