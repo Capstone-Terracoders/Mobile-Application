@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <!-- Toolbar -->
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
@@ -17,5 +18,25 @@
         app:title="@string/recordTitle"
         app:titleMarginStart="30dp" />
 
+    <!-- Horizontal LinearLayout containing Toolbar and Optimal Operation Card -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <!-- Optimal Operation Card -->
+        <include layout="@layout/optimal_operation_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!-- Spacer to separate the card from the toolbar -->
+        <View
+            android:layout_width="16dp"
+        android:layout_height="match_parent" />
+    </LinearLayout>
 
 </LinearLayout>
+
+
+
