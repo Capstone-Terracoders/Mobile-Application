@@ -10,6 +10,7 @@
     <string name="safetyOperationalSettingsCardTitle">Safety and Operational Settings</string>
 
 
+
     <!-- Strings used for Home Page -->
 
     <string name="recordTitle">Record</string>
@@ -72,5 +73,13 @@
 
     <!-- Extra Strings -->
     <string name="numberHint">Enter a number</string>
+
+    <!-- Strings used for Optimal Operation Card-->
+    <string name="optimalOperationTitle">Optimal Operation</string>
+    <string name="optimalRakeHeight">Optimal Rake Height</string>
+    <string name="optimalRakeRPM">Optimal Rake RPM</string>
+    <string name="currentOperationTitle">Current Operation</string>
+    <string name="currentSpeed">Speed (KPH)</string>
+    <string name="currentBushHeight">Bush Height (CM)</string>
 
 </resources>

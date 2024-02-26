@@ -82,7 +82,9 @@
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/unitSwitch"
                 android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp"
+                android:textOn="@string/imperial"
+                android:textOff="@string/metric"/>
 
             <TextView
                 android:id="@+id/unitImperialTitle"

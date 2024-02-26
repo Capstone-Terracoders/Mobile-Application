@@ -1,13 +1,28 @@
 package com.terracode.blueharvest
 
+import AccessibilitySettingsActivity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.ReadJSONObject
+import com.terracode.blueharvest.utils.UnitConverter
 
 class HomeActivity : AppCompatActivity() {
+
+    // Declare variables as var to allow reassignment
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var optimalRakeHeightTextView: TextView
+
+    var bushHeightData: Double? = null
+    var rakeHeightData: Double? = null
+    var rpmData: Double? = null
+    var speedData: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -16,6 +31,25 @@ class HomeActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.homeToolbar)
         setSupportActionBar(toolbar)
 
+        optimalRakeHeightTextView = findViewById(R.id.optimalRakeHeightValue)
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        val isMetric = sharedPreferences.getBoolean("is_metric", true)
+
+        //Replace with get data from microcontroller.
+        val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")
+        sensorData?.apply {
+            rpmData = getRPM()
+            rakeHeightData = getRakeHeight()
+            bushHeightData = getBushHeight()
+            speedData = getSpeed()
+        }
+
+        optimalRakeHeightTextView.text = if (isMetric) {
+            "${UnitConverter.convertToMetric(rakeHeightData)} cm"
+        } else {
+            "${UnitConverter.convertToImperial(rakeHeightData)} in"
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
