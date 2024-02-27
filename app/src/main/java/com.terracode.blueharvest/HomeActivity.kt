@@ -1,6 +1,5 @@
 package com.terracode.blueharvest
 
-import AccessibilitySettingsActivity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -18,6 +17,7 @@ class HomeActivity : AppCompatActivity() {
     // Declare variables as var to allow reassignment
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var optimalRakeHeightTextView: TextView
+    private lateinit var currentBushHeightTextView: TextView
 
     var bushHeightData: Double? = null
     var rakeHeightData: Double? = null
@@ -32,6 +32,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         optimalRakeHeightTextView = findViewById(R.id.optimalRakeHeightValue)
+        currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         val isMetric = sharedPreferences.getBoolean("is_metric", true)
@@ -49,6 +50,13 @@ class HomeActivity : AppCompatActivity() {
             "${UnitConverter.convertToMetric(rakeHeightData)} cm"
         } else {
             "${UnitConverter.convertToImperial(rakeHeightData)} in"
+        }
+
+
+        currentBushHeightTextView.text = if (isMetric) {
+            "${UnitConverter.convertToMetric(bushHeightData)} cm"
+        } else {
+            "${UnitConverter.convertToImperial(bushHeightData)} in"
         }
     }
 

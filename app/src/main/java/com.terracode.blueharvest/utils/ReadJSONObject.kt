@@ -10,15 +10,15 @@ class ReadJSONObject (private val jsonObject: JSONObject){
     }
 
     fun getRakeHeight(): Double? {
-        return jsonObject.getDouble("RakeHeight")
+        return jsonObject.getDouble("rakeHeight")
     }
 
     fun getBushHeight(): Double? {
-        return jsonObject.getDouble("BushHeight")
+        return jsonObject.getDouble("bushHeight")
     }
 
     fun getSpeed(): Double? {
-        return jsonObject.getDouble("Speed")
+        return jsonObject.getDouble("speed")
     }
 
     companion object{
