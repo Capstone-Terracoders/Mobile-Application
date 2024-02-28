@@ -2,19 +2,19 @@ package com.terracode.blueharvest.utils
 
 class UnitConverter {
     companion object {
-        fun convertToMetric(currentValue: Double?): Double? {
-            val metricToImperial = Constants.MetricImperialConversionConstant.value
+        fun convertHeightToImperial(currentValue: Double?): Double? {
+            val heightToImperial = Constants.heightToImperialConstant.value
             if (currentValue != null) {
-                return currentValue * metricToImperial
+                return currentValue / heightToImperial
             } else {
                 return null
             }
         }
 
-        fun convertToImperial(currentValue: Double?): Double? {
-            val metricToImperial = Constants.MetricImperialConversionConstant.value
+        fun convertSpeedToImperial(currentValue: Double?): Double? {
+            val speedToImperial = Constants.SpeedToImperialConstant.value
             if (currentValue != null) {
-                return currentValue / metricToImperial
+                return currentValue / speedToImperial
             } else {
                 return null
             }

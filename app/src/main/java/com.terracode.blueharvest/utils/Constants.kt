@@ -1,6 +1,6 @@
 package com.terracode.blueharvest.utils
 
 enum class Constants(val value: Double) {
-    MetricImperialConversionConstant(2.54),
-    SpeedConversionConstant(0.6)
+    heightToImperialConstant(2.54),
+    SpeedToImperialConstant(0.6)
 }

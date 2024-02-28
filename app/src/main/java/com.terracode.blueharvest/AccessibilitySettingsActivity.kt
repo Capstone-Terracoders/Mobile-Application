@@ -3,12 +3,12 @@ package com.terracode.blueharvest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import androidx.preference.PreferenceManager
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import androidx.preference.PreferenceManager
 
 
 class AccessibilitySettingsActivity : AppCompatActivity() {
@@ -25,15 +25,16 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        unitSwitch = findViewById(R.id.unitSwitch) // Corrected typo here
+        unitSwitch = findViewById(R.id.unitSwitch)
 
         // Set initial state of the switch
-        val isMetric = sharedPreferences.getBoolean("is_metric", true)
-        unitSwitch.isChecked = isMetric
+        val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
+        unitSwitch.isChecked = toggleValue
 
         unitSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Update SharedPreferences with the new unit preference
-            sharedPreferences.edit().putBoolean("is_metric", isChecked).apply()
+            sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
+           // sharedPreferences.edit().putBoolean("onStart", true).apply()
         }
     }
 
