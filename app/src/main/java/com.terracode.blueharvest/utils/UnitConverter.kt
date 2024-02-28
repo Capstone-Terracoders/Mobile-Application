@@ -5,7 +5,7 @@ class UnitConverter {
         fun convertToMetric(currentValue: Double?): Double? {
             val metricToImperial = Constants.MetricImperialConversionConstant.value
             if (currentValue != null) {
-                return currentValue / metricToImperial
+                return currentValue * metricToImperial
             } else {
                 return null
             }
@@ -14,7 +14,7 @@ class UnitConverter {
         fun convertToImperial(currentValue: Double?): Double? {
             val metricToImperial = Constants.MetricImperialConversionConstant.value
             if (currentValue != null) {
-                return currentValue * metricToImperial
+                return currentValue / metricToImperial
             } else {
                 return null
             }
