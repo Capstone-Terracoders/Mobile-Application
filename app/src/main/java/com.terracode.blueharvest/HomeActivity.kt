@@ -3,7 +3,6 @@ package com.terracode.blueharvest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
@@ -24,10 +23,10 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var currentSpeedTextView: TextView
 
     //Declaring the data values
-    var bushHeightData: Double? = null
-    var rakeHeightData: Double? = null
-    var rpmData: Double? = null
-    var speedData: Double? = null
+    private var bushHeightData: Double? = null
+    private var rakeHeightData: Double? = null
+    private var rpmData: Double? = null
+    private var speedData: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,26 +56,26 @@ class HomeActivity : AppCompatActivity() {
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
         optimalRakeHeightTextView.text = if (toggleValue) {
-            "${rakeHeightData} cm"
+            "$rakeHeightData cm"
         } else {
             "${UnitConverter.convertHeightToImperial(rakeHeightData)} in"
         }
 
         optimalRakeRPMValueTextView.text = if (toggleValue) {
-            "${rpmData} mph"
+            "$rpmData mph"
         } else {
             //Needs function
             "${UnitConverter.convertSpeedToImperial(rpmData)} kmh"
         }
 
         currentBushHeightTextView.text = if (toggleValue) {
-            "${bushHeightData} cm"
+            "$bushHeightData cm"
         } else {
             "${UnitConverter.convertHeightToImperial(bushHeightData)} in"
         }
 
         currentSpeedTextView.text = if (toggleValue) {
-            "${speedData} mph"
+            "$speedData mph"
         } else {
             //Needs function
             "${UnitConverter.convertSpeedToImperial(speedData)} kmh"

@@ -4,6 +4,7 @@ fileHashes.bin
 fileHashes.lock
 local.properties
 misc.xml
+gradle.xml
 
 # Ignore unversioned files
 Unversioned Files

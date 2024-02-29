@@ -36,7 +36,6 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         unitSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Update SharedPreferences with the new unit preference
             sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
-           // sharedPreferences.edit().putBoolean("onStart", true).apply()
         }
     }
 
