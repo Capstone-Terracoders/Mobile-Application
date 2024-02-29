@@ -3,16 +3,13 @@ package com.terracode.blueharvest
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
@@ -26,8 +23,11 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var unitSwitch: SwitchCompat
     private lateinit var languageSpinner: Spinner
+    private lateinit var colorSpinner: Spinner
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setAppTheme(colorSpinner, sharedPreferences)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_accessibility_settings)
 
@@ -43,11 +43,11 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         val languages = resources.getStringArray(R.array.languageArray)
         languageSpinner = findViewById(R.id.languageSpinner)
-        val adapter = ArrayAdapter(
+        val languageAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item, languages
         )
-        languageSpinner.adapter = adapter
+        languageSpinner.adapter = languageAdapter
 
         languageSpinner.setSelection(currentLanguagePosition)
 
@@ -82,6 +82,39 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
             // Update SharedPreferences with the new unit preference
             sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
         }
+
+        //-----Logic for Color Scheme-----//
+        val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
+
+        val colors = resources.getStringArray(R.array.colorSchemeArray)
+        colorSpinner = findViewById(R.id.colorSchemeSpinner)
+        val colorAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, colors
+        )
+        colorSpinner.adapter = colorAdapter
+
+        colorSpinner.setSelection(currentColorPosition)
+
+        colorSpinner.onItemSelectedListener = object :
+            AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View?, position: Int, id: Long
+            ) {
+                val selectedColorTheme = getColorTheme(position)
+                if (currentColorPosition != position) {
+                    setTheme(selectedColorTheme)
+                    sharedPreferences.edit().putInt("selectedColorPosition", position).apply()
+                    recreate()
+                }
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // write code to perform some action
+            }
+        }
+
     }
 
     //Inflates the menu in the toolbar.
@@ -113,12 +146,26 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         }
     }
 
+    private fun setAppTheme(colorSpinner: Spinner, sharedPreferences: SharedPreferences){
+
+    }
+
+
     private fun getLanguageCode(position: Int): String {
         return when (position) {
             0 -> "en" // English
             1 -> "fr" // French
             2 -> "es" // Spanish
             else -> "en" // Default to English if position is out of range
+        }
+    }
+
+    private fun getColorTheme(position: Int): String {
+        return when (position) {
+            0 -> "Theme.Light" // Light Mode
+            1 -> "Theme.Dark" // Dark Mode
+            2 -> "Theme.Colorblind" // Colorblind Mode
+            else -> "Theme.Light" // Default to light mode if position is out of range
         }
     }
 
