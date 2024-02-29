@@ -3,9 +3,10 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="charcoal">#3D4C5B</color>
-    <color name="lightGrey">#767778</color>
+    <color name="lightGrey">#D9D9D9</color>
 
     <color name="blueGrey">#34474A</color>
+    <color name="blueBerry">#2A416F</color>
 
     <color name="yellow">#FFC801</color>
 
