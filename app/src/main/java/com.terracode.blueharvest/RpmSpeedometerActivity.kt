@@ -6,6 +6,8 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
+import kotlin.math.cos
+import kotlin.math.sin
 
 class RpmSpeedometerActivity @JvmOverloads constructor(
     context: Context,
@@ -94,21 +96,20 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         val tickLength = 60f // Length of the ticks
         val tickWidth = 50f // Width of the ticks
 
+        val needleLength = radius - 40 // Adjusted needle length
+
         for (i in 0 until numTicks) {
             val angle = startAngle - i * angleInterval // Calculate the angle for each tick
-            val endX = centerX + (radius - tickLength) * Math.cos(Math.toRadians(angle.toDouble())).toFloat() // Adjusted endpoint X
-            val endY = centerY + (radius - tickLength) * Math.sin(Math.toRadians(angle.toDouble())).toFloat() // Adjusted endpoint Y
-            canvas.drawLine(centerX, centerY, endX, endY, dialPaint.apply {
+            val endX = centerX + needleLength * cos(Math.toRadians(angle.toDouble())).toFloat() // Adjusted endpoint X
+            val endY = centerY + needleLength * sin(Math.toRadians(angle.toDouble())).toFloat() // Adjusted endpoint Y
+            val startX = centerX + (needleLength - tickLength) * cos(Math.toRadians(angle.toDouble())).toFloat() // Adjusted start X
+            val startY = centerY + (needleLength - tickLength) * sin(Math.toRadians(angle.toDouble())).toFloat() // Adjusted start Y
+            canvas.drawLine(startX, startY, endX, endY, dialPaint.apply {
                 strokeWidth = tickWidth
             })
             canvas.drawText(label, endX, endY, textPaint)
         }
     }
-
-
-
-
-
 
 
     fun setCurrentSpeed(speed: Float) {
