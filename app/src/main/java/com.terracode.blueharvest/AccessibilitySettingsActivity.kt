@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -38,6 +39,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         //-----Logic for Language Spinner-----//
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
+        setLocale(getLanguageCode(currentLanguagePosition))
 
         val languages = resources.getStringArray(R.array.languageArray)
         languageSpinner = findViewById(R.id.languageSpinner)
@@ -55,12 +57,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View?, position: Int, id: Long
             ) {
-                val selectedLanguageCode = when (position) {
-                    0 -> "en" // English
-                    1 -> "fr" // French
-                    2 -> "es" // Spanish
-                    else -> "en" // Default to English if position is out of range
-                }
+                val selectedLanguageCode = getLanguageCode(position)
                 if (currentLanguagePosition != position) {
                     setLocale(selectedLanguageCode)
                     sharedPreferences.edit().putInt("selectedLanguagePosition", position).apply()
@@ -116,13 +113,21 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         }
     }
 
+    private fun getLanguageCode(position: Int): String {
+        return when (position) {
+            0 -> "en" // English
+            1 -> "fr" // French
+            2 -> "es" // Spanish
+            else -> "en" // Default to English if position is out of range
+        }
+    }
+
     private fun setLocale(languageCode: String) {
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
 
         val resources = resources
         val configuration = Configuration(resources.configuration)
-
         // Set the new locale configuration
         configuration.setLocale(locale)
 
@@ -131,7 +136,5 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         // Update the base context of the application
         baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
-
-        // Restart the activity to apply the changes
     }
 }
