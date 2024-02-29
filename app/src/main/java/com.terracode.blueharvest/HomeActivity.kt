@@ -17,11 +17,13 @@ class HomeActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
     private lateinit var sharedPreferences: SharedPreferences
+    //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
 
+    //Declaring the data values
     var bushHeightData: Double? = null
     var rakeHeightData: Double? = null
     var rpmData: Double? = null
@@ -34,17 +36,17 @@ class HomeActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.homeToolbar)
         setSupportActionBar(toolbar)
 
+        //Set the declared TextView values equal to the IDs in the HomeActivity XML file.
         optimalRakeHeightTextView = findViewById(R.id.optimalRakeHeightValue)
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
+        //Get the value of the toggle from AccessibilitySettings XML file.
         val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
-        Log.i("Home activity","HomeActivity is running")
 
-
-        //Replace with get data from microcontroller.
+        //Read data from mock values/bluetooth, and set the data values equal to the declared variables from above.
         val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")
         sensorData?.apply {
             rpmData = getRPM()
@@ -53,6 +55,7 @@ class HomeActivity : AppCompatActivity() {
             speedData = getSpeed()
         }
 
+        //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
         optimalRakeHeightTextView.text = if (toggleValue) {
             "${rakeHeightData} cm"
         } else {
@@ -80,11 +83,13 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.home_menu, menu)
         return true
     }
 
+    //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             //This needs to be changed to include a card for notifications

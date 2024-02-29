@@ -10,7 +10,7 @@ import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 
-
+//Activity class for the accessibility setting page.
 class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
@@ -24,6 +24,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
         setSupportActionBar(toolbar)
 
+        //Initialized the shared preferences and sets the unit switch equal to the id in the XML file.
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         unitSwitch = findViewById(R.id.unitSwitch)
 
@@ -31,6 +32,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
         unitSwitch.isChecked = toggleValue
 
+        //Logic to change value of the unitToggleValue in the shared preferences when the unit toggle is switched.
         unitSwitch.setOnCheckedChangeListener { _, isChecked ->
             // Update SharedPreferences with the new unit preference
             sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
@@ -38,11 +40,13 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         }
     }
 
+    //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.settings_menu, menu)
         return true
     }
 
+    //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.backButton -> {
