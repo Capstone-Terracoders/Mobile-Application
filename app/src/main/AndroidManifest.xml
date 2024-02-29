@@ -10,11 +10,11 @@
         android:icon="@mipmap/blueharvest"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.MyApplication"
+        android:theme="@style/Theme.MyApplication.NoActionBar"
         tools:targetApi="31"
         android:enableOnBackInvokedCallback="true">
         <activity
-            android:name="com.terracode.blueharvest.StartActivity"
+            android:name="com.terracode.blueharvest.HomeActivity"
             android:exported="true">
             <tools:validation testUrl="http://terracode.com" />
 
@@ -35,10 +35,6 @@
             </intent-filter>
 
         </activity>
-
-        <activity
-            android:name="com.terracode.blueharvest.HomeActivity"
-            android:exported="true" />
 
         <activity
             android:name="com.terracode.blueharvest.ConfigurationSettingsActivity"

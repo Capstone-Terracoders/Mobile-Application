@@ -63,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
             "${rpmData} mph"
         } else {
             //Needs function
-            "${UnitConverter.convertSpeedToImperial(rpmData)} kmph"
+            "${UnitConverter.convertSpeedToImperial(rpmData)} kmh"
         }
 
         currentBushHeightTextView.text = if (toggleValue) {
@@ -73,10 +73,10 @@ class HomeActivity : AppCompatActivity() {
         }
 
         currentSpeedTextView.text = if (toggleValue) {
-            "${speedData} cm"
+            "${speedData} mph"
         } else {
             //Needs function
-            "${UnitConverter.convertSpeedToImperial(speedData)} in"
+            "${UnitConverter.convertSpeedToImperial(speedData)} kmh"
         }
     }
 
