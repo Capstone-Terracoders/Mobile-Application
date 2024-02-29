@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibilityPageTitle">"Configuraciones de accesibilidad "</string>
+    <string name="configurationPageTitle">"Configuración de configuración "</string>
+    <string name="displayedValuesCardTitle">"Mostrar los valores "</string>
+    <string name="safetyOperationalSettingsCardTitle">Seguridad y Configuraciones Operativas</string>
+    <string name="recordTitle">"Registro "</string>
+    <string name="textSizeTitle">"Tamaño de mensajes "</string>
+    <string name="languageTitle">"Idioma "</string>
+    <string name="unitSystemTitle">"Sistema de unidades "</string>
+    <string name="colorSchemeTitle">"Plan de color "</string>
+    <string name="metric">"Métrico "</string>
+    <string name="imperial">Imperial</string>
+    <string name="maxRPMDisplayedTitle">"Máximo RPM Displayed "</string>
+    <string name="maxHeightDisplayedTitle">"Altura máxima mostrada "</string>
+    <string name="optimalRPMRangeTitle">"Rango RPM óptimo "</string>
+    <string name="optimalHeightRangeTitle">"Altura óptima "</string>
+    <string name="connectedSensorTitle">"Sensores conectados "</string>
+    <string name="minRakeRPMTitle">"Mínimo Rake RPM "</string>
+    <string name="minRakeHeightTitle">"Altura mínima del Rake "</string>
+    <string name="coefficientRPMTitle">"Coeficiente RPM "</string>
+    <string name="coefficientHeightTitle">"Coeficiente de altura "</string>
+    <string name="safetyParametersTitle">"Parámetros de seguridad "</string>
+    <string name="optimizationParametersTitle">"Operación Parámetros "</string>
+    <string name="backButtonTitle">"Botón de atrás "</string>
+    <string name="settingsTitle">"Configuraciones "</string>
+    <string name="notificationTitle">"Notificaciones "</string>
+    <string name="numberHint">"Introduzca un número "</string>
+    <string name="optimalOperationTitle">"Operación óptima "</string>
+    <string name="optimalRakeHeight">"Altura óptima del Rake "</string>
+    <string name="optimalRakeRPM">"RPM de Rake Optimal "</string>
+    <string name="currentOperationTitle">"Operación actual "</string>
+    <string name="currentSpeed">"Velocidad (KPH) "</string>
+    <string name="currentBushHeight">"Bush Height (CM) "</string>
+</resources>

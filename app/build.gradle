@@ -47,6 +47,9 @@ android {
         }
     }
 
+    defaultConfig {
+        resourceConfigurations += ["en", "es", "fr"]
+    }
 }
 
 dependencies {
