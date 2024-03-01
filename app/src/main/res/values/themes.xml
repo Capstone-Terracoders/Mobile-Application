@@ -5,7 +5,7 @@
         <item name="windowNoTitle">true</item>
     </style>
     <!-- Light application theme. -->
-    <style name="Theme.Light" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="DynamicColors.Overlay_Light" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/light_primary</item>
         <item name="colorPrimaryVariant">@color/light_primary</item>
@@ -20,7 +20,7 @@
     </style>
 
     <!-- Dark application theme. -->
-    <style name="Theme.Dark" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="DynamicColors.Overlay_Dark" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/blue</item>
         <item name="colorPrimaryVariant">@color/dark_primary</item>
@@ -35,7 +35,7 @@
     </style>
 
     <!-- Colorblind application theme. -->
-    <style name="Theme.Colorblind" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="DynamicColors.Overlay_Colorblind" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/colorblind_red</item>
         <item name="colorPrimaryVariant">@color/colorblind_primary</item>
