@@ -25,15 +25,31 @@
         android:orientation="horizontal">
 
         <!-- Optimal Operation Card -->
-        <include layout="@layout/optimal_operation_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <!-- Spacer to separate the card from the toolbar -->
-        <View
-            android:layout_width="16dp"
-        android:layout_height="match_parent" />
+            <!-- Optimal Operation Card -->
+            <include layout="@layout/optimal_operation_card"
+                android:id="@+id/optimalOperationCard"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/speedometer"
+                android:layout_margin="16dp" />
+
+            <!-- Speedometer -->
+            <com.terracode.blueharvest.RpmSpeedometerActivity
+                android:id="@+id/speedometer"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/optimalOperationCard"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="16dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 
 </LinearLayout>
