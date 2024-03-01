@@ -1,4 +1,6 @@
-package com.terracode.blueharvest.utils
+package com.terracode.blueharvest.accessibilitySettings
+
+import com.terracode.blueharvest.utils.Constants
 
 
 //Class to convert units from metric to imperial.

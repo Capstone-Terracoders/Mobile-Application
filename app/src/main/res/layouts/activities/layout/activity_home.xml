@@ -10,7 +10,7 @@
         android:id="@+id/homeToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/blueGrey"
+        android:background="@color/green"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:logo="@drawable/record_circle"
         app:menu="@menu/home_menu"

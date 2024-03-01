@@ -13,7 +13,7 @@
             android:id="@+id/settingsToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/blueGrey"
+            android:background="@color/green"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:menu="@menu/settings_menu"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
