@@ -22,7 +22,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private val dialPaint = Paint().apply {
         color = blueBerryColor // Use custom color
         style = Paint.Style.STROKE
-        strokeWidth = 10f // Adjust the stroke width as needed
+        strokeWidth = 30f // Adjust the stroke width as needed
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
     }
 
