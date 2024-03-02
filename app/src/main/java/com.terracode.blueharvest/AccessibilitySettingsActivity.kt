@@ -18,6 +18,7 @@ import com.google.android.material.color.DynamicColors.applyToActivityIfAvailabl
 import com.google.android.material.color.DynamicColorsOptions
 import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
+import com.terracode.blueharvest.listeners.UnitToggleListener
 import com.terracode.blueharvest.utils.SetTextSize
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
@@ -50,10 +51,12 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
         languageSpinner = findViewById(R.id.languageSpinner)
+        unitSwitch = findViewById(R.id.unitSwitch)
 
         //Initialize Listeners
         val languageListener = LanguageSelectionListener(this)
         val textSizeChangeListener = TextSizeChangeListener(this)
+        val unitToggleListener = UnitToggleListener(this)
 
         //-----Logic for Text Size Seek Bar-----//
         // Initialize SeekBar properties
@@ -81,19 +84,14 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         languageSpinner.onItemSelectedListener = languageListener
 
 
-
         //-----Logic for Unit Switch-----//
-        unitSwitch = findViewById(R.id.unitSwitch)
-
-        // Set initial state of the switch
         val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
         unitSwitch.isChecked = toggleValue
 
         //Logic to change value of the unitToggleValue in the shared preferences when the unit toggle is switched.
-        unitSwitch.setOnCheckedChangeListener { _, isChecked ->
-            // Update SharedPreferences with the new unit preference
-            sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
-        }
+        unitSwitch.setOnCheckedChangeListener(unitToggleListener)
+
+
 
         //-----Logic for Color Scheme-----//
         val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
