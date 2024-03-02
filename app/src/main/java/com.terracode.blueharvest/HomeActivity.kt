@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.LocaleHelper
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.SetTextSize
@@ -33,13 +34,26 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Initialize the sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        //Set setting values before setting the content view
         val currentTheme = ThemeHelper.getCurrentTheme(this)
         ThemeHelper.setColorOverlayTheme(this, currentTheme)
+
+        val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
+        val languagePosition = LocaleHelper.getLanguageCode(currentLanguagePosition)
+        LocaleHelper.setLocale(this, languagePosition)
+
+        //Set the view
         setContentView(R.layout.activity_home)
 
+        //Set the toolbar
         val toolbar: Toolbar = findViewById(R.id.homeToolbar)
         setSupportActionBar(toolbar)
 
+        //Set the text size
         val rootView = findViewById<View>(android.R.id.content).rootView
         SetTextSize.setTextSizeView(this, rootView)
 
@@ -48,7 +62,6 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         //Get the value of the toggle from AccessibilitySettings XML file.
         val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)

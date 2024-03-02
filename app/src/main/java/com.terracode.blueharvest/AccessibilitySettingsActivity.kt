@@ -17,6 +17,7 @@ import com.terracode.blueharvest.listeners.ColorSchemeListener
 import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
 import com.terracode.blueharvest.listeners.UnitToggleListener
+import com.terracode.blueharvest.utils.LocaleHelper
 import com.terracode.blueharvest.utils.SetTextSize
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
@@ -26,6 +27,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
     private lateinit var sharedPreferences: SharedPreferences
+
     private lateinit var unitSwitch: SwitchCompat
     private lateinit var languageSpinner: Spinner
     private lateinit var colorSpinner: Spinner
@@ -33,8 +35,15 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        //Initialize the sharedPreferences
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        //Set setting values before setting the content view
         val currentTheme = ThemeHelper.getCurrentTheme(this)
         ThemeHelper.setColorOverlayTheme(this, currentTheme)
+
+        //Set the view
         setContentView(R.layout.activity_accessibility_settings)
 
         //Set the text size for the view onCreate
@@ -46,7 +55,6 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         //Initialized variables:
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         colorSpinner = findViewById(R.id.colorSchemeSpinner)
         languageSpinner = findViewById(R.id.languageSpinner)
         textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
@@ -76,8 +84,8 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         //-----Logic for Language Spinner in Activity-----//
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
-        val languagePosition = languageListener.getLanguageCode(currentLanguagePosition)
-        languageListener.setLocale(languagePosition)
+        val languagePosition = LocaleHelper.getLanguageCode(currentLanguagePosition)
+        LocaleHelper.setLocale(this, languagePosition)
 
         val languages = resources.getStringArray(R.array.languageArray)
         val languageAdapter = ArrayAdapter(
