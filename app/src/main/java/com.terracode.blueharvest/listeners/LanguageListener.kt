@@ -13,7 +13,9 @@ class LanguageSelectionListener(private val activity: AccessibilitySettingsActiv
 
     override fun onItemSelected(
         parent: AdapterView<*>,
-        view: View?, position: Int, id: Long
+        view: View?,
+        position: Int,
+        id: Long
     ) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity) // Access preferences within activity context
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)

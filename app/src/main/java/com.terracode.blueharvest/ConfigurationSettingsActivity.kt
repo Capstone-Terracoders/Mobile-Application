@@ -8,11 +8,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.utils.SetTextSize
+import com.terracode.blueharvest.utils.ThemeHelper
 
 class ConfigurationSettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val currentTheme = ThemeHelper.getCurrentTheme(this)
+        ThemeHelper.setColorOverlayTheme(this, currentTheme)
         setContentView(R.layout.activity_configuration_settings)
 
         val toolbar: Toolbar = findViewById(R.id.settingsToolbar)

@@ -13,6 +13,7 @@ import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.SetTextSize
+import com.terracode.blueharvest.utils.ThemeHelper
 
 class HomeActivity : AppCompatActivity() {
 
@@ -32,6 +33,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val currentTheme = ThemeHelper.getCurrentTheme(this)
+        ThemeHelper.setColorOverlayTheme(this, currentTheme)
         setContentView(R.layout.activity_home)
 
         val toolbar: Toolbar = findViewById(R.id.homeToolbar)

@@ -1,7 +1,10 @@
 package com.terracode.blueharvest.utils
 
+import android.app.Activity
 import android.content.Context
 import androidx.preference.PreferenceManager
+import com.google.android.material.color.DynamicColors
+import com.google.android.material.color.DynamicColorsOptions
 import com.terracode.blueharvest.R
 
 /**
@@ -35,6 +38,11 @@ object ThemeHelper {
             2 -> R.style.DynamicColors_Overlay_Colorblind // Colorblind theme
             else -> R.style.DynamicColors_Overlay_Light // Default to light mode if themeName is unknown
         }
+    }
+
+     fun setColorOverlayTheme(activity: Activity, colorOverlay: Int) {
+        val options = DynamicColorsOptions.Builder().setThemeOverlay(colorOverlay).build()
+        DynamicColors.applyToActivityIfAvailable(activity, options)
     }
 }
 

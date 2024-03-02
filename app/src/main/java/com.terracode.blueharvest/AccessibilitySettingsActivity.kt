@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.SeekBar
 import android.widget.Spinner
@@ -14,15 +13,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
-import com.google.android.material.color.DynamicColors.applyToActivityIfAvailable
-import com.google.android.material.color.DynamicColorsOptions
+import com.terracode.blueharvest.listeners.ColorSchemeListener
 import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
 import com.terracode.blueharvest.listeners.UnitToggleListener
 import com.terracode.blueharvest.utils.SetTextSize
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
-import com.terracode.blueharvest.utils.ThemeHelper.getThemeResource
 
 //Activity class for the accessibility setting page.
 class AccessibilitySettingsActivity : AppCompatActivity() {
@@ -36,7 +33,8 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setColorOverlayTheme(ThemeHelper.getCurrentTheme(this))
+        val currentTheme = ThemeHelper.getCurrentTheme(this)
+        ThemeHelper.setColorOverlayTheme(this, currentTheme)
         setContentView(R.layout.activity_accessibility_settings)
 
         //Set the text size for the view onCreate
@@ -49,22 +47,31 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         //Initialized variables:
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
+        colorSpinner = findViewById(R.id.colorSchemeSpinner)
         languageSpinner = findViewById(R.id.languageSpinner)
+        textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
         unitSwitch = findViewById(R.id.unitSwitch)
 
         //Initialize Listeners
+        val colorSchemeListener = ColorSchemeListener(this)
         val languageListener = LanguageSelectionListener(this)
         val textSizeChangeListener = TextSizeChangeListener(this)
         val unitToggleListener = UnitToggleListener(this)
 
-        //-----Logic for Text Size Seek Bar-----//
-        // Initialize SeekBar properties
-        val initialTextSize = sharedPreferences.getFloat("selectedTextSize", 16f)
-        val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
-        textSizeSeekBar.max = (maxTextSize)
-        textSizeSeekBar.progress = initialTextSize.toInt()
-        textSizeSeekBar.setOnSeekBarChangeListener(textSizeChangeListener)
+
+        //-----Logic for Color Scheme-----//
+        val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
+
+        val colors = resources.getStringArray(R.array.colorSchemeArray)
+        val colorAdapter = ArrayAdapter(
+            this,
+            android.R.layout.simple_spinner_item, colors
+        )
+        colorSpinner.adapter = colorAdapter
+
+        colorSpinner.setSelection(currentColorPosition)
+
+        colorSpinner.onItemSelectedListener = colorSchemeListener
 
 
         //-----Logic for Language Spinner in Activity-----//
@@ -84,47 +91,21 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         languageSpinner.onItemSelectedListener = languageListener
 
 
+        //-----Logic for Text Size Seek Bar-----//
+        // Initialize SeekBar properties
+        val initialTextSize = sharedPreferences.getFloat("selectedTextSize", 16f)
+        val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
+        textSizeSeekBar.max = (maxTextSize)
+        textSizeSeekBar.progress = initialTextSize.toInt()
+        textSizeSeekBar.setOnSeekBarChangeListener(textSizeChangeListener)
+
+
         //-----Logic for Unit Switch-----//
         val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
         unitSwitch.isChecked = toggleValue
 
         //Logic to change value of the unitToggleValue in the shared preferences when the unit toggle is switched.
         unitSwitch.setOnCheckedChangeListener(unitToggleListener)
-
-
-
-        //-----Logic for Color Scheme-----//
-        val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
-
-        val colors = resources.getStringArray(R.array.colorSchemeArray)
-        colorSpinner = findViewById(R.id.colorSchemeSpinner)
-        val colorAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, colors
-        )
-        colorSpinner.adapter = colorAdapter
-
-        colorSpinner.setSelection(currentColorPosition)
-
-        colorSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?, position: Int, id: Long
-            ) {
-                val selectedColorTheme = getThemeResource(position)
-                if (currentColorPosition != position) {
-                    setColorOverlayTheme(selectedColorTheme)
-                    sharedPreferences.edit().putInt("selectedColorPosition", position).apply()
-                    recreate()
-                }
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
-        }
-
     }
 
     //Inflates the menu in the toolbar.
@@ -154,10 +135,5 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
             else -> super.onOptionsItemSelected(item)
         }
-    }
-
-    private fun setColorOverlayTheme(colorOverlay: Int) {
-        val options = DynamicColorsOptions.Builder().setThemeOverlay(colorOverlay).build()
-        applyToActivityIfAvailable(this, options)
     }
 }
