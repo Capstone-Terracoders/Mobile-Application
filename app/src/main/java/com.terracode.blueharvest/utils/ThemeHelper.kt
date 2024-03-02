@@ -10,9 +10,9 @@ object ThemeHelper {
     fun getCurrentTheme(context: Context): Int {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val currentThemePosition = sharedPreferences.getInt("selectedColorPosition", 0)
-        return getThemeResourceId(currentThemePosition)
+        return getThemeResource(currentThemePosition)
     }
-    fun getThemeResourceId(themePosition: Int): Int {
+    fun getThemeResource(themePosition: Int): Int {
         return when (themePosition) {
             0 -> R.style.DynamicColors_Overlay_Light
             1 -> R.style.DynamicColors_Overlay_Dark

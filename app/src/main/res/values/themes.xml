@@ -22,7 +22,7 @@
     <!-- Dark application theme. -->
     <style name="DynamicColors.Overlay_Dark" parent="Theme.Material3.Dark.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimary">@color/dark_primary</item>
         <item name="colorPrimaryVariant">@color/dark_primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
@@ -37,7 +37,7 @@
     <!-- Colorblind application theme. -->
     <style name="DynamicColors.Overlay_Colorblind" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/colorblind_red</item>
+        <item name="colorPrimary">@color/colorblind_primary</item>
         <item name="colorPrimaryVariant">@color/colorblind_primary</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->

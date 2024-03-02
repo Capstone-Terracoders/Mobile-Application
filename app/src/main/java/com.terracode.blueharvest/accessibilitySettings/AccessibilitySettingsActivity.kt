@@ -20,10 +20,11 @@ import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.ThemeHelper
-import com.terracode.blueharvest.utils.ThemeHelper.getThemeResourceId
 import java.util.Locale
+import com.terracode.blueharvest.utils.ThemeHelper.getThemeResource
 
 //Activity class for the accessibility setting page.
+@Suppress("DEPRECATION")
 class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
@@ -40,7 +41,6 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
         setSupportActionBar(toolbar)
-
         //Initialized the shared preferences and sets the XML components equal to the id in the XML file.
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
@@ -109,7 +109,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
                 parent: AdapterView<*>,
                 view: View?, position: Int, id: Long
             ) {
-                val selectedColorTheme = getThemeResourceId(position)
+                val selectedColorTheme = getThemeResource(position)
                 if (currentColorPosition != position) {
                     setColorOverlayTheme(selectedColorTheme)
                     sharedPreferences.edit().putInt("selectedColorPosition", position).apply()
@@ -154,8 +154,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     }
 
     private fun setColorOverlayTheme(colorOverlay: Int) {
-        val themeId = getThemeResourceId(colorOverlay)
-        val options = DynamicColorsOptions.Builder().setThemeOverlay(themeId).build()
+        val options = DynamicColorsOptions.Builder().setThemeOverlay(colorOverlay).build()
         applyToActivityIfAvailable(this, options)
     }
 
@@ -164,7 +163,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         return when (position) {
             0 -> "en" // English
             1 -> "fr" // French
-            2 -> "es" // Spanisherr
+            2 -> "es" // Spanish
             else -> "en" // Default to English if position is out of range
         }
     }
@@ -177,9 +176,6 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         val configuration = Configuration(resources.configuration)
         // Set the new locale configuration
         configuration.setLocale(locale)
-
-        // Create a new Context with the updated configuration
-        val context = baseContext.createConfigurationContext(configuration)
 
         // Update the base context of the application
         baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
