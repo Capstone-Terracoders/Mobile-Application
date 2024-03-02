@@ -7,7 +7,6 @@ import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.accessibilitySettings.AccessibilitySettingsActivity
 import com.terracode.blueharvest.utils.SetTextSize
 
 class ConfigurationSettingsActivity : AppCompatActivity() {

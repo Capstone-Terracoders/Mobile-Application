@@ -4,43 +4,68 @@ import android.content.Context
 import org.json.JSONObject
 import java.io.IOException
 
-//Class to get data values from the JSON object either from mock values or from bluetooth.
-class ReadJSONObject (private val jsonObject: JSONObject){
-   //Gets the RPM data value.
+/**
+ * Class to retrieve data values from a JSON object either from mock values or from Bluetooth.
+ * The class provides methods to retrieve specific data values such as RPM, rake height, bush height, and linear speed.
+ */
+class ReadJSONObject(private val jsonObject: JSONObject) {
+
+    /**
+     * Retrieves the RPM (Revolutions Per Minute) data value from the JSON object.
+     *
+     * @return The RPM data value as a Double.
+     */
     fun getRPM(): Double? {
         return jsonObject.getDouble("RPM")
     }
 
-    //Gets the rake height data value.
+    /**
+     * Retrieves the rake height data value from the JSON object.
+     *
+     * @return The rake height data value as a Double.
+     */
     fun getRakeHeight(): Double? {
         return jsonObject.getDouble("rakeHeight")
     }
 
-    //Gets the bush height data value.
+    /**
+     * Retrieves the bush height data value from the JSON object.
+     *
+     * @return The bush height data value as a Double.
+     */
     fun getBushHeight(): Double? {
         return jsonObject.getDouble("bushHeight")
     }
 
-    //Gets the linear speed data value.
+    /**
+     * Retrieves the linear speed data value from the JSON object.
+     *
+     * @return The linear speed data value as a Double.
+     */
     fun getSpeed(): Double? {
         return jsonObject.getDouble("speed")
     }
 
-    companion object{
-        //Function to read file from assets folder, open the file and read the JSON object
-        //Returning the json object, or error if there is one.
+    companion object {
+        /**
+         * Reads a file from the assets folder, opens the file, and reads the JSON object.
+         * Returns the JSON object, or null if there is an error.
+         *
+         * @param context The context used to access the assets folder.
+         * @param fileName The name of the JSON file to read.
+         * @return A ReadJSONObject instance initialized with the JSON object read from the file, or null if there is an error.
+         */
         fun fromAsset(context: Context, fileName: String): ReadJSONObject? {
             return try {
                 val jsonString = context.assets.open(fileName).bufferedReader().use {
                     it.readText()
                 }
                 val jsonObject = JSONObject(jsonString)
-                ReadJSONObject (jsonObject)
+                ReadJSONObject(jsonObject)
             } catch (ioException: IOException) {
                 ioException.printStackTrace()
                 null
             }
-
         }
     }
 }

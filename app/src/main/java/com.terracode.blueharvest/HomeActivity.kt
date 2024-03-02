@@ -10,9 +10,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
-import com.terracode.blueharvest.accessibilitySettings.AccessibilitySettingsActivity
 import com.terracode.blueharvest.utils.ReadJSONObject
-import com.terracode.blueharvest.accessibilitySettings.UnitConverter
+import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.SetTextSize
 
 class HomeActivity : AppCompatActivity() {

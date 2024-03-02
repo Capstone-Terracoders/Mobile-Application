@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.accessibilitySettings
+package com.terracode.blueharvest
 
 import android.content.Intent
 import android.content.SharedPreferences
@@ -19,9 +19,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import com.google.android.material.color.DynamicColors.applyToActivityIfAvailable
 import com.google.android.material.color.DynamicColorsOptions
-import com.terracode.blueharvest.ConfigurationSettingsActivity
-import com.terracode.blueharvest.HomeActivity
-import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
 import java.util.Locale
