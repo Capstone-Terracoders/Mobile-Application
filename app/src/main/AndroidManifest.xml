@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <!--This checks that the device is ble enabled, most modern ones are-->
+    <!--This checks that the device is ble enabled, most modern ones are, will not show on app
+    store for non-compatable devices -->
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
 

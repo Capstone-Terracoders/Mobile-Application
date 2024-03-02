@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
-//import com.lorenzofelletti.simpleblescanner.BuildConfig
+
 
 object PermissionsUtilities {
     private var TAG = this::class.java.simpleName
