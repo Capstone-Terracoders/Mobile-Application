@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -12,6 +13,7 @@ import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.accessibilitySettings.AccessibilitySettingsActivity
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.accessibilitySettings.UnitConverter
+import com.terracode.blueharvest.utils.SetTextSize
 
 class HomeActivity : AppCompatActivity() {
 
@@ -35,6 +37,9 @@ class HomeActivity : AppCompatActivity() {
 
         val toolbar: Toolbar = findViewById(R.id.homeToolbar)
         setSupportActionBar(toolbar)
+
+        val rootView = findViewById<View>(android.R.id.content).rootView
+        SetTextSize.applyTextSizeFromPreferences(this, rootView)
 
         //Set the declared TextView values equal to the IDs in the HomeActivity XML file.
         optimalRakeHeightTextView = findViewById(R.id.optimalRakeHeightValue)

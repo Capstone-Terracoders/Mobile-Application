@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.SeekBar
 import android.widget.Spinner
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
@@ -19,9 +22,11 @@ import com.google.android.material.color.DynamicColorsOptions
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
+import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
 import java.util.Locale
 import com.terracode.blueharvest.utils.ThemeHelper.getThemeResource
+import kotlin.math.min
 
 //Activity class for the accessibility setting page.
 @Suppress("DEPRECATION")
@@ -32,9 +37,9 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     private lateinit var unitSwitch: SwitchCompat
     private lateinit var languageSpinner: Spinner
     private lateinit var colorSpinner: Spinner
+    private lateinit var textSizeSeekBar: SeekBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setColorOverlayTheme(ThemeHelper.getCurrentTheme(this))
         setContentView(R.layout.activity_accessibility_settings)
@@ -43,6 +48,30 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         //Initialized the shared preferences and sets the XML components equal to the id in the XML file.
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+
+        //-----Logic for Text Size Seek Bar-----//
+        // Initialize SeekBar and set its properties
+        textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
+        val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
+
+        // Set the maximum value of the SeekBar to reflect the maximum text size
+        textSizeSeekBar.max = (maxTextSize)
+
+        // Set the initial progress based on stored preferences
+        val initialTextSize = sharedPreferences.getFloat("selectedTextSize", 16f)
+        textSizeSeekBar.progress = initialTextSize.toInt()
+
+        textSizeSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                // Apply the selected text size globally
+                applyTextSize(progress.toFloat())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
+
+
 
         //-----Logic for Language Spinner-----//
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
@@ -179,5 +208,29 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         // Update the base context of the application
         baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
+    }
+    private fun applyTextSize(textSize: Float) {
+        // Implement logic to apply text size changes globally
+        // For example, you can iterate through your TextViews and set their text sizes accordingly
+        val minTextSize = TextConstants.MIN_TEXT_SIZE.value
+        val maxTextSize = TextConstants.MAX_TEXT_SIZE.value
+        val finalTextSize = maxOf(minTextSize, min(maxTextSize, textSize))
+
+        val rootView = window.decorView.rootView
+        setViewTextSize(rootView, finalTextSize)
+
+        // Save the selected text size to preferences
+        sharedPreferences.edit().putFloat("selectedTextSize", finalTextSize).apply()
+    }
+
+    private fun setViewTextSize(view: View, textSize: Float) {
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                val child = view.getChildAt(i)
+                setViewTextSize(child, textSize)
+            }
+        } else if (view is TextView) {
+            view.textSize = textSize
+        }
     }
 }
