@@ -2,7 +2,6 @@ package com.terracode.blueharvest
 
 import android.content.Intent
 import android.content.SharedPreferences
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -17,15 +16,14 @@ import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
 import com.google.android.material.color.DynamicColors.applyToActivityIfAvailable
 import com.google.android.material.color.DynamicColorsOptions
+import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
 import com.terracode.blueharvest.utils.SetTextSize
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.ThemeHelper
-import java.util.Locale
 import com.terracode.blueharvest.utils.ThemeHelper.getThemeResource
 
 //Activity class for the accessibility setting page.
-@Suppress("DEPRECATION")
 class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
@@ -51,22 +49,27 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         //Initialized variables:
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
         textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
+        languageSpinner = findViewById(R.id.languageSpinner)
+
+        //Initialize Listeners
+        val languageListener = LanguageSelectionListener(this)
+        val textSizeChangeListener = TextSizeChangeListener(this)
 
         //-----Logic for Text Size Seek Bar-----//
         // Initialize SeekBar properties
+        val initialTextSize = sharedPreferences.getFloat("selectedTextSize", 16f)
         val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
         textSizeSeekBar.max = (maxTextSize)
-        val initialTextSize = sharedPreferences.getFloat("selectedTextSize", 16f)
         textSizeSeekBar.progress = initialTextSize.toInt()
-        textSizeSeekBar.setOnSeekBarChangeListener(TextSizeChangeListener(this))
+        textSizeSeekBar.setOnSeekBarChangeListener(textSizeChangeListener)
 
 
-        //-----Logic for Language Spinner-----//
+        //-----Logic for Language Spinner in Activity-----//
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
-        setLocale(getLanguageCode(currentLanguagePosition))
+        val languagePosition = languageListener.getLanguageCode(currentLanguagePosition)
+        languageListener.setLocale(languagePosition)
 
         val languages = resources.getStringArray(R.array.languageArray)
-        languageSpinner = findViewById(R.id.languageSpinner)
         val languageAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_item, languages
@@ -75,24 +78,9 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
         languageSpinner.setSelection(currentLanguagePosition)
 
-        languageSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?, position: Int, id: Long
-            ) {
-                val selectedLanguageCode = getLanguageCode(position)
-                if (currentLanguagePosition != position) {
-                    setLocale(selectedLanguageCode)
-                    sharedPreferences.edit().putInt("selectedLanguagePosition", position).apply()
-                    recreate()
-                }
-            }
+        languageSpinner.onItemSelectedListener = languageListener
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // write code to perform some action
-            }
-        }
+
 
         //-----Logic for Unit Switch-----//
         unitSwitch = findViewById(R.id.unitSwitch)
@@ -173,28 +161,5 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     private fun setColorOverlayTheme(colorOverlay: Int) {
         val options = DynamicColorsOptions.Builder().setThemeOverlay(colorOverlay).build()
         applyToActivityIfAvailable(this, options)
-    }
-
-
-    private fun getLanguageCode(position: Int): String {
-        return when (position) {
-            0 -> "en" // English
-            1 -> "fr" // French
-            2 -> "es" // Spanish
-            else -> "en" // Default to English if position is out of range
-        }
-    }
-
-    private fun setLocale(languageCode: String) {
-        val locale = Locale(languageCode)
-        Locale.setDefault(locale)
-
-        val resources = resources
-        val configuration = Configuration(resources.configuration)
-        // Set the new locale configuration
-        configuration.setLocale(locale)
-
-        // Update the base context of the application
-        baseContext.resources.updateConfiguration(configuration, baseContext.resources.displayMetrics)
     }
 }
