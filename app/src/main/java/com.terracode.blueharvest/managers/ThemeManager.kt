@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.utils
+package com.terracode.blueharvest.managers
 
 import android.app.Activity
 import android.content.Context
@@ -11,7 +11,7 @@ import com.terracode.blueharvest.R
  * Utility object for managing themes in the application.
  * This object provides functions to retrieve the current theme and theme resources.
  */
-object ThemeHelper {
+object ThemeManager {
 
     /**
      * Retrieves the current theme based on the stored theme position in SharedPreferences.
@@ -40,7 +40,7 @@ object ThemeHelper {
         }
     }
 
-     fun setColorOverlayTheme(activity: Activity, colorOverlay: Int) {
+    fun setColorOverlayTheme(activity: Activity, colorOverlay: Int) {
         val options = DynamicColorsOptions.Builder().setThemeOverlay(colorOverlay).build()
         DynamicColors.applyToActivityIfAvailable(activity, options)
     }

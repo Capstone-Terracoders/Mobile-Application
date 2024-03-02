@@ -5,7 +5,7 @@ import android.content.Context
 import android.widget.SeekBar
 import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.utils.SetTextSize
+import com.terracode.blueharvest.managers.TextSizeManager
 import com.terracode.blueharvest.utils.TextConstants
 import kotlin.math.min
 
@@ -34,7 +34,7 @@ class TextSizeChangeListener(private val activity: AccessibilitySettingsActivity
         // Get the root view using context to avoid potential errors
         val rootView = activity.window.decorView.rootView
 
-        SetTextSize.setTextSize(context, rootView, finalTextSize)
+        TextSizeManager.setTextSize(context, rootView, finalTextSize)
 
         // Save the selected text size to preferences
         sharedPreferences.edit().putFloat("selectedTextSize", finalTextSize).apply()

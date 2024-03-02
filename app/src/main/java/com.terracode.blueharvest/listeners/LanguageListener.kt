@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.utils.LocaleHelper
+import com.terracode.blueharvest.managers.LocaleManager
 
 
 class LanguageSelectionListener(private val activity: AccessibilitySettingsActivity) :
@@ -18,9 +18,9 @@ class LanguageSelectionListener(private val activity: AccessibilitySettingsActiv
     ) {
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity) // Access preferences within activity context
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
-        val selectedLanguageCode = LocaleHelper.getLanguageCode(position)
+        val selectedLanguageCode = LocaleManager.getLanguageCode(position)
         if (currentLanguagePosition != position) {
-            LocaleHelper.setLocale(activity,selectedLanguageCode)
+            LocaleManager.setLocale(activity,selectedLanguageCode)
             sharedPreferences.edit().putInt("selectedLanguagePosition", position).apply()
             activity.recreate()
         }

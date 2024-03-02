@@ -9,9 +9,9 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
-import com.terracode.blueharvest.utils.LocaleHelper
-import com.terracode.blueharvest.utils.SetTextSize
-import com.terracode.blueharvest.utils.ThemeHelper
+import com.terracode.blueharvest.managers.LocaleManager
+import com.terracode.blueharvest.managers.TextSizeManager
+import com.terracode.blueharvest.managers.ThemeManager
 
 class ConfigurationSettingsActivity : AppCompatActivity() {
     // Declare variables as var to allow reassignment
@@ -24,12 +24,12 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
 
         //Set setting values before setting the content view
-        val currentTheme = ThemeHelper.getCurrentTheme(this)
-        ThemeHelper.setColorOverlayTheme(this, currentTheme)
+        val currentTheme = ThemeManager.getCurrentTheme(this)
+        ThemeManager.setColorOverlayTheme(this, currentTheme)
 
         val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
-        val languagePosition = LocaleHelper.getLanguageCode(currentLanguagePosition)
-        LocaleHelper.setLocale(this, languagePosition)
+        val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
+        LocaleManager.setLocale(this, languagePosition)
 
         //Set the view
         setContentView(R.layout.activity_configuration_settings)
@@ -40,7 +40,7 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
 
         //Set the text size
         val rootView = findViewById<View>(android.R.id.content).rootView
-        SetTextSize.setTextSizeView(this, rootView)
+        TextSizeManager.setTextSizeView(this, rootView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

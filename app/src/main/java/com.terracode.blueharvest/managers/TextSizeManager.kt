@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.utils
+package com.terracode.blueharvest.managers
 
 import android.content.Context
 import android.view.View
@@ -10,7 +10,7 @@ import androidx.preference.PreferenceManager
  * Utility object for managing text size in all the activities in the application.
  * This object provides functions to apply text size preferences to views.
  */
-object SetTextSize {
+object TextSizeManager {
     /**
      * Applies the specified text size to the TextViews within the given view hierarchy.
      * If the view is a ViewGroup, recursively applies the text size to its children.

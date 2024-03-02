@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.AdapterView
 import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.utils.ThemeHelper
+import com.terracode.blueharvest.managers.ThemeManager
 
 class ColorSchemeListener(private val activity: AccessibilitySettingsActivity) :
     AdapterView.OnItemSelectedListener {
@@ -19,8 +19,8 @@ class ColorSchemeListener(private val activity: AccessibilitySettingsActivity) :
         val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
 
         if (position != currentColorPosition) {
-            val selectedColorTheme = ThemeHelper.getThemeResource(position)
-            ThemeHelper.setColorOverlayTheme(activity, selectedColorTheme)
+            val selectedColorTheme = ThemeManager.getThemeResource(position)
+            ThemeManager.setColorOverlayTheme(activity, selectedColorTheme)
             sharedPreferences.edit().putInt("selectedColorPosition", position).apply()
             activity.recreate()
         }
