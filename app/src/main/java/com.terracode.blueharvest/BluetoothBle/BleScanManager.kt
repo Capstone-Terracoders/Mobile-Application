@@ -9,7 +9,10 @@ class BleScanManager(
     btManager: BluetoothManager,
     private val scanPeriod: Long = DEFAULT_SCAN_PERIOD,
     private val scanCallback: BleScanCallback = BleScanCallback()
-) {
+)
+
+
+{
     private val btAdapter = btManager.adapter
     private val bleScanner = btAdapter.bluetoothLeScanner
 
@@ -26,14 +29,16 @@ class BleScanManager(
      * Does not checks the required permissions are granted, check must be done beforehand.
      */
     @SuppressLint("MissingPermission")
-    fun scanBleDevices() {
-        fun stopScan() {
-            scanning = false
-            bleScanner.stopScan(scanCallback)
+    fun stopScan() {
+        scanning = false
+        bleScanner.stopScan(scanCallback)
 
-            // execute all the functions to execute after scanning
-            executeAfterScanActions()
-        }
+        // execute all the functions to execute after scanning
+        executeAfterScanActions()
+    }
+    @SuppressLint("MissingPermission")//best to remove these for security,, implement later
+    fun scanBleDevices() {
+
 
         // scans for bluetooth LE devices
         if (scanning) {
@@ -56,6 +61,8 @@ class BleScanManager(
     private fun executeAfterScanActions() {
         executeListOfFunctions(afterScanActions)
     }
+
+
     companion object {
         const val DEFAULT_SCAN_PERIOD: Long = 10000
 
