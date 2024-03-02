@@ -19,11 +19,11 @@ object SetTextSize {
      * @param context The context used to access resources and preferences.
      * @param view The root view of the view hierarchy to apply text size to.
      */
-    fun applyTextSizeFromPreferences(context: Context, view: View) {
+    fun setTextSizeView(context: Context, view: View) {
         // Get the preference manager value for the text size and apply the text size.
         val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val textSize = sharedPreferences.getFloat("selectedTextSize", 16f)
-        applyTextSize(context, view, textSize)
+        setTextSize(context, view, textSize)
     }
 
     /**
@@ -35,12 +35,12 @@ object SetTextSize {
      * @param view The root view of the view hierarchy to apply text size to.
      * @param textSize The text size to be applied.
      */
-    private fun applyTextSize(context: Context, view: View, textSize: Float) {
+    fun setTextSize(context: Context, view: View, textSize: Float) {
         // If the view is a ViewGroup, recursively apply text size to its children
         if (view is ViewGroup) {
             for (i in 0 until view.childCount) {
                 val child = view.getChildAt(i)
-                applyTextSize(context, child, textSize)
+                setTextSize(context, child, textSize)
             }
         }
         // If the view is a TextView, set its text size

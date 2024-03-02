@@ -38,7 +38,7 @@ class HomeActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val rootView = findViewById<View>(android.R.id.content).rootView
-        SetTextSize.applyTextSizeFromPreferences(this, rootView)
+        SetTextSize.setTextSizeView(this, rootView)
 
         //Set the declared TextView values equal to the IDs in the HomeActivity XML file.
         optimalRakeHeightTextView = findViewById(R.id.optimalRakeHeightValue)

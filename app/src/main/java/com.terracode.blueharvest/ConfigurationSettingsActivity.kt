@@ -19,7 +19,7 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         val rootView = findViewById<View>(android.R.id.content).rootView
-        SetTextSize.applyTextSizeFromPreferences(this, rootView)
+        SetTextSize.setTextSizeView(this, rootView)
 
     }
 
