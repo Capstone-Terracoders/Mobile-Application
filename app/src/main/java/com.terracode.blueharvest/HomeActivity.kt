@@ -1,7 +1,6 @@
 package com.terracode.blueharvest
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -9,12 +8,12 @@ import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.preference.PreferenceManager
-import com.terracode.blueharvest.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
-import com.terracode.blueharvest.viewManagers.TextSizeManager
-import com.terracode.blueharvest.viewManagers.ThemeManager
+import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
+import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
 /**
  * Activity class for the Accessibility Settings Page
@@ -25,8 +24,6 @@ import com.terracode.blueharvest.viewManagers.ThemeManager
  */
 class HomeActivity : AppCompatActivity() {
 
-    // Declare variables as var to allow reassignment
-    private lateinit var sharedPreferences: SharedPreferences
     //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
     private lateinit var optimalRakeRPMValueTextView: TextView
@@ -43,13 +40,13 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //Initialize the sharedPreferences
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
+        PreferenceManager.init(this)
 
         //Set setting values before setting the content view
         val currentTheme = ThemeManager.getCurrentTheme(this)
         ThemeManager.setColorOverlayTheme(this, currentTheme)
 
-        val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
+        val currentLanguagePosition = PreferenceManager.getSelectedLanguagePosition()
         val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
         LocaleManager.setLocale(this, languagePosition)
 
@@ -71,7 +68,7 @@ class HomeActivity : AppCompatActivity() {
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
 
         //Get the value of the toggle from AccessibilitySettings XML file.
-        val toggleValue = sharedPreferences.getBoolean("unitToggleValue", true)
+        val toggleValue = PreferenceManager.getSelectedUnit()
 
         //Read data from mock values/bluetooth, and set the data values equal to the declared variables from above.
         val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")

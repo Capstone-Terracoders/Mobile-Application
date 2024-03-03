@@ -1,8 +1,8 @@
-package com.terracode.blueharvest.viewManagers
+package com.terracode.blueharvest.utils.viewManagers
 
 import android.app.Activity
 import android.content.Context
-import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.PreferenceManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.terracode.blueharvest.R
@@ -22,8 +22,9 @@ object ThemeManager {
      * @return The resource ID of the current theme.
      */
     fun getCurrentTheme(context: Context): Int {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val currentThemePosition = sharedPreferences.getInt("selectedColorPosition", 0)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(context)
+        val currentThemePosition = PreferenceManager.getSelectedColorPosition()
         return getThemeResource(currentThemePosition)
     }
 

@@ -2,9 +2,9 @@ package com.terracode.blueharvest.listeners
 
 import android.content.Context
 import android.widget.SeekBar
-import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.viewManagers.TextSizeManager
+import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.TextConstants
 import kotlin.math.min
 
@@ -48,7 +48,8 @@ class TextSizeChangeListener(private val activity: AccessibilitySettingsActivity
      * @param textSize The size of the text to be applied.
      */
     private fun applyText(context: Context, textSize: Float) {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(activity)
 
         // Retrieve minimum and maximum text size constants
         val minTextSize = TextConstants.MIN_TEXT_SIZE.value
@@ -64,7 +65,7 @@ class TextSizeChangeListener(private val activity: AccessibilitySettingsActivity
         TextSizeManager.setTextSize(context, rootView, finalTextSize)
 
         // Save the selected text size to preferences
-        sharedPreferences.edit().putFloat("selectedTextSize", finalTextSize).apply()
+        PreferenceManager.setSelectedTextSize(finalTextSize)
     }
 }
 

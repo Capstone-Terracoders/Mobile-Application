@@ -1,10 +1,11 @@
-package com.terracode.blueharvest.viewManagers
+package com.terracode.blueharvest.utils.viewManagers
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.PreferenceManager
+
 
 /**
  * Utility object for managing text size in all the activities in the application.
@@ -24,8 +25,9 @@ object TextSizeManager {
      */
     fun setTextSizeView(context: Context, view: View) {
         // Get the preference manager value for the text size and apply the text size.
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val textSize = sharedPreferences.getFloat("selectedTextSize", 16f)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(context)
+        val textSize = PreferenceManager.getSelectedTextSize()
         setTextSize(context, view, textSize)
     }
 

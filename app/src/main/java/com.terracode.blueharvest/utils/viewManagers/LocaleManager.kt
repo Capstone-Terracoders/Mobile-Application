@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.viewManagers
+package com.terracode.blueharvest.utils.viewManagers
 
 import android.app.Activity
 import android.content.res.Configuration

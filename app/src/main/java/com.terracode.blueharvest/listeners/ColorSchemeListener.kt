@@ -2,9 +2,9 @@ package com.terracode.blueharvest.listeners
 
 import android.view.View
 import android.widget.AdapterView
-import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.viewManagers.ThemeManager
+import com.terracode.blueharvest.utils.viewManagers.ThemeManager
+import com.terracode.blueharvest.utils.PreferenceManager
 
 /**
  * Listener for handling color scheme changes.
@@ -32,11 +32,11 @@ class ColorSchemeListener(private val activity: AccessibilitySettingsActivity) :
         position: Int,
         id: Long
     ) {
-        // Retrieve SharedPreferences for managing application preferences
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(activity)
 
         // Retrieve the position of the currently selected color scheme
-        val currentColorPosition = sharedPreferences.getInt("selectedColorPosition", 0)
+        val currentColorPosition = PreferenceManager.getSelectedColorPosition()
 
         // Check if the selected position is different from the current position
         if (position != currentColorPosition) {
@@ -46,8 +46,8 @@ class ColorSchemeListener(private val activity: AccessibilitySettingsActivity) :
             // Apply the selected color overlay theme from the viewManager package
             ThemeManager.setColorOverlayTheme(activity, selectedColorTheme)
 
-            // Update the selected color position in SharedPreferences
-            sharedPreferences.edit().putInt("selectedColorPosition", position).apply()
+            // Update the selected color position in PreferenceManager
+            PreferenceManager.setSelectedColorPosition(position)
 
             // Recreate the activity to apply the changes
             activity.recreate()

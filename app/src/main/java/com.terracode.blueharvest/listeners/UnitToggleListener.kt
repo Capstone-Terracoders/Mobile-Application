@@ -1,8 +1,8 @@
 package com.terracode.blueharvest.listeners
 
 import android.widget.CompoundButton
-import androidx.preference.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
+import com.terracode.blueharvest.utils.PreferenceManager
 
 /**
  * Listener for handling changes in unit toggle switch in the accessibility settings screen.
@@ -22,10 +22,10 @@ class UnitToggleListener(private val activity: AccessibilitySettingsActivity) :
      * @param isChecked The new checked state of buttonView.
      */
     override fun onCheckedChanged(buttonView: CompoundButton, isChecked: Boolean) {
-        // Retrieve SharedPreferences for managing application preferences
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(activity)
 
         // Update the value of unit toggle switch in SharedPreferences
-        sharedPreferences.edit().putBoolean("unitToggleValue", isChecked).apply()
+        PreferenceManager.setSelectedUnit(isChecked)
     }
 }

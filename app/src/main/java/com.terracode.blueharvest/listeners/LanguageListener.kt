@@ -2,9 +2,9 @@ package com.terracode.blueharvest.listeners
 
 import android.view.View
 import android.widget.AdapterView
-import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 
 /**
  * Listener for handling language selection changes in the accessibility settings screen.
@@ -31,11 +31,11 @@ class LanguageSelectionListener(private val activity: AccessibilitySettingsActiv
         position: Int,
         id: Long
     ) {
-        // Retrieve SharedPreferences for managing application preferences
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(activity)
+        // Set SharedPreferences for this activity
+        PreferenceManager.init(activity)
 
         // Retrieve the position of the currently selected language
-        val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
+        val currentLanguagePosition = PreferenceManager.getSelectedLanguagePosition()
 
         // Get the language code of the selected language position
         val selectedLanguageCode = LocaleManager.getLanguageCode(position)
@@ -45,8 +45,8 @@ class LanguageSelectionListener(private val activity: AccessibilitySettingsActiv
             // Set the locale to the selected language
             LocaleManager.setLocale(activity, selectedLanguageCode)
 
-            // Update the selected language position in SharedPreferences
-            sharedPreferences.edit().putInt("selectedLanguagePosition", position).apply()
+            // Update the selected language position in PreferenceManager
+            PreferenceManager.setSelectedLanguagePosition(position)
 
             // Recreate the activity to apply the changes
             activity.recreate()

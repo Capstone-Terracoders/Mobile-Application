@@ -27,5 +27,14 @@ enum class UnitConstants(val value: Double) {
  */
 enum class TextConstants(val value: Float) {
     MIN_TEXT_SIZE(12f),
-    MAX_TEXT_SIZE(50f)
+    MAX_TEXT_SIZE(50f),
+    DEFAULT_TEXT_SIZE(16f)
+}
+
+enum class PreferenceKeys {
+    SELECTED_COLOR_POSITION,
+    SELECTED_LANGUAGE_POSITION,
+    SELECTED_TEXT_SIZE,
+    SELECTED_UNIT
+
 }
