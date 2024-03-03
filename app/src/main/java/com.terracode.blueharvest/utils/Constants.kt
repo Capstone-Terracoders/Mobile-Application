@@ -4,6 +4,8 @@ package com.terracode.blueharvest.utils
  * Enum class to declare conversion constants for units.
  * Each constant represents a conversion factor from one unit to another.
  *
+ * @author MacKenzie Young 3/2/2024
+ *
  * @property value The value representing the conversion factor.
  *
  * @value CM_TO_INCH Conversion factor from centimeters to inches.

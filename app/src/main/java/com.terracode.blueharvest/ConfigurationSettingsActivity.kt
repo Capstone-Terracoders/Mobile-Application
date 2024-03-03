@@ -9,10 +9,17 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.PreferenceManager
-import com.terracode.blueharvest.managers.LocaleManager
-import com.terracode.blueharvest.managers.TextSizeManager
-import com.terracode.blueharvest.managers.ThemeManager
+import com.terracode.blueharvest.viewManagers.LocaleManager
+import com.terracode.blueharvest.viewManagers.TextSizeManager
+import com.terracode.blueharvest.viewManagers.ThemeManager
 
+/**
+ * Activity class for the Configuration Settings Page
+ *
+ * @authors MacKenzie Young
+ * Last Updated: 3/2/2024
+ *
+ */
 class ConfigurationSettingsActivity : AppCompatActivity() {
     // Declare variables as var to allow reassignment
     private lateinit var sharedPreferences: SharedPreferences

@@ -17,12 +17,17 @@ import com.terracode.blueharvest.listeners.ColorSchemeListener
 import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
 import com.terracode.blueharvest.listeners.UnitToggleListener
-import com.terracode.blueharvest.managers.LocaleManager
-import com.terracode.blueharvest.managers.TextSizeManager
+import com.terracode.blueharvest.viewManagers.LocaleManager
+import com.terracode.blueharvest.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.TextConstants
-import com.terracode.blueharvest.managers.ThemeManager
+import com.terracode.blueharvest.viewManagers.ThemeManager
 
-//Activity class for the accessibility setting page.
+/**
+ * Activity class for the Accessibility Settings Page
+ *
+ * @authors MacKenzie Young 3/2/2024
+ *
+ */
 class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
@@ -42,6 +47,10 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         //Set setting values before setting the content view
         val currentTheme = ThemeManager.getCurrentTheme(this)
         ThemeManager.setColorOverlayTheme(this, currentTheme)
+
+        val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
+        val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
+        LocaleManager.setLocale(this, languagePosition)
 
         //Set the view
         setContentView(R.layout.activity_accessibility_settings)
@@ -83,8 +92,6 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
 
         //-----Logic for Language Spinner in Activity-----//
-        val currentLanguagePosition = sharedPreferences.getInt("selectedLanguagePosition", 0)
-        val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
         LocaleManager.setLocale(this, languagePosition)
 
         val languages = resources.getStringArray(R.array.languageArray)

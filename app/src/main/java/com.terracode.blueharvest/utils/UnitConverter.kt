@@ -6,6 +6,9 @@ package com.terracode.blueharvest.utils
  * If needed, imperial to metric conversion can also be done here.
  * Since the data is sent via metric units, there is no need to convert back to metric as of 2/28/2024.
  * These functions format the units to 2 decimal places.
+ *
+ * @author MacKenzie Young 3/2/2024
+ *
  */
 class UnitConverter {
     companion object {
@@ -20,7 +23,9 @@ class UnitConverter {
         fun convertHeightToImperial(currentValue: Double?): Double? {
             val cmToInch = UnitConstants.CM_TO_INCH.value
             return if (currentValue != null) {
-                "%.2f".format(currentValue * cmToInch).toDouble()
+                // Replace commas with periods and limit to two decimal places
+                val formattedValue = currentValue.times(cmToInch)
+                String.format("%.2f", formattedValue).replace(",", ".").toDouble()
             } else {
                 null
             }
@@ -36,8 +41,10 @@ class UnitConverter {
          */
         fun convertSpeedToImperial(currentValue: Double?): Double? {
             val mphToKmh = UnitConstants.MPH_TO_KMH.value
+
             return if (currentValue != null) {
-                "%.2f".format(currentValue * mphToKmh).toDouble()
+                val formattedValue = currentValue.times(mphToKmh)
+                String.format("%.2f", formattedValue).replace(",", ".").toDouble()
             } else {
                 null
             }

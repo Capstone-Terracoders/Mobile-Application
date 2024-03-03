@@ -1,14 +1,24 @@
-package com.terracode.blueharvest.managers
+package com.terracode.blueharvest.viewManagers
 
 import android.app.Activity
 import android.content.res.Configuration
-import android.util.Log
 import java.util.Locale
 
+/**
+ * Singleton object for managing locale changes within the application.
+ *
+ * @author MacKenzie Young 3/2/2024
+ *
+ */
 @Suppress("DEPRECATION")
 object LocaleManager {
+    /**
+     * Set the locale of the application to the specified language.
+     *
+     * @param activity The current activity.
+     * @param languageCode The language code representing the desired locale.
+     */
     fun setLocale(activity: Activity, languageCode: String) {
-        Log.d("CAT", languageCode)
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
 
@@ -24,6 +34,12 @@ object LocaleManager {
         )
     }
 
+    /**
+     * Get the language code corresponding to the selected position in the language spinner.
+     *
+     * @param position The position of the selected language.
+     * @return The language code corresponding to the selected position.
+     */
     fun getLanguageCode(position: Int): String {
         return when (position) {
             0 -> "en" // English

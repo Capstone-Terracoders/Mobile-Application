@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.managers
+package com.terracode.blueharvest.viewManagers
 
 import android.app.Activity
 import android.content.Context
@@ -10,9 +10,11 @@ import com.terracode.blueharvest.R
 /**
  * Utility object for managing themes in the application.
  * This object provides functions to retrieve the current theme and theme resources.
+ *
+ * @author MacKenzie Young 3/2/2024
+ *
  */
 object ThemeManager {
-
     /**
      * Retrieves the current theme based on the stored theme position in SharedPreferences.
      *

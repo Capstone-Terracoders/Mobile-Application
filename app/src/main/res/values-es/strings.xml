@@ -31,5 +31,5 @@
     <string name="optimalRakeRPM">"RPM de Rake Optimal "</string>
     <string name="currentOperationTitle">"Operación actual "</string>
     <string name="currentSpeed">"Velocidad (KPH) "</string>
-    <string name="currentBushHeight">"Bush Height (CM) "</string>
+    <string name="currentBushHeight">" Altura del arbusto (CM)"</string>
 </resources>
