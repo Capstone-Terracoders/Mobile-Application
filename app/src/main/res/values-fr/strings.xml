@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="accessibilityPageTitle">Paramètres d’accessibilité</string>
+    <string name="configurationPageTitle">Paramètres de configuration</string>
+    <string name="displayedValuesCardTitle">Afficher les valeurs</string>
+    <string name="safetyOperationalSettingsCardTitle">"Paramètres de sécurité et d’exploitation "</string>
+    <string name="recordTitle">"Enregistrer "</string>
+    <string name="textSizeTitle">"Taille du texte "</string>
+    <string name="languageTitle">"Langue "</string>
+    <string name="unitSystemTitle">"Système d’unités "</string>
+    <string name="colorSchemeTitle">"Couleurs "</string>
+    <string name="metric">"Métrique "</string>
+    <string name="imperial">"Impérial "</string>
+    <string name="maxRPMDisplayedTitle">"Vitesse de rotation maximale affichée "</string>
+    <string name="maxHeightDisplayedTitle">"Hauteur maximale affichée "</string>
+    <string name="optimalRPMRangeTitle">"Plage de régime optimale "</string>
+    <string name="optimalHeightRangeTitle">"Plage de hauteur optimale "</string>
+    <string name="connectedSensorTitle">"Capteurs connectés "</string>
+    <string name="minRakeRPMTitle">"Régime minimal de l’andaineur "</string>
+    <string name="minRakeHeightTitle">"Hauteur minimale du râteau "</string>
+    <string name="coefficientRPMTitle">"Coefficient de régime "</string>
+    <string name="coefficientHeightTitle">"Coefficient de hauteur "</string>
+    <string name="safetyParametersTitle">"Paramètres de sécurité "</string>
+    <string name="optimizationParametersTitle">"Paramètres de fonctionnement "</string>
+    <string name="backButtonTitle">"Bouton de retour "</string>
+    <string name="settingsTitle">"Paramètres "</string>
+    <string name="notificationTitle">Notifications</string>
+    <string name="numberHint">"Entrez un nombre "</string>
+    <string name="optimalOperationTitle">"Fonctionnement optimal "</string>
+    <string name="optimalRakeHeight">"Hauteur optimale du râteau "</string>
+    <string name="optimalRakeRPM">"Régime optimal de l’andaineur "</string>
+    <string name="currentOperationTitle">"Fonctionnement en cours "</string>
+    <string name="currentSpeed">Vitesse (km/h)</string>
+    <string name="currentBushHeight">"Hauteur de Bush (CM) "</string>
+</resources>

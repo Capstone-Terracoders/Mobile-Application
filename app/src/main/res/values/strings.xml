@@ -1,6 +1,6 @@
 <resources>
     <!-- Strings used for App Name -->
-    <string name="app_name">BlueHarvest</string>
+    <string name="app_name" translatable="false">BlueHarvest</string>
 
 
     <!-- Strings used for Page Titles -->
@@ -44,7 +44,7 @@
     <string name="optimalRPMRangeTitle">Optimal RPM Range</string>
     <string name="optimalHeightRangeTitle">Optimal Height Range</string>
     <string name="connectedSensorTitle">Connected Sensors</string>
-    <string name="plusMinusSign">+/-</string>
+    <string name="plusMinusSign" translatable="false">+/-</string>
 
     <string-array name="connectedSensors">
         <item>Sensor 1</item>
@@ -72,5 +72,13 @@
 
     <!-- Extra Strings -->
     <string name="numberHint">Enter a number</string>
+
+    <!-- Strings used for Optimal Operation Card-->
+    <string name="optimalOperationTitle">Optimal Operation</string>
+    <string name="optimalRakeHeight">Optimal Rake Height</string>
+    <string name="optimalRakeRPM">Optimal Rake RPM</string>
+    <string name="currentOperationTitle">Current Operation</string>
+    <string name="currentSpeed">Speed</string>
+    <string name="currentBushHeight">Bush Height</string>
 
 </resources>

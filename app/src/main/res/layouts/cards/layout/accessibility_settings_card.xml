@@ -27,9 +27,9 @@
             android:id="@+id/textSizeSeekBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp" />
+            android:layout_marginEnd="20dp" />
 
         <TextView
             android:id="@+id/languageTitle"
@@ -45,9 +45,9 @@
             android:id="@+id/languageSpinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:background="@color/white"
             android:entries="@array/languageArray"
             android:textSize="18sp" />
@@ -71,25 +71,27 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/unitMetricTitle"
+                android:id="@+id/unitImperialTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="@string/metric"
+                android:text="@string/imperial"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/unitSwitch"
                 android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:layout_height="50dp"
+                android:textOn="@string/imperial"
+                android:textOff="@string/metric"/>
 
             <TextView
-                android:id="@+id/unitImperialTitle"
+                android:id="@+id/unitMetricTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:text="@string/imperial"
+                android:text="@string/metric"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
@@ -109,9 +111,9 @@
             android:id="@+id/colorSchemeSpinner"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="50dp"
             android:background="@color/white"
             android:entries="@array/colorSchemeArray"
