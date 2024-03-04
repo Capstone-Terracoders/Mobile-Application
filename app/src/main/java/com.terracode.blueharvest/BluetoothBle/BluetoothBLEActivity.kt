@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
 import com.terracode.blueharvest.R
 import serviceBLE
-
+//import com.terracode.blueharvest.BluetoothBle.serviceBLE.Companion.isServiceBound
 
 
 class BluetoothBLEActivity : ComponentActivity() {
@@ -42,6 +42,8 @@ class BluetoothBLEActivity : ComponentActivity() {
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
         foundDevices = BleDevice.createBleDevicesList()//returns mutablelistog
         val adapter = BleDeviceAdapter(foundDevices)
+
+
         rvFoundDevices.adapter = adapter
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
@@ -66,8 +68,8 @@ class BluetoothBLEActivity : ComponentActivity() {
             {
                 true -> {
                     //check if bound to btservice
-                    if (/*serviceBLE.isBound */ true == true) {// TODO:  
-                      //  serviceBLE?.scanBleDevices()
+                    if (/*serviceBLE.isServiceBound()*/ true == true) {//todo
+                        serviceBLE?.initBleScanManager()
                     }
                 }
                 false -> PermissionsUtilities.checkPermissions(
@@ -79,7 +81,7 @@ class BluetoothBLEActivity : ComponentActivity() {
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-      //todo      serviceBLE = (service as serviceBLE.LocalBinder).service
+            serviceBLE = (service as serviceBLE.LocalBinder).service
             serviceBLEBound = true
         }
 

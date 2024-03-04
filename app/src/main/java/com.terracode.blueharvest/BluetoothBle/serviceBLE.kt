@@ -1,6 +1,7 @@
 import android.app.Service
 import android.bluetooth.BluetoothManager
 import android.content.Intent
+import android.os.Binder
 import android.os.IBinder
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,7 @@ import com.terracode.blueharvest.R
 
 class serviceBLE : Service() {
 
-
+    //var isBound = isServiceBound()
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BleDevice>
 
@@ -29,12 +30,19 @@ class serviceBLE : Service() {
 
     }
 
-    override fun onBind(intent: Intent?): IBinder? {
+    override fun onBind(intent: Intent?): IBinder {
         initBleScanManager() // Ensure initialization when bound
-        return null // TODO: Return a binder for communication
+        return  LocalBinder()
+    }
+    inner class LocalBinder : Binder() {
+        val service: serviceBLE
+            get() = this@serviceBLE
+    }
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return super.onStartCommand(intent, flags, startId)
     }
 
-    private fun initBleScanManager()
+    fun initBleScanManager()
     {
         val btManager = getSystemService(BluetoothManager::class.java)
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback({
@@ -48,13 +56,21 @@ class serviceBLE : Service() {
             }
         }))
     }
+//for state management, update and retrive value of isboun
+/*you can access the binding state from outside the service using serviceBLE.isServiceBound()
+but cannot directly modify it from outside. To update the state, call serviceBLE.setBound(true)
+within your service when necessary. */
+companion object {
+    private var isBound: Boolean = false
 
-    companion object {
-        val isBound: Any
-            get() {
-                TODO()
-            }
-        private const val BLE_PERMISSION_REQUEST_CODE = 1 }
+    fun isServiceBound(): Boolean {
+        return isBound
+    }
+
+    fun setBound(bound: Boolean) {
+        isBound = bound
+    }
+}
 }
     // ... (other service methods)
 
