@@ -13,7 +13,7 @@ package com.terracode.blueharvest.utils
  */
 enum class UnitConstants(val value: Double) {
     CM_TO_INCH(0.3937),
-    MPH_TO_KMH(1.609344),
+    MPH_TO_KMH(0.621371),
 }
 
 /**
