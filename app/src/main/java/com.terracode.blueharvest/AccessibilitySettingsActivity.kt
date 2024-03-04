@@ -11,14 +11,14 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.listeners.ColorSchemeListener
 import com.terracode.blueharvest.listeners.LanguageSelectionListener
 import com.terracode.blueharvest.listeners.TextSizeChangeListener
 import com.terracode.blueharvest.listeners.UnitToggleListener
+import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
-import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
 /**
@@ -107,6 +107,8 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         // Initialize SeekBar properties
         val initialTextSize = PreferenceManager.getSelectedTextSize()
         val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
+        val minTextSize = TextConstants.MIN_TEXT_SIZE.value.toInt()
+        textSizeSeekBar.min = (minTextSize)
         textSizeSeekBar.max = (maxTextSize)
         textSizeSeekBar.progress = initialTextSize.toInt()
         textSizeSeekBar.setOnSeekBarChangeListener(textSizeChangeListener)

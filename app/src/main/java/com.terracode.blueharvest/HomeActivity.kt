@@ -9,9 +9,9 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
+import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -86,12 +86,7 @@ class HomeActivity : AppCompatActivity() {
             "${UnitConverter.convertHeightToImperial(rakeHeightData)} in"
         }
 
-        optimalRakeRPMValueTextView.text = if (toggleValue) {
-            "$rpmData mph"
-        } else {
-            //Needs function
-            "${UnitConverter.convertSpeedToImperial(rpmData)} kmh"
-        }
+        optimalRakeRPMValueTextView.text = "$rpmData"
 
         currentBushHeightTextView.text = if (toggleValue) {
             "$bushHeightData cm"
@@ -100,10 +95,10 @@ class HomeActivity : AppCompatActivity() {
         }
 
         currentSpeedTextView.text = if (toggleValue) {
-            "$speedData mph"
+            "$speedData km/h"
         } else {
             //Needs function
-            "${UnitConverter.convertSpeedToImperial(speedData)} kmh"
+            "${UnitConverter.convertSpeedToImperial(speedData)} mph"
         }
     }
 

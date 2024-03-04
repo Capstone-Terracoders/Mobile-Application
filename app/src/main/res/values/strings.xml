@@ -78,7 +78,7 @@
     <string name="optimalRakeHeight">Optimal Rake Height</string>
     <string name="optimalRakeRPM">Optimal Rake RPM</string>
     <string name="currentOperationTitle">Current Operation</string>
-    <string name="currentSpeed">Speed (KPH)</string>
-    <string name="currentBushHeight">Bush Height (CM)</string>
+    <string name="currentSpeed">Speed</string>
+    <string name="currentBushHeight">Bush Height</string>
 
 </resources>
