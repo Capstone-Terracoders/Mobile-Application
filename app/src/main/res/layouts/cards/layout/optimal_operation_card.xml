@@ -1,138 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/optimalOperationCard"
+xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+android:id="@+id/optimalOperationCard"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+app:cardUseCompatPadding="true">
+
+<LinearLayout
+    android:id="@+id/BoxLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:cardUseCompatPadding="true">
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/BoxLayout"
+        android:id="@+id/card1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/rounded_corner"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/card1"
+        <TextView
+            android:id="@+id/optimalOperationTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/optimalOperationTitle"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/optimalOperationTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/optimalOperationTitle"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white" />
-
-            <TextView
-                android:id="@+id/optimalRakeHeightTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/optimalRakeHeight"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/optimalRakeHeightValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="EXAMPLE"/>
-
-            <TextView
-                android:id="@+id/optimalRakeRPMTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:paddingBottom="20dp"
-                android:text="@string/optimalRakeRPM"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/optimalRakeRPMValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="EXAMPLE"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/card2"
+        <TextView
+            android:id="@+id/optimalRakeHeight"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rounded_corner"
-            android:layout_marginTop="50dp"
-            android:orientation="vertical">
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/optimalRakeHeight"
+            android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/currentOperationTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/currentOperationTitle"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/optimalRakeHeightValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:layout_marginTop="10dp"
-                android:background="@color/white" />
+        <TextView
+            android:id="@+id/optimalRakeRPM"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/optimalRakeRPM"
+            android:textColor="@color/white" />
 
+        <TextView
+            android:id="@+id/optimalRakeRPMValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
 
-            <TextView
-                android:id="@+id/currentSpeedTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:text="@string/currentSpeed"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/currentSpeedValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="EXAMPLE"/>
-
-            <TextView
-                android:id="@+id/currentBushHeightTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:gravity="center"
-                android:paddingBottom="20dp"
-                android:text="@string/currentBushHeight"
-                android:textColor="@color/white" />
-
-            <TextView
-                android:id="@+id/currentBushHeightValue"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textColor="@color/white"
-                android:text="EXAMPLE"/>
-        </LinearLayout>
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/card2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_corner"
+        android:layout_marginTop="50dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/currentOperationTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/currentOperationTitle"
+            android:textColor="@color/white"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/white" />
+
+
+        <TextView
+            android:id="@+id/currentSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:text="@string/currentSpeed"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/currentSpeedValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/currentBushHeight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:paddingBottom="20dp"
+            android:text="@string/currentBushHeight"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/currentBushHeightValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColor="@color/white" />
+    </LinearLayout>
+</LinearLayout>
 </androidx.cardview.widget.CardView>
