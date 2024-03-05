@@ -1,3 +1,6 @@
+
+package com.terracode.blueharvest.BluetoothBle
+
 import android.app.Service
 import android.bluetooth.BluetoothManager
 import android.content.Intent
@@ -27,6 +30,17 @@ class serviceBLE : Service() {
     override fun onCreate() {
         super.onCreate()
         initBleScanManager()
+        // Adding the actions the manager must do before and after scanning
+        //todo implement this so that it takes button value from ble activity
+      /*  bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
+        bleScanManager.beforeScanActions.add {
+            foundDevices.clear()
+            adapter.notifyDataSetChanged()
+        }
+
+
+        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }*/
+
 
     }
 

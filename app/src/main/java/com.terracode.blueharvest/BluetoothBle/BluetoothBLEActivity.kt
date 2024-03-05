@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
 import com.terracode.blueharvest.R
-import serviceBLE
-//import com.terracode.blueharvest.BluetoothBle.serviceBLE.Companion.isServiceBound
+import com.terracode.blueharvest.BluetoothBle.serviceBLE
+import com.terracode.blueharvest.BluetoothBle.serviceBLE.Companion.isServiceBound
 
 
 class BluetoothBLEActivity : ComponentActivity() {
@@ -30,10 +30,17 @@ class BluetoothBLEActivity : ComponentActivity() {
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BleDevice>//list of found devices
 
+
+
+    override fun onStart() {
+        super.onStart()
+        Intent(this, serviceBLE!!::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+    }
+
     @SuppressLint("NotifyDataSetChanged", "MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_ble)
@@ -50,15 +57,6 @@ class BluetoothBLEActivity : ComponentActivity() {
         // BleManager creation
 
 
-        // Adding the actions the manager must do before and after scanning
-        bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
-        bleScanManager.beforeScanActions.add {
-            foundDevices.clear()
-            adapter.notifyDataSetChanged()
-        }
-
-
-        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }
 
         // Adding the onclick listener to the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
@@ -68,7 +66,12 @@ class BluetoothBLEActivity : ComponentActivity() {
             {
                 true -> {
                     //check if bound to btservice
-                    if (/*serviceBLE.isServiceBound()*/ true == true) {//todo
+                    if (serviceBLEBound) {
+                        //todo find a way for the service to me notified when the scan
+                        //button is clicked, modify permissions so that they do not call
+                        //the scan, but simply check permissions
+                        //scanning should be done in the service
+                        //Review kenzies preference manager
                         serviceBLE?.initBleScanManager()
                     }
                 }
@@ -90,12 +93,7 @@ class BluetoothBLEActivity : ComponentActivity() {
             serviceBLE = null
         }
     }
-    override fun onStart() {
-        super.onStart()
-        Intent(this, serviceBLE!!::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-    }
+
     override fun onStop() {
         super.onStop()
         if (serviceBLEBound) {
@@ -113,7 +111,7 @@ class BluetoothBLEActivity : ComponentActivity() {
 
         dispatchOnRequestPermissionsResult(
             requestCode,
-            grantResults,
+            grantResults,//todo remove the reverence to BLEscanmanager,
             onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { bleScanManager.scanBleDevices() }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
                 "Some permissions were not granted, please grant them and try again",
