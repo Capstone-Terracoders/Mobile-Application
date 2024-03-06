@@ -75,12 +75,12 @@
 
 
     <!--  BleActivity strings -->
-
-    <string name="Bluetooth_Functionality">Bluetooth Functionality</string>
-    <string name="btn_start_scan_text">Start Scan</string>
-    <string name="tw_scan_results_title">Scan Results</string>
-    <string name="ble_permission_rationale">This app needs to access bluetooth and location in order to scan for BLE devices.</string>
-    <string name="ble_permissions_denied_message">Some permissions were not granted, please grant them and try again</string>
+    //todo add translation
+    <string name="Bluetooth_Functionality" translatable="false">Bluetooth Functionality</string>
+    <string name="btn_start_scan_text" translatable="false">Start Scan</string>
+    <string name="tw_scan_results_title" translatable="false">Scan Results</string>
+    <string name="ble_permission_rationale" translatable="false">This app needs to access bluetooth and location in order to scan for BLE devices.</string>
+    <string name="ble_permissions_denied_message" translatable="false">Some permissions were not granted, please grant them and try again</string>
 
     <!-- Strings used for Optimal Operation Card-->
     <string name="optimalOperationTitle">Optimal Operation</string>
