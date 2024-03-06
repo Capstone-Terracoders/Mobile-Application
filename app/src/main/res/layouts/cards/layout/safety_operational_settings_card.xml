@@ -6,23 +6,6 @@
     android:layout_height="match_parent"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-    <TextView
-            android:id="@+id/configurationCardTitle"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:text="@string/safetyOperationalSettingsCardTitle"
-            android:textColor="@color/black" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -60,6 +43,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
                 android:hint="@string/numberHint"
                 android:inputType="number"
                 android:textSize="16sp" />
@@ -83,7 +67,7 @@
                 android:ems="10"
                 android:gravity="center"
                 android:layout_gravity="center_horizontal"
-
+                android:layout_marginTop="30dp"
                 android:hint="@string/numberHint"
                 android:inputType="number"
                 android:textSize="16sp" />
@@ -147,7 +131,5 @@
                 android:textSize="16sp" />
 
         </LinearLayout>
-
-    </LinearLayout>
 
 </androidx.cardview.widget.CardView>
