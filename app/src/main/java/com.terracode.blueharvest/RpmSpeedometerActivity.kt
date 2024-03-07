@@ -8,6 +8,12 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import kotlin.math.cos
 import kotlin.math.sin
+import android.graphics.RectF
+import android.graphics.Rect
+import android.animation.ObjectAnimator
+
+
+
 
 class RpmSpeedometerActivity @JvmOverloads constructor(
     context: Context,
@@ -52,6 +58,16 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         isAntiAlias = true
     }
 
+    private var needleRotationAnimator: ObjectAnimator? = null
+
+    init {
+        needleRotationAnimator = ObjectAnimator.ofFloat(this, "needleRotation", 0f, 20f).apply {
+            duration = 1000 // Animation duration in milliseconds
+            repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
+            repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+        }
+    }
+
     init {
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RpmSpeedometer)
         dialWidth = typedArray.getDimension(R.styleable.RpmSpeedometer_dialWidth, DEFAULT_DIAL_WIDTH)
@@ -66,6 +82,9 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         val centerX = width / 2f
         val centerY = height / 2f
         val radius = Math.min(centerX, centerY) - 40
+
+
+
         canvas.drawArc(
             centerX - radius, centerY - radius, centerX + radius, centerY + radius,
             START_ANGLE, SWEEP_ANGLE, false, dialPaint
@@ -89,10 +108,32 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
         textPaint.textSize = 40f // Set text size to 40
 
+
         // Draw current speed text
         if (angle > START_ANGLE + 1 && angle < START_ANGLE + SWEEP_ANGLE - 1) {
             canvas.drawText("$currentSpeed", centerX, centerY + 50, textPaint)
         }
+        // Draw rounded rectangle for RPM value
+        val rpmRectWidth = 200f
+        val rpmRectHeight = 100f
+        val rpmRectLeft = centerX - rpmRectWidth / 2
+        val rpmRectTop = centerY + radius * 0.8f
+        val rpmRectRight = rpmRectLeft + rpmRectWidth
+        val rpmRectBottom = rpmRectTop + rpmRectHeight
+        val cornerRadius = 20f // adjust corner radius as needed
+        val rpmRect = RectF(rpmRectLeft, rpmRectTop, rpmRectRight, rpmRectBottom)
+        canvas.drawRoundRect(rpmRect, cornerRadius, cornerRadius, dialPaint)
+
+        // Draw RPM value text inside the rounded rectangle
+        val rpmText = "Rake RPM $currentSpeed"
+        val textRect = Rect()
+        textPaint.color = lightGreyColor
+        textPaint.getTextBounds(rpmText, 0, rpmText.length, textRect)
+        val textX = centerX
+        val textY = centerY + radius * 0.8f + (rpmRectHeight + textRect.height()) / 2
+        canvas.drawText(rpmText, textX, textY, textPaint)
+
+        needleRotationAnimator?.start()
     }
 
 
@@ -133,6 +174,14 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             currentSpeed = speed
             invalidate()
         }
+    }
+
+    fun setNeedleRotation(rotation: Float) {
+        // Set the rotation angle of the needle
+        // Adjust rotation as needed
+        // For example:
+        // needlePaint.rotation = rotation
+        invalidate()
     }
 }
 
