@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.terracode.blueharvest.listeners.MaxRPMDisplayListener
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
@@ -16,10 +18,15 @@ import com.terracode.blueharvest.utils.viewManagers.ThemeManager
  * Activity class for the Configuration Settings Page
  *
  * @authors MacKenzie Young
- * Last Updated: 3/2/2024
+ * Last Updated: 3/9/2024
  *
  */
 class ConfigurationSettingsActivity : AppCompatActivity() {
+
+    private lateinit var maxRPMDisplayedInput: EditText
+    private lateinit var maxHeightDisplayedInput: EditText
+    private lateinit var optimalRPMRangeInput: EditText
+    private lateinit var optimalHeightRangeInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,6 +52,27 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         //Set the text size
         val rootView = findViewById<View>(android.R.id.content).rootView
         TextSizeManager.setTextSizeView(this, rootView)
+
+        //Declaring View Components
+        maxRPMDisplayedInput = findViewById(R.id.maxRPMDisplayedNumber)
+        maxHeightDisplayedInput = findViewById(R.id.maxHeightDisplayedNumber)
+        optimalRPMRangeInput = findViewById(R.id.optimalRPMRangeNumber)
+        optimalHeightRangeInput = findViewById(R.id.optimalHeightRangeNumber)
+
+        //Initialize Listeners
+        val maxRPMDisplayedListener = MaxRPMDisplayListener(this)
+//        val maxHeightDisplayedListener = MaxHeightDisplayListener(this)
+//        val optimalRPMRangeListener = OptimalRPMRangeListener(this)
+//        val optimalHeightRangeListener = OptimalHeightRangeListener(this)
+
+        //Logic for the maxRPMDisplayedInput
+        maxRPMDisplayedInput.addTextChangedListener(maxRPMDisplayedListener)
+
+        //Logic for the maxHeightDisplayedInput
+
+        //Logic for the optimalRPMRangeInput
+
+        //Logic for the optimalHeightRangeInput
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

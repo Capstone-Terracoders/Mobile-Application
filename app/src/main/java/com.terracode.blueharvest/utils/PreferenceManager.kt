@@ -67,6 +67,30 @@ object PreferenceManager {
             true)
     }
 
+    fun getMaxRPMDisplayedInput(): String? {
+        return sharedPreferences.getString(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            "")
+    }
+
+    fun getMaxHeightDisplayedInput(): String? {
+        return sharedPreferences.getString(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            "")
+    }
+
+    fun getOptimalRPMRangeInput(): String? {
+        return sharedPreferences.getString(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            "")
+    }
+
+    fun getOptimalHeightRangeInput(): String? {
+        return sharedPreferences.getString(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            "")
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -111,6 +135,30 @@ object PreferenceManager {
         sharedPreferences.edit().putBoolean(
             PreferenceKeys.SELECTED_UNIT.toString(),
             isChecked).apply()
+    }
+
+    fun setMaxRPMDisplayedInput(input: String) {
+        sharedPreferences.edit().putString(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxHeightDisplayedInput(input: String) {
+        sharedPreferences.edit().putString(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalRPMRangeInput(input: String) {
+        sharedPreferences.edit().putString(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalHeightRangeInput(input: String) {
+        sharedPreferences.edit().putString(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            input).apply()
     }
 
     //Enum to Int
