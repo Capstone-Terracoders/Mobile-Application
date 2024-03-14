@@ -11,10 +11,10 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.listeners.ColorSchemeListener
-import com.terracode.blueharvest.listeners.LanguageSelectionListener
-import com.terracode.blueharvest.listeners.TextSizeChangeListener
-import com.terracode.blueharvest.listeners.UnitToggleListener
+import com.terracode.blueharvest.listeners.accessibilityListeners.ColorSchemeListener
+import com.terracode.blueharvest.listeners.accessibilityListeners.LanguageSelectionListener
+import com.terracode.blueharvest.listeners.accessibilityListeners.TextSizeChangeListener
+import com.terracode.blueharvest.listeners.accessibilityListeners.UnitToggleListener
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager

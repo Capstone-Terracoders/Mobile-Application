@@ -32,10 +32,13 @@ enum class TextConstants(val value: Float) {
 }
 
 enum class PreferenceKeys {
+    //---Accessibility Settings---//
     SELECTED_COLOR_POSITION,
     SELECTED_LANGUAGE_POSITION,
     SELECTED_TEXT_SIZE,
     SELECTED_UNIT,
+
+    //---Display Values---//
     MAX_RPM_DISPLAYED_INPUT,
     MAX_HEIGHT_DISPLAYED_INPUT,
     OPTIMAL_RPM_RANGE_INPUT,

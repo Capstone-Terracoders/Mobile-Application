@@ -67,28 +67,28 @@ object PreferenceManager {
             true)
     }
 
-    fun getMaxRPMDisplayedInput(): String? {
-        return sharedPreferences.getString(
+    fun getMaxRPMDisplayedInput(): Int {
+        return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            "")
+            0)
     }
 
-    fun getMaxHeightDisplayedInput(): String? {
-        return sharedPreferences.getString(
+    fun getMaxHeightDisplayedInput(): Int {
+        return sharedPreferences.getInt(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
-            "")
+            0)
     }
 
-    fun getOptimalRPMRangeInput(): String? {
-        return sharedPreferences.getString(
+    fun getOptimalRPMRangeInput(): Int {
+        return sharedPreferences.getInt(
             PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
-            "")
+            0)
     }
 
-    fun getOptimalHeightRangeInput(): String? {
-        return sharedPreferences.getString(
+    fun getOptimalHeightRangeInput(): Int {
+        return sharedPreferences.getInt(
             PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
-            "")
+            0)
     }
 
     // Setters ----------------------------------------------------------
@@ -137,26 +137,26 @@ object PreferenceManager {
             isChecked).apply()
     }
 
-    fun setMaxRPMDisplayedInput(input: String) {
-        sharedPreferences.edit().putString(
+    fun setMaxRPMDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
             input).apply()
     }
 
-    fun setMaxHeightDisplayedInput(input: String) {
-        sharedPreferences.edit().putString(
+    fun setMaxHeightDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
             input).apply()
     }
 
-    fun setOptimalRPMRangeInput(input: String) {
-        sharedPreferences.edit().putString(
+    fun setOptimalRPMRangeInput(input: Int) {
+        sharedPreferences.edit().putInt(
             PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
             input).apply()
     }
 
-    fun setOptimalHeightRangeInput(input: String) {
-        sharedPreferences.edit().putString(
+    fun setOptimalHeightRangeInput(input: Int) {
+        sharedPreferences.edit().putInt(
             PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
             input).apply()
     }

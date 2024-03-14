@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.listeners
+package com.terracode.blueharvest.listeners.accessibilityListeners
 
 import android.widget.CompoundButton
 import com.terracode.blueharvest.AccessibilitySettingsActivity
