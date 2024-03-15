@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.listeners
+package com.terracode.blueharvest.listeners.accessibilityListeners
 
 import android.content.Context
 import android.widget.SeekBar
