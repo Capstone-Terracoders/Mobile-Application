@@ -12,6 +12,8 @@ import com.terracode.blueharvest.services.displayValueServices.MaxHeightDisplaye
 import com.terracode.blueharvest.services.displayValueServices.MaxRPMDisplayedService
 import com.terracode.blueharvest.services.displayValueServices.OptimalHeightRangeService
 import com.terracode.blueharvest.services.displayValueServices.OptimalRPMRangeService
+import com.terracode.blueharvest.services.operationValueServices.HeightCoefficientService
+import com.terracode.blueharvest.services.operationValueServices.RPMCoefficientService
 import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
 import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
 import com.terracode.blueharvest.utils.PreferenceManager
@@ -35,6 +37,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
 
     private lateinit var maxRakeRPMInput: EditText
     private lateinit var minRakeHeightInput: EditText
+
+    private lateinit var rpmCoefficientInput: EditText
+    private lateinit var heightCoefficientInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,9 +72,13 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         optimalRPMRangeInput = findViewById(R.id.optimalRPMRangeNumber)
         optimalHeightRangeInput = findViewById(R.id.optimalHeightRangeNumber)
 
-        //Declaring Safety Value View Components
+        //Declaring Safety Param View Components
         maxRakeRPMInput = findViewById(R.id.maxRakeRPMNumber)
         minRakeHeightInput = findViewById(R.id.minHeightNumber)
+
+        //Declaring Operation Param View Components
+        rpmCoefficientInput = findViewById(R.id.coefficientRPMNumber)
+        heightCoefficientInput = findViewById(R.id.coefficientHeightNumber)
 
         //Initialize Display Value Services
         MaxRPMDisplayedService.setup(maxRPMDisplayedInput, this)
@@ -77,9 +86,13 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         OptimalRPMRangeService.setup(optimalRPMRangeInput, this)
         OptimalHeightRangeService.setup(optimalHeightRangeInput, this)
 
-        //Initialize Safety Value Services
+        //Initialize Safety Param Services
         MaxRakeRPMService.setup(maxRakeRPMInput, this)
         MinRakeHeightService.setup(minRakeHeightInput, this)
+
+        //Initialize Operation Param Services
+        RPMCoefficientService.setup(rpmCoefficientInput, this)
+        HeightCoefficientService.setup(heightCoefficientInput, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
