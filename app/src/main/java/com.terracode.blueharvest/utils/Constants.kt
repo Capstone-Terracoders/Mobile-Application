@@ -42,6 +42,13 @@ enum class PreferenceKeys {
     MAX_RPM_DISPLAYED_INPUT,
     MAX_HEIGHT_DISPLAYED_INPUT,
     OPTIMAL_RPM_RANGE_INPUT,
-    OPTIMAL_HEIGHT_RANGE_INPUT
+    OPTIMAL_HEIGHT_RANGE_INPUT,
 
+    //---Safety Parameters---//
+    MAX_RAKE_RPM,
+    MIN_RAKE_HEIGHT,
+
+    //---Operation Parameters---//
+    RPM_COEFFICIENT,
+    HEIGHT_COEFFICIENT
 }

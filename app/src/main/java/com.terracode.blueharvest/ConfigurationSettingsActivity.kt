@@ -8,10 +8,10 @@ import android.view.View
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.listeners.configurationListeners.MaxHeightDisplayListener
-import com.terracode.blueharvest.listeners.configurationListeners.MaxRPMDisplayListener
-import com.terracode.blueharvest.listeners.configurationListeners.OptimalHeightRangeListener
-import com.terracode.blueharvest.listeners.configurationListeners.OptimalRPMRangeListener
+import com.terracode.blueharvest.listeners.displayValueListeners.MaxHeightDisplayListener
+import com.terracode.blueharvest.listeners.displayValueListeners.MaxRPMDisplayListener
+import com.terracode.blueharvest.listeners.displayValueListeners.OptimalHeightRangeListener
+import com.terracode.blueharvest.listeners.displayValueListeners.OptimalRPMRangeListener
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
