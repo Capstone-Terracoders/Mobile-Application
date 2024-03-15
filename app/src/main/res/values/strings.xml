@@ -55,7 +55,7 @@
 
     <!-- Strings used for Operation Parameters Settings Card-->
 
-    <string name="minRakeRPMTitle">Minimum Rake RPM</string>
+    <string name="maxRakeRPMTitle">Maximum Rake RPM</string>
     <string name="minRakeHeightTitle">Minimum Rake Height</string>
     <string name="coefficientRPMTitle">RPM Coefficient</string>
     <string name="coefficientHeightTitle">Height Coefficient</string>
