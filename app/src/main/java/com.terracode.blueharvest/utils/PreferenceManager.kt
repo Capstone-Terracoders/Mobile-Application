@@ -191,19 +191,19 @@ object PreferenceManager {
             input).apply()
     }
 
-    fun getMinRakeHeightInput(input: Int) {
+    fun setMinRakeHeightInput(input: Int) {
         sharedPreferences.edit().putInt(
             PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
             input).apply()
     }
 
-    fun getRPMCoefficientInput(input: Int) {
+    fun setRPMCoefficientInput(input: Int) {
         sharedPreferences.edit().putInt(
             PreferenceKeys.RPM_COEFFICIENT.toString(),
             input).apply()
     }
 
-    fun getHeightCoefficientInput(input: Int) {
+    fun setHeightCoefficientInput(input: Int) {
         sharedPreferences.edit().putInt(
             PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
             input).apply()
