@@ -12,6 +12,8 @@ import com.terracode.blueharvest.services.displayValueServices.MaxHeightDisplaye
 import com.terracode.blueharvest.services.displayValueServices.MaxRPMDisplayedService
 import com.terracode.blueharvest.services.displayValueServices.OptimalHeightRangeService
 import com.terracode.blueharvest.services.displayValueServices.OptimalRPMRangeService
+import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
+import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
@@ -30,6 +32,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
     private lateinit var maxHeightDisplayedInput: EditText
     private lateinit var optimalRPMRangeInput: EditText
     private lateinit var optimalHeightRangeInput: EditText
+
+    private lateinit var maxRakeRPMInput: EditText
+    private lateinit var minRakeHeightInput: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,17 +61,25 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         val rootView = findViewById<View>(android.R.id.content).rootView
         TextSizeManager.setTextSizeView(this, rootView)
 
-        //Declaring View Components
+        //Declaring Display Value View Components
         maxRPMDisplayedInput = findViewById(R.id.maxRPMDisplayedNumber)
         maxHeightDisplayedInput = findViewById(R.id.maxHeightDisplayedNumber)
         optimalRPMRangeInput = findViewById(R.id.optimalRPMRangeNumber)
         optimalHeightRangeInput = findViewById(R.id.optimalHeightRangeNumber)
+
+        //Declaring Safety Value View Components
+        maxRakeRPMInput = findViewById(R.id.maxRakeRPMNumber)
+        minRakeHeightInput = findViewById(R.id.minHeightNumber)
 
         //Initialize Display Value Services
         MaxRPMDisplayedService.setup(maxRPMDisplayedInput, this)
         MaxHeightDisplayedService.setup(maxHeightDisplayedInput, this)
         OptimalRPMRangeService.setup(optimalRPMRangeInput, this)
         OptimalHeightRangeService.setup(optimalHeightRangeInput, this)
+
+        //Initialize Safety Value Services
+        MaxRakeRPMService.setup(maxRakeRPMInput, this)
+        MinRakeHeightService.setup(minRakeHeightInput, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
