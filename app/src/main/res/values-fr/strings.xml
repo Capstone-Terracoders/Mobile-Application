@@ -16,7 +16,7 @@
     <string name="optimalRPMRangeTitle">"Plage de régime optimale "</string>
     <string name="optimalHeightRangeTitle">"Plage de hauteur optimale "</string>
     <string name="connectedSensorTitle">"Capteurs connectés "</string>
-    <string name="minRakeRPMTitle">"Régime minimal de l’andaineur "</string>
+    <string name="maxRakeRPMTitle">RPM maximum de râteau</string>
     <string name="minRakeHeightTitle">"Hauteur minimale du râteau "</string>
     <string name="coefficientRPMTitle">"Coefficient de régime "</string>
     <string name="coefficientHeightTitle">"Coefficient de hauteur "</string>

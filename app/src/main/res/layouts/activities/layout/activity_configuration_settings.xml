@@ -31,13 +31,32 @@
         <HorizontalScrollView
             android:id="@+id/horizontalConfigurationContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginTop="20dp"
                 android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/displayedValuesCardTitle"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/displayedValuesCardTitle"
+                    android:textColor="@color/black" />
 
                 <!-- Displayed Values Card -->
                 <include
@@ -50,6 +69,25 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp" />
 
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/configurationCardTitle"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="400dp"                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/safetyOperationalSettingsCardTitle"
+                    android:textColor="@color/black" />
+
                 <!-- Operation Parameter Card -->
                 <include
                     android:id="@+id/operationParameterCard"
@@ -61,6 +99,7 @@
                     android:layout_marginEnd="25dp"
                     android:layout_marginBottom="20dp" />
 
+            </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>
