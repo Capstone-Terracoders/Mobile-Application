@@ -91,6 +91,30 @@ object PreferenceManager {
             0)
     }
 
+    fun getMaxRakeRPMInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            0)
+    }
+
+    fun getMinRakeHeightInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            0)
+    }
+
+    fun getRPMCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            0)
+    }
+
+    fun getHeightCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            0)
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -158,6 +182,30 @@ object PreferenceManager {
     fun setOptimalHeightRangeInput(input: Int) {
         sharedPreferences.edit().putInt(
             PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxRakeRPMInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            input).apply()
+    }
+
+    fun setMinRakeHeightInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            input).apply()
+    }
+
+    fun setRPMCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setHeightCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
             input).apply()
     }
 

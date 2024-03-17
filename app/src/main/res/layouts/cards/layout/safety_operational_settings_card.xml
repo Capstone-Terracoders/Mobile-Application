@@ -8,7 +8,7 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#DADBDC"
             android:orientation="vertical">
 
@@ -35,7 +35,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/minRakeRPMNumber"
+                android:id="@+id/maxRakeRPMNumber"
                 android:layout_width="125dp"
                 android:layout_height="48dp"
                 android:autofillHints="minRakeRPMNumber"
@@ -49,7 +49,7 @@
                 android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/minHeightDisplayedTitle"
+                android:id="@+id/minHeightTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -59,7 +59,7 @@
                 android:textStyle="bold" />
 
             <EditText
-                android:id="@+id/minHeightDisplayedNumber"
+                android:id="@+id/minHeightNumber"
                 android:layout_width="125dp"
                 android:layout_height="48dp"
                 android:autofillHints="minHeightDisplayedNumber"
@@ -102,6 +102,7 @@
                 android:background="@color/white"
                 android:ems="10"
                 android:gravity="center"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/numberHint"
                 android:inputType="number"
@@ -125,6 +126,7 @@
                 android:background="@color/white"
                 android:ems="10"
                 android:gravity="center"
+                android:layout_marginTop="30dp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/numberHint"
                 android:inputType="number"

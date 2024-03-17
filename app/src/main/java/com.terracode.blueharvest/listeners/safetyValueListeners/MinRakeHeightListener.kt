@@ -1,11 +1,11 @@
-package com.terracode.blueharvest.listeners.configurationListeners
+package com.terracode.blueharvest.listeners.safetyValueListeners
 
 import android.text.Editable
 import android.text.TextWatcher
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.utils.PreferenceManager
 
-class OptimalRPMRangeListener(private val activity: ConfigurationSettingsActivity) :
+class MinRakeHeightListener(private val activity: ConfigurationSettingsActivity) :
     TextWatcher {
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -22,7 +22,7 @@ class OptimalRPMRangeListener(private val activity: ConfigurationSettingsActivit
             if (input.isNotEmpty()) {
                 val value = input.toIntOrNull()
                 value?.let {
-                    PreferenceManager.setOptimalRPMRangeInput(it)
+                    PreferenceManager.setMinRakeHeightInput(it)
                 }
             }
         }
