@@ -4,10 +4,20 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.os.Handler
 import android.os.Looper
-
+/**
+ * This class manages Bluetooth LE scans for discovering nearby devices.
+ * It provides methods to start and stop scans, configure scan duration, and
+ * define actions to be executed before and after scans.
+ */
 class BleScanManager(
     btManager: BluetoothManager,
+    /**
+     * The duration of the BLE scan in milliseconds. Defaults to [DEFAULT_SCAN_PERIOD].
+     */
     private val scanPeriod: Long = DEFAULT_SCAN_PERIOD,
+    /**
+     * The callback object used to handle BLE scan results and errors.
+     */
     private val scanCallback: BleScanCallback = BleScanCallback()
 )
 
@@ -18,15 +28,16 @@ class BleScanManager(
 
     var beforeScanActions: MutableList<() -> Unit> = mutableListOf()
     var afterScanActions: MutableList<() -> Unit> = mutableListOf()
-
+    /**
+     * A list of functions to be executed before and after, commented out in bleactivity, starting a BLE scan.
+     */
     /** True when the manager is performing the scan */
     private var scanning = false
 
     private val handler = Handler(Looper.getMainLooper())
 
     /**
-     * Scans for Bluetooth LE devices and stops the scan after [scanPeriod] seconds.
-     * Does not checks the required permissions are granted, check must be done beforehand.
+     * Stops the ongoing BLE scan.
      */
     @SuppressLint("MissingPermission")
     fun stopScan() {
@@ -36,6 +47,10 @@ class BleScanManager(
         // execute all the functions to execute after scanning
         executeAfterScanActions()
     }
+    /**
+     * Scans for Bluetooth LE devices and stops the scan after [scanPeriod] seconds.
+     * Does not checks the required permissions are granted, check must be done beforehand.
+     */
     @SuppressLint("MissingPermission")//best to remove these for security,, implement later
     fun scanBleDevices() {
 

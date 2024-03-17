@@ -67,6 +67,7 @@ class serviceBLE() : Service() {
     }
     fun requestBleScan(adapter: BleDeviceAdapter) {
 
+       // initBleScanManager()
         bleScanManager.scanBleDevices()
            // Initialize and start scan here
             // Handle permission not granted case (optional)

@@ -28,78 +28,62 @@ class BluetoothBLEActivity : ComponentActivity() {
     private var serviceBLE: serviceBLE? = null
     private lateinit var btnStartScan: Button
     private lateinit var btManager: BluetoothManager
-  //  private lateinit var bleScanManager: BleScanManager
-    private lateinit var foundDevices: MutableList<BleDevice>//list of found devices
+    private lateinit var foundDevices: MutableList<BleDevice>
     private lateinit var adapter: BleDeviceAdapter
 
-    override fun onStart() {
-        super.onStart()
-        // Check if service is already bound, otherwise bind
-
-    }
-
-    @SuppressLint("NotifyDataSetChanged", "MissingPermission")
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_bluetooth_ble)
 
-        // RecyclerView handling
+        // Initialize RecyclerView and adapter
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
-        foundDevices = BleDevice.createBleDevicesList()//returns mutablelistog
-        val adapter = BleDeviceAdapter(foundDevices)
+        foundDevices = BleDevice.createBleDevicesList()
+        adapter = BleDeviceAdapter(foundDevices)
         rvFoundDevices.adapter = adapter
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
-        if (!serviceBLEBound) {
-            serviceBLE?.let { service ->
-                Intent(this, service::class.java).also { intent ->
-                    bindService(intent, connection, Context.BIND_AUTO_CREATE)
-                }
-            }
-        } else {
-            // Service is already bound, you can potentially use serviceBLE here (optional)
+        // Bind the service
+        serviceBLE?.let { service ->
+            val serviceIntent = Intent(this, service::class.java)
+            bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
         }
 
-
-        //reference kezies preference manager
+        // Reference Kezies preference manager
         PreferenceManager.init(this)
-        // BleManager creation
 
+        // Initialize BluetoothManager
+        btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
 
-        //disable the scan button after first click so android ble dosnt time out
-     /*   bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
-        bleScanManager.beforeScanActions.add {
-            foundDevices.clear()
-            adapter.notifyDataSetChanged()
-        }
-        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }*/
-
-        // Adding the onclick listener to the start scan button
+        // Initialize the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
-
         btnStartScan.setOnClickListener {
-            when (PermissionsUtilities.checkPermissionsGranted(
-                this,
-                BleScanRequiredPermissions.permissions
-            )) {
-                true -> {
-                    // Notify service to initiate scan with granted permissions
-                    if (serviceBLEBound) {
-                        serviceBLE?.requestBleScan(adapter) // New method to request scan in service
-                    }
-                }
+            handleStartScanButtonClick()
+        }
+    }
 
-                false -> PermissionsUtilities.checkPermissions(
-                    this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
-                )
+    @RequiresApi(Build.VERSION_CODES.S)
+    private fun handleStartScanButtonClick() {
+        when (PermissionsUtilities.checkPermissionsGranted(
+            this,
+            BleScanRequiredPermissions.permissions
+        )) {
+            true -> {
+                if (serviceBLEBound) {
+                    serviceBLE?.requestBleScan(adapter)
+                }
             }
+
+            false -> PermissionsUtilities.checkPermissions(
+                this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
+            )
         }
     }
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            serviceBLE = (service as serviceBLE.LocalBinder).service
+            val binder = service as serviceBLE.LocalBinder
+            serviceBLE = binder.service
             serviceBLEBound = true
         }
 
@@ -117,7 +101,6 @@ class BluetoothBLEActivity : ComponentActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java")
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onRequestPermissionsResult(
         requestCode: Int, permissions: Array<out String>, grantResults: IntArray,
@@ -134,5 +117,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         )
     }
 
-    companion object { private const val BLE_PERMISSION_REQUEST_CODE = 1 }
+    companion object {
+        private const val BLE_PERMISSION_REQUEST_CODE = 1
+    }
 }
