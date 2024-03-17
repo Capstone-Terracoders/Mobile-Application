@@ -52,12 +52,15 @@ class BluetoothBLEActivity : ComponentActivity() {
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
         if (!serviceBLEBound) {
-            Intent(this, serviceBLE!!::class.java).also { intent ->
-                bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            serviceBLE?.let { service ->
+                Intent(this, service::class.java).also { intent ->
+                    bindService(intent, connection, Context.BIND_AUTO_CREATE)
+                }
             }
         } else {
             // Service is already bound, you can potentially use serviceBLE here (optional)
         }
+
 
         //reference kezies preference manager
         PreferenceManager.init(this)
