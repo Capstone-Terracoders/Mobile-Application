@@ -8,6 +8,7 @@ import android.os.Binder
 import android.os.IBinder
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.terracode.blueharvest.AccessibilitySettingsActivity
 import com.terracode.blueharvest.BluetoothBle.BleDevice
 import com.terracode.blueharvest.BluetoothBle.BleDeviceAdapter
 import com.terracode.blueharvest.BluetoothBle.BleScanCallback
@@ -19,33 +20,26 @@ import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.checkPermissi
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
 //import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.onRequestPermissionsResult
 import com.terracode.blueharvest.R
+import com.terracode.blueharvest.utils.PreferenceManager
 
 
-class serviceBLE : Service() {
+class serviceBLE() : Service() {
 
     //var isBound = isServiceBound()
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BleDevice>
+    private var adapter = BleDeviceAdapter(foundDevices)
+
 
     override fun onCreate() {
         super.onCreate()
-        initBleScanManager()
-        // Adding the actions the manager must do before and after scanning
-        //todo implement this so that it takes button value from ble activity
-      /*  bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
-        bleScanManager.beforeScanActions.add {
-            foundDevices.clear()
-            adapter.notifyDataSetChanged()
-        }
-
-
-        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }*/
+        PreferenceManager.init(this)
 
 
     }
 
     override fun onBind(intent: Intent?): IBinder {
-        initBleScanManager() // Ensure initialization when bound
+        initBleScanManager(adapter) // Ensure initialization when bound
         return  LocalBinder()
     }
     inner class LocalBinder : Binder() {
@@ -56,13 +50,14 @@ class serviceBLE : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    fun initBleScanManager()
+
+    fun initBleScanManager(adapter: BleDeviceAdapter)
     {
         val btManager = getSystemService(BluetoothManager::class.java)
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback({
             val name = it?.device?.address
             if (name.isNullOrBlank()) return@BleScanCallback
-            val adapter = BleDeviceAdapter(foundDevices)
+           // val adapter = BleDeviceAdapter(foundDevices)
             val device = BleDevice(name)
             if (!foundDevices.contains(device)) {
                 foundDevices.add(device)
@@ -70,7 +65,15 @@ class serviceBLE : Service() {
             }
         }))
     }
-//for state management, update and retrive value of isboun
+    fun requestBleScan(adapter: BleDeviceAdapter) {
+
+        bleScanManager.scanBleDevices()
+           // Initialize and start scan here
+            // Handle permission not granted case (optional)
+            // You can inform the activity or show an error message here.
+
+    }
+//for state management, update and retrive value of isbounb
 /*you can access the binding state from outside the service using serviceBLE.isServiceBound()
 but cannot directly modify it from outside. To update the state, call serviceBLE.setBound(true)
 within your service when necessary. */

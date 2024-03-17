@@ -20,23 +20,22 @@ import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnReq
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.BluetoothBle.serviceBLE.Companion.isServiceBound
+import com.terracode.blueharvest.utils.PreferenceManager
 
 
 class BluetoothBLEActivity : ComponentActivity() {
     private var serviceBLEBound = false
     private var serviceBLE: serviceBLE? = null
     private lateinit var btnStartScan: Button
-   // private lateinit var btManager: BluetoothManager
-    private lateinit var bleScanManager: BleScanManager
+    private lateinit var btManager: BluetoothManager
+  //  private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BleDevice>//list of found devices
-
-
+    private lateinit var adapter: BleDeviceAdapter
 
     override fun onStart() {
         super.onStart()
-        Intent(this, serviceBLE!!::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
+        // Check if service is already bound, otherwise bind
+
     }
 
     @SuppressLint("NotifyDataSetChanged", "MissingPermission")
@@ -49,32 +48,45 @@ class BluetoothBLEActivity : ComponentActivity() {
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
         foundDevices = BleDevice.createBleDevicesList()//returns mutablelistog
         val adapter = BleDeviceAdapter(foundDevices)
-
-
         rvFoundDevices.adapter = adapter
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
+        if (!serviceBLEBound) {
+            Intent(this, serviceBLE!!::class.java).also { intent ->
+                bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            }
+        } else {
+            // Service is already bound, you can potentially use serviceBLE here (optional)
+        }
+
+        //reference kezies preference manager
+        PreferenceManager.init(this)
         // BleManager creation
 
-
-
+        /*
+        //disable the scan button after first click so android ble dosnt time out
+        bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
+        bleScanManager.beforeScanActions.add {
+            foundDevices.clear()
+            adapter.notifyDataSetChanged()
+        }
+        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }
+*/
         // Adding the onclick listener to the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
+
         btnStartScan.setOnClickListener {
-            // Checks if the required permissions are granted and starts the scan if so, otherwise it requests them
-            when (PermissionsUtilities.checkPermissionsGranted(this, BleScanRequiredPermissions.permissions))
-            {
+            when (PermissionsUtilities.checkPermissionsGranted(
+                this,
+                BleScanRequiredPermissions.permissions
+            )) {
                 true -> {
-                    //check if bound to btservice
+                    // Notify service to initiate scan with granted permissions
                     if (serviceBLEBound) {
-                        //todo find a way for the service to me notified when the scan
-                        //button is clicked, modify permissions so that they do not call
-                        //the scan, but simply check permissions
-                        //scanning should be done in the service
-                        //Review kenzies preference manager
-                        serviceBLE?.initBleScanManager()
+                        serviceBLE?.requestBleScan(adapter) // New method to request scan in service
                     }
                 }
+
                 false -> PermissionsUtilities.checkPermissions(
                     this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
                 )
@@ -105,14 +117,14 @@ class BluetoothBLEActivity : ComponentActivity() {
     @Deprecated("Deprecated in Java")
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onRequestPermissionsResult(
-        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         dispatchOnRequestPermissionsResult(
             requestCode,
-            grantResults,//todo remove the reverence to BLEscanmanager,
-            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { bleScanManager.scanBleDevices() }),
+            grantResults,
+            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { serviceBLE?.requestBleScan(adapter) }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
                 "Some permissions were not granted, please grant them and try again",
                 Toast.LENGTH_LONG).show() })

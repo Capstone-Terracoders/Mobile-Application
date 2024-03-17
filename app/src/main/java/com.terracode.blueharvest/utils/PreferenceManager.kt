@@ -66,6 +66,17 @@ object PreferenceManager {
             PreferenceKeys.SELECTED_UNIT.toString(),
             true)
     }
+    /**
+     * Retrieves if scan button is pressed from SharedPreferences.
+     *
+     * @return The selected unit.
+     */
+    fun getScanIsPressed() : Boolean{
+        return sharedPreferences.getBoolean(
+            PreferenceKeys.SELECTED_START_SCAN.toString(),
+            false)
+
+    }
 
     // Setters ----------------------------------------------------------
 
@@ -111,6 +122,16 @@ object PreferenceManager {
         sharedPreferences.edit().putBoolean(
             PreferenceKeys.SELECTED_UNIT.toString(),
             isChecked).apply()
+    }
+    /**
+     * Sets the selected unit in SharedPreferences.
+     *
+     * @param isPressed The state of the scanbutton.
+     */
+    fun setScanIsPressed(isPressed: Boolean){
+        sharedPreferences.edit().putBoolean(
+            PreferenceKeys.SELECTED_UNIT.toString(),
+            isPressed).apply()
     }
 
     //Enum to Int
