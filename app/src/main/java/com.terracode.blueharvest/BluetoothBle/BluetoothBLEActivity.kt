@@ -66,15 +66,15 @@ class BluetoothBLEActivity : ComponentActivity() {
         PreferenceManager.init(this)
         // BleManager creation
 
-        /*
+
         //disable the scan button after first click so android ble dosnt time out
-        bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
+     /*   bleScanManager.beforeScanActions.add { btnStartScan.isEnabled = false }
         bleScanManager.beforeScanActions.add {
             foundDevices.clear()
             adapter.notifyDataSetChanged()
         }
-        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }
-*/
+        bleScanManager.afterScanActions.add { btnStartScan.isEnabled = true }*/
+
         // Adding the onclick listener to the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
 
