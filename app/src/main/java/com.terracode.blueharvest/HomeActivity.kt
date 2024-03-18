@@ -33,7 +33,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
     private lateinit var recordButton: Button
-    private lateinit var notificationButton: View
+    private lateinit var notificationBellIcon: View
 
     //Declaring the data values
     private var bushHeightData: Double? = null
@@ -72,7 +72,7 @@ class HomeActivity : AppCompatActivity() {
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
         recordButton = findViewById(R.id.recordButton)
-        notificationButton = findViewById(R.id.notifications)
+        notificationBellIcon = findViewById(R.id.notifications)
 
         // Calls Record Data Service
         RecordButtonService.setup(recordButton, this)
@@ -125,7 +125,7 @@ class HomeActivity : AppCompatActivity() {
             R.id.notifications -> {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
-                NotificationManager.showNotificationList(this,notificationButton, notifications)
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
                 true
             }
             R.id.configurationSettings -> {

@@ -13,13 +13,13 @@ class RecordButtonListener(private val activity: HomeActivity) : OnClickListener
 
     override fun onClick(view: View?) {
         val startRecordingNotification = Notification(
-            NotificationTypes.NOTIFICATION.toString(),
+            NotificationTypes.NOTIFICATION,
             "Started Recording Data",
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
 
         val stopRecordingNotification = Notification(
-            NotificationTypes.NOTIFICATION.toString(),
+            NotificationTypes.NOTIFICATION,
             "Stopped Recording Data",
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )

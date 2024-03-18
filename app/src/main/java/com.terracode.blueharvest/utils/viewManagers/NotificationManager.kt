@@ -40,27 +40,25 @@ object NotificationManager {
 
                 // Set icon based on notification type
                 val icon = when (notification.type) {
-                    NotificationTypes.WARNING.toString() -> {
+                    NotificationTypes.WARNING -> {
                         val drawable =
                             ContextCompat.getDrawable(activity, R.drawable.exclamation_triangle_fill)
                         drawable?.setTint(Color.YELLOW)
                         drawable
                     }
 
-                    NotificationTypes.ERROR.toString() -> {
+                    NotificationTypes.ERROR -> {
                         val drawable =
                             ContextCompat.getDrawable(activity, R.drawable.exclamation_circle_fill)
                         drawable?.setTint(Color.RED)
                         drawable
                     }
 
-                    NotificationTypes.NOTIFICATION.toString() -> {
+                    NotificationTypes.NOTIFICATION -> {
                         val drawable = ContextCompat.getDrawable(activity, R.drawable.info_circle_fill)
                         drawable?.setTint(Color.BLUE)
                         drawable
                     }
-
-                    else -> null
                 }
 
                 // Set the drawable icon to the left of the text

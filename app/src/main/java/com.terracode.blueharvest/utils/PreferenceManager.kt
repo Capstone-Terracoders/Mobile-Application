@@ -2,6 +2,7 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 
 /**
@@ -126,7 +127,7 @@ object PreferenceManager {
         return notificationsSet?.mapNotNull { notificationString ->
             val parts = notificationString.split("|")
             if (parts.size == 3) {
-                Notification(parts[0], parts[1], parts[2])
+                Notification(toNotification(parts[0]), parts[1], parts[2])
             } else {
                 null
             }
@@ -251,5 +252,26 @@ object PreferenceManager {
     //Enum to Int
     private inline fun <reified T : Enum<T>> T.toFloat(): Float {
         return this.ordinal.toFloat()
+    }
+
+    private fun toNotification(type: String): NotificationTypes {
+        return when (type) {
+            "NOTIFICATION" -> {
+                NotificationTypes.NOTIFICATION
+            }
+
+            "WARNING" -> {
+                NotificationTypes.WARNING
+            }
+
+            "ERROR" -> {
+                NotificationTypes.ERROR
+            }
+
+            else -> {
+                Log.d("PreferenceManager", "String type does not match type: NotificationType")
+                throw IllegalArgumentException("Invalid type: $type")
+            }
+        }
     }
 }
