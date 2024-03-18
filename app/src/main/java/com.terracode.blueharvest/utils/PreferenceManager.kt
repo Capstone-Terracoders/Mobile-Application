@@ -2,9 +2,7 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import androidx.preference.PreferenceManager
-import com.terracode.blueharvest.utils.Notification
 
 /**
  * Singleton object for managing SharedPreferences in the application.

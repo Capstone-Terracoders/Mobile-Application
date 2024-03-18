@@ -1,23 +1,15 @@
 package com.terracode.blueharvest
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.WindowManager
 import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.services.homeServices.RecordButtonService
-import com.terracode.blueharvest.utils.Notification
-import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter

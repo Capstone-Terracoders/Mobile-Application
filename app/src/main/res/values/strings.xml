@@ -13,6 +13,7 @@
     <!-- Strings used for Home Page -->
 
     <string name="recordTitle">Record</string>
+    <string name="clearNotificationsButton">Clear Notifications</string>
 
 
     <!-- Strings used for Accessibility Settings Card-->

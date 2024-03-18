@@ -11,7 +11,9 @@
         android:id="@+id/clearNotificationsButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Clear Notifications"/>
+        android:text="@string/clearNotificationsButton"
+        android:textColor="@color/black"
+        android:textColorLink="#000000" />
 
     <!-- Notifications will be added dynamically here -->
 
