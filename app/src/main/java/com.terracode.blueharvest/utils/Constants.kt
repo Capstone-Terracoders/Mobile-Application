@@ -52,3 +52,14 @@ enum class PreferenceKeys {
     RPM_COEFFICIENT,
     HEIGHT_COEFFICIENT
 }
+
+enum class HomeKeys {
+    RECORD_BUTTON,
+    NOTIFICATION
+}
+
+enum class NotificationTypes {
+    NOTIFICATION,
+    WARNING,
+    ERROR
+}

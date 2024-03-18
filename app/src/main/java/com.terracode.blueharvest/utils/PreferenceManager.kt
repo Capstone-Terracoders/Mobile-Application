@@ -2,7 +2,9 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.Notification
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -115,6 +117,24 @@ object PreferenceManager {
             0)
     }
 
+    fun getRecordButtonStatus(): Boolean {
+        return sharedPreferences.getBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            false)
+    }
+
+    fun getNotifications(): List<Notification> {
+        val notificationsSet = sharedPreferences.getStringSet(HomeKeys.NOTIFICATION.toString(), null)
+        return notificationsSet?.mapNotNull { notificationString ->
+            val parts = notificationString.split("|")
+            if (parts.size == 3) {
+                Notification(parts[0], parts[1], parts[2])
+            } else {
+                null
+            }
+        } ?: emptyList()
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -207,6 +227,27 @@ object PreferenceManager {
         sharedPreferences.edit().putInt(
             PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
             input).apply()
+    }
+
+    fun setRecordButtonStatus(input: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            input).apply()
+    }
+
+    fun setNotification(notification: Notification) {
+        val notifications = getNotifications().toMutableList()
+        notifications.add(notification)
+        val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+    }
+
+
+    /**
+     * Clears all notifications from SharedPreferences.
+     */
+    fun clearNotifications() {
+        sharedPreferences.edit().remove(HomeKeys.NOTIFICATION.toString()).apply()
     }
 
     //Enum to Int

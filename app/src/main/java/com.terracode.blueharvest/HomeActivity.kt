@@ -1,19 +1,30 @@
 package com.terracode.blueharvest
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.WindowManager
+import android.widget.Button
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.services.homeServices.RecordButtonService
+import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.Notification
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
+
 
 /**
  * Activity class for the Accessibility Settings Page
@@ -29,6 +40,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
+    private lateinit var recordButton: Button
+    private lateinit var notificationButton: Button
 
     //Declaring the data values
     private var bushHeightData: Double? = null
@@ -66,6 +79,11 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
+        recordButton = findViewById(R.id.recordButton)
+        notificationButton = findViewById(R.id.notifications)
+
+        // Calls Record Data Service
+        RecordButtonService.setup(recordButton, this)
 
         //Get the value of the toggle from AccessibilitySettings XML file.
         val toggleValue = PreferenceManager.getSelectedUnit()
@@ -111,10 +129,9 @@ class HomeActivity : AppCompatActivity() {
     //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            //This needs to be changed to include a card for notifications
             R.id.notifications -> {
-                val home = Intent(this, HomeActivity::class.java)
-                startActivity(home)
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
                 true
             }
             R.id.configurationSettings -> {
@@ -130,4 +147,5 @@ class HomeActivity : AppCompatActivity() {
             else -> false
         }
     }
+
 }
