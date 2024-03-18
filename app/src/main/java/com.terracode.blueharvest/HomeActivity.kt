@@ -16,15 +16,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.services.homeServices.RecordButtonService
+import com.terracode.blueharvest.utils.Notification
 import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
-import com.terracode.blueharvest.utils.Notification
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
-
 
 /**
  * Activity class for the Accessibility Settings Page
@@ -41,7 +40,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
     private lateinit var recordButton: Button
-    private lateinit var notificationButton: Button
+    private lateinit var notificationButton: View
 
     //Declaring the data values
     private var bushHeightData: Double? = null
@@ -129,9 +128,11 @@ class HomeActivity : AppCompatActivity() {
     //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            //This needs to be changed to include a card for notifications
             R.id.notifications -> {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
+                showNotificationList(notificationButton, notifications)
                 true
             }
             R.id.configurationSettings -> {
@@ -148,4 +149,66 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    private fun showNotificationList(anchorView: View, notifications: List<Notification>) {
+        Log.d("NotificationDebug", "Number of notifications: ${notifications.size}")
+        Log.d("NotificationDebug", "Notifications: $notifications")
+        val popupView = layoutInflater.inflate(R.layout.notification_layout, null)
+        val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        // Find the container layout in the popup view
+        val containerLayout = popupView.findViewById<LinearLayout>(R.id.notificationContainer)
+
+        // Add notifications dynamically to the container layout
+        if (notifications.isEmpty()){
+            val textView = TextView(this)
+            textView.text = "No Notifications Yet!"
+            containerLayout.addView(textView)
+        } else {
+            notifications.forEach { notification ->
+                val textView = TextView(this)
+                textView.text = "${notification.message}  ${notification.timestamp}"
+
+                // Set icon based on notification type
+                val icon = when (notification.type) {
+                    NotificationTypes.WARNING.toString() -> {
+                        val drawable =
+                            ContextCompat.getDrawable(this, R.drawable.exclamation_triangle_fill)
+                        drawable?.setTint(Color.YELLOW)
+                        drawable
+                    }
+
+                    NotificationTypes.ERROR.toString() -> {
+                        val drawable =
+                            ContextCompat.getDrawable(this, R.drawable.exclamation_circle_fill)
+                        drawable?.setTint(Color.RED)
+                        drawable
+                    }
+
+                    NotificationTypes.NOTIFICATION.toString() -> {
+                        val drawable = ContextCompat.getDrawable(this, R.drawable.info_circle_fill)
+                        drawable?.setTint(Color.BLUE)
+                        drawable
+                    }
+
+                    else -> null
+                }
+
+                // Set the drawable icon to the left of the text
+                icon?.let {
+                    textView.setCompoundDrawablesWithIntrinsicBounds(it, null, null, null)
+                    val padding = resources.getDimensionPixelSize(R.dimen.icon_padding)
+                    textView.compoundDrawablePadding = padding
+                }
+
+                containerLayout.addView(textView)
+            }
+        }
+
+        // Set a dismiss listener to close the popup when clicked outside
+        popupWindow.isOutsideTouchable = true
+        popupWindow.isFocusable = true
+
+        // Show the popup below the anchor view (bell icon)
+        popupWindow.showAsDropDown(anchorView)
+    }
 }
