@@ -150,13 +150,14 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun showNotificationList(anchorView: View, notifications: List<Notification>) {
-        Log.d("NotificationDebug", "Number of notifications: ${notifications.size}")
-        Log.d("NotificationDebug", "Notifications: $notifications")
         val popupView = layoutInflater.inflate(R.layout.notification_layout, null)
         val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
         // Find the container layout in the popup view
         val containerLayout = popupView.findViewById<LinearLayout>(R.id.notificationContainer)
+
+        // Find the clearNotificationsButton directly from the inflated view
+        val clearNotificationButton = popupView.findViewById<Button>(R.id.clearNotificationsButton)
 
         // Add notifications dynamically to the container layout
         if (notifications.isEmpty()){
@@ -204,6 +205,14 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        // Set up Listener for Clearing Notifications
+        clearNotificationButton.setOnClickListener {
+            // Call the method to clear notifications
+            PreferenceManager.clearNotifications()
+            // Dismiss the popup window after clearing notifications
+            popupWindow.dismiss()
+        }
+
         // Set a dismiss listener to close the popup when clicked outside
         popupWindow.isOutsideTouchable = true
         popupWindow.isFocusable = true
@@ -211,4 +220,5 @@ class HomeActivity : AppCompatActivity() {
         // Show the popup below the anchor view (bell icon)
         popupWindow.showAsDropDown(anchorView)
     }
+
 }
