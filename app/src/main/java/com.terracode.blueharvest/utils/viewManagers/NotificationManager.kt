@@ -1,5 +1,6 @@
 package com.terracode.blueharvest.utils.viewManagers
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.view.View
 import android.view.WindowManager
@@ -15,6 +16,7 @@ import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 
 object NotificationManager {
+    @SuppressLint("InflateParams", "SetTextI18n")
     fun showNotificationList(activity: HomeActivity, anchorView: View, notifications: List<Notification>) {
         val popupView = activity.layoutInflater.inflate(R.layout.notification_layout, null)
         val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
@@ -33,7 +35,8 @@ object NotificationManager {
         } else {
             notifications.forEach { notification ->
                 val textView = TextView(activity)
-                textView.text = "${notification.message}  ${notification.timestamp}"
+                //If we like the timestamp on a new line keep \n if we want it on one line do \t
+                textView.text = "${notification.message} \n ${notification.timestamp}"
 
                 // Set icon based on notification type
                 val icon = when (notification.type) {
