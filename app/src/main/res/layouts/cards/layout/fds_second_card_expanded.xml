@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fds_second_card_expanded.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Additional or expanded views for the second card -->
+    <TextView
+        android:id="@+id/expandedTextView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="2a. Locate the Microcontroller device connected to the Sensor System.\n\n2b. Power off the Microcontroller device.\n\n2c. Wait for a few seconds and then power it back on.\n\n2d. After the Microcontroller device has restarted, attempt to reconnect via Bluetooth."
+        android:textSize="18sp"
+        android:lineSpacingExtra="10dp"
+        android:textColor="@color/black" />
+
+    <!-- Add more views as needed -->
+
+</LinearLayout>
