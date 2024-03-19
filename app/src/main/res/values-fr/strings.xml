@@ -5,6 +5,7 @@
     <string name="displayedValuesCardTitle">Afficher les valeurs</string>
     <string name="safetyOperationalSettingsCardTitle">"Paramètres de sécurité et d’exploitation "</string>
     <string name="recordTitle">"Enregistrer "</string>
+    <string name="clearNotificationsButton">" Effacer les notifications"</string>
     <string name="textSizeTitle">"Taille du texte "</string>
     <string name="languageTitle">"Langue "</string>
     <string name="unitSystemTitle">"Système d’unités "</string>

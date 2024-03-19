@@ -2,6 +2,7 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 
 /**
@@ -115,6 +116,24 @@ object PreferenceManager {
             0)
     }
 
+    fun getRecordButtonStatus(): Boolean {
+        return sharedPreferences.getBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            false)
+    }
+
+    fun getNotifications(): List<Notification> {
+        val notificationsSet = sharedPreferences.getStringSet(HomeKeys.NOTIFICATION.toString(), null)
+        return notificationsSet?.mapNotNull { notificationString ->
+            val parts = notificationString.split("|")
+            if (parts.size == 3) {
+                Notification(toNotification(parts[0]), parts[1], parts[2])
+            } else {
+                null
+            }
+        } ?: emptyList()
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -209,8 +228,50 @@ object PreferenceManager {
             input).apply()
     }
 
+    fun setRecordButtonStatus(input: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            input).apply()
+    }
+
+    fun setNotification(notification: Notification) {
+        val notifications = getNotifications().toMutableList()
+        notifications.add(notification)
+        val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+    }
+
+
+    /**
+     * Clears all notifications from SharedPreferences.
+     */
+    fun clearNotifications() {
+        sharedPreferences.edit().remove(HomeKeys.NOTIFICATION.toString()).apply()
+    }
+
     //Enum to Int
     private inline fun <reified T : Enum<T>> T.toFloat(): Float {
         return this.ordinal.toFloat()
+    }
+
+    private fun toNotification(type: String): NotificationTypes {
+        return when (type) {
+            "NOTIFICATION" -> {
+                NotificationTypes.NOTIFICATION
+            }
+
+            "WARNING" -> {
+                NotificationTypes.WARNING
+            }
+
+            "ERROR" -> {
+                NotificationTypes.ERROR
+            }
+
+            else -> {
+                Log.d("PreferenceManager", "String type does not match type: NotificationType")
+                throw IllegalArgumentException("Invalid type: $type")
+            }
+        }
     }
 }

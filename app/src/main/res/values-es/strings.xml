@@ -5,6 +5,7 @@
     <string name="displayedValuesCardTitle">"Mostrar los valores "</string>
     <string name="safetyOperationalSettingsCardTitle">Seguridad y Configuraciones Operativas</string>
     <string name="recordTitle">"Registro "</string>
+    <string name="clearNotificationsButton">"Borrar notificaciones"</string>
     <string name="textSizeTitle">"Tamaño de mensajes "</string>
     <string name="languageTitle">"Idioma "</string>
     <string name="unitSystemTitle">"Sistema de unidades "</string>
