@@ -11,7 +11,7 @@
         android:id="@+id/BoxLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="transparent"
         android:orientation="vertical">
 
         <LinearLayout
@@ -38,7 +38,7 @@
                 android:background="@color/white" />
 
             <TextView
-                android:id="@+id/optimalRakeHeight"
+                android:id="@+id/optimalRakeHeightTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -48,13 +48,14 @@
 
             <TextView
                 android:id="@+id/optimalRakeHeightValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:text="EXAMPLE"/>
 
             <TextView
-                android:id="@+id/optimalRakeRPM"
+                android:id="@+id/optimalRakeRPMTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -65,10 +66,11 @@
 
             <TextView
                 android:id="@+id/optimalRakeRPMValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:text="EXAMPLE"/>
 
         </LinearLayout>
 
@@ -98,7 +100,7 @@
 
 
             <TextView
-                android:id="@+id/currentSpeed"
+                android:id="@+id/currentSpeedTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -108,13 +110,14 @@
 
             <TextView
                 android:id="@+id/currentSpeedValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:text="EXAMPLE"/>
 
             <TextView
-                android:id="@+id/currentBushHeight"
+                android:id="@+id/currentBushHeightTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
@@ -125,10 +128,11 @@
 
             <TextView
                 android:id="@+id/currentBushHeightValue"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:text="EXAMPLE"/>
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
