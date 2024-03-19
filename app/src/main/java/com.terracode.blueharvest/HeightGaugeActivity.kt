@@ -16,7 +16,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
 
-    private var currentHeight: Float = 6f // Default current height
+    private var currentHeight: Float = 15f // Default current height
     private var maxHeight: Float = 30f // Default maximum height
 
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
@@ -94,6 +94,31 @@ class HeightGaugeActivity @JvmOverloads constructor(
             val labelY = startY + barHeight - i * labelSpacing
             canvas.drawText(labelValue.toInt().toString(), startX - 20f, labelY + labelTextSize / 2, textPaint)
         }
+
+        // Draw "Rake Height (CM)" text
+        val textPaint = Paint().apply {
+            color = blackColor
+            textSize = 40f // Adjust text size as needed
+            textAlign = Paint.Align.LEFT
+            isFakeBoldText = true // Make the text bold
+            strokeWidth = 2f // Increase stroke width for bold effect
+        }
+
+// Calculate the height of the text
+        val textMetrics = textPaint.fontMetrics
+        val textHeight = textMetrics.descent - textMetrics.ascent
+
+// Calculate the width of the text
+        val textWidth = textPaint.measureText("Rake Height (CM)")
+
+        val textX = startX + barWidth + 20 // Adjust as needed
+        val textY = startY + barHeight / 2 + textHeight / 2 // Adjust as needed to center vertically
+        canvas.drawText("Rake Height (CM)", textX, textY, textPaint)
+
+// Draw current height value below the text
+        val currentHeightText = "${currentHeight.toInt()}" // Convert to string with "cm" suffix
+        val currentHeightTextY = textY + textHeight // Adjust as needed for spacing
+        canvas.drawText(currentHeightText, textX, currentHeightTextY, textPaint)
     }
 }
 
