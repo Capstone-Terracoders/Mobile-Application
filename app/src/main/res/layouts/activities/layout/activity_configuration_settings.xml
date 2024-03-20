@@ -38,13 +38,14 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:background="@android:color/transparent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:background="@color/white">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@android:color/transparent">
 
                 <TextView
                     android:id="@+id/displayedValuesCardTitle"
@@ -63,7 +64,7 @@
                     android:id="@+id/displayValuesCard"
                     layout="@layout/displayed_value_settings_card"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="50dp"
                     android:layout_marginTop="20dp"
@@ -73,9 +74,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:background="@color/white">
+                android:background="@android:color/transparent">
 
                 <TextView
                     android:id="@+id/configurationCardTitle"
