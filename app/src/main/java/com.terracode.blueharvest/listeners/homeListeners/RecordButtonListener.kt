@@ -12,6 +12,7 @@ import java.time.format.DateTimeFormatter
 class RecordButtonListener(private val activity: HomeActivity) : OnClickListener {
 
     override fun onClick(view: View?) {
+
         val startRecordingNotification = Notification(
             NotificationTypes.NOTIFICATION,
             "Started Recording Data",
