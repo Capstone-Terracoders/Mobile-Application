@@ -5,6 +5,7 @@
     <string name="displayedValuesCardTitle">Afficher les valeurs</string>
     <string name="safetyOperationalSettingsCardTitle">"Paramètres de sécurité et d’exploitation "</string>
     <string name="recordTitle">"Enregistrer "</string>
+    <string name="clearNotificationsButton">" Effacer les notifications"</string>
     <string name="textSizeTitle">"Taille du texte "</string>
     <string name="languageTitle">"Langue "</string>
     <string name="unitSystemTitle">"Système d’unités "</string>
@@ -16,7 +17,7 @@
     <string name="optimalRPMRangeTitle">"Plage de régime optimale "</string>
     <string name="optimalHeightRangeTitle">"Plage de hauteur optimale "</string>
     <string name="connectedSensorTitle">"Capteurs connectés "</string>
-    <string name="minRakeRPMTitle">"Régime minimal de l’andaineur "</string>
+    <string name="maxRakeRPMTitle">RPM maximum de râteau</string>
     <string name="minRakeHeightTitle">"Hauteur minimale du râteau "</string>
     <string name="coefficientRPMTitle">"Coefficient de régime "</string>
     <string name="coefficientHeightTitle">"Coefficient de hauteur "</string>

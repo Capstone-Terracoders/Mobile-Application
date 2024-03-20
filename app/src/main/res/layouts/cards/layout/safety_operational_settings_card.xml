@@ -6,26 +6,9 @@
     android:layout_height="match_parent"
     app:cardUseCompatPadding="true">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:background="@color/white">
-
-    <TextView
-            android:id="@+id/configurationCardTitle"
-            style="@style/TextAppearance.MaterialComponents.Headline5"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
-            android:gravity="center"
-            android:text="@string/safetyOperationalSettingsCardTitle"
-            android:textColor="@color/black" />
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="#DADBDC"
             android:orientation="vertical">
 
@@ -42,48 +25,31 @@
                 android:textSize="20sp"/>
 
             <TextView
-                android:id="@+id/minRakeRPMTitle"
+                android:id="@+id/maxRakeRPMTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
                 android:gravity="center"
-                android:text="@string/minRakeRPMTitle"
+                android:text="@string/maxRakeRPMTitle"
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/minRakeRPMLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+            <EditText
+                android:id="@+id/maxRakeRPMNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="minRakeRPMNumber"
+                android:background="@color/white"
+                android:ems="10"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/plusMinusSign01"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/plusMinusSign"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/minRakeRPMNumber"
-                    android:layout_width="125dp"
-                    android:layout_height="48dp"
-                    android:autofillHints="minRakeRPMNumber"
-                    android:background="@color/white"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/numberHint"
-                    android:inputType="number"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:hint="@string/numberHint"
+                android:inputType="number"
+                android:textSize="16sp" />
 
             <TextView
-                android:id="@+id/minHeightDisplayedTitle"
+                android:id="@+id/minHeightTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="50dp"
@@ -92,37 +58,19 @@
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
-
-            <LinearLayout
-                android:id="@+id/minHeightDisplayedLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+            <EditText
+                android:id="@+id/minHeightNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="minHeightDisplayedNumber"
+                android:background="@color/white"
+                android:ems="10"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/plusMinusSign02"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/plusMinusSign"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/minHeightDisplayedNumber"
-                    android:layout_width="125dp"
-                    android:layout_height="48dp"
-                    android:autofillHints="minHeightDisplayedNumber"
-                    android:background="@color/white"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/numberHint"
-                    android:inputType="number"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:hint="@string/numberHint"
+                android:inputType="number"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/optimizationParametersTitle"
@@ -146,36 +94,19 @@
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/coefficientRPMLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+            <EditText
+                android:id="@+id/coefficientRPMNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="coefficientRPMNumber"
+                android:background="@color/white"
+                android:ems="10"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/plusMinusSign03"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/plusMinusSign"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/coefficientRPMNumber"
-                    android:layout_width="125dp"
-                    android:layout_height="48dp"
-                    android:autofillHints="coefficientRPMNumber"
-                    android:background="@color/white"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/numberHint"
-                    android:inputType="number"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/numberHint"
+                android:inputType="number"
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/coefficientHeightTitle"
@@ -187,39 +118,20 @@
                 android:textAllCaps="true"
                 android:textStyle="bold" />
 
-            <LinearLayout
-                android:id="@+id/coefficientHeightLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="30dp"
+            <EditText
+                android:id="@+id/coefficientHeightNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="coefficientHeightNumber"
+                android:background="@color/white"
+                android:ems="10"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/plusMinusSign04"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="@string/plusMinusSign"
-                    android:textAllCaps="true"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/coefficientHeightNumber"
-                    android:layout_width="125dp"
-                    android:layout_height="48dp"
-                    android:autofillHints="coefficientHeightNumber"
-                    android:background="@color/white"
-                    android:ems="10"
-                    android:gravity="center"
-                    android:hint="@string/numberHint"
-                    android:inputType="number"
-                    android:textSize="16sp" />
-
-            </LinearLayout>
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/numberHint"
+                android:inputType="number"
+                android:textSize="16sp" />
 
         </LinearLayout>
-
-    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

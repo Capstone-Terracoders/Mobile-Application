@@ -5,6 +5,7 @@
     <string name="displayedValuesCardTitle">"Mostrar los valores "</string>
     <string name="safetyOperationalSettingsCardTitle">Seguridad y Configuraciones Operativas</string>
     <string name="recordTitle">"Registro "</string>
+    <string name="clearNotificationsButton">"Borrar notificaciones"</string>
     <string name="textSizeTitle">"Tamaño de mensajes "</string>
     <string name="languageTitle">"Idioma "</string>
     <string name="unitSystemTitle">"Sistema de unidades "</string>
@@ -16,7 +17,7 @@
     <string name="optimalRPMRangeTitle">"Rango RPM óptimo "</string>
     <string name="optimalHeightRangeTitle">"Altura óptima "</string>
     <string name="connectedSensorTitle">"Sensores conectados "</string>
-    <string name="minRakeRPMTitle">"Mínimo Rake RPM "</string>
+    <string name="maxRakeRPMTitle">RPM máximas de rastrillo</string>
     <string name="minRakeHeightTitle">"Altura mínima del Rake "</string>
     <string name="coefficientRPMTitle">"Coeficiente RPM "</string>
     <string name="coefficientHeightTitle">"Coeficiente de altura "</string>

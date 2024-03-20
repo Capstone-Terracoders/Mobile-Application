@@ -2,6 +2,7 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
 
 /**
@@ -67,6 +68,72 @@ object PreferenceManager {
             true)
     }
 
+    fun getMaxRPMDisplayedInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            0)
+    }
+
+    fun getMaxHeightDisplayedInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            0)
+    }
+
+    fun getOptimalRPMRangeInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            0)
+    }
+
+    fun getOptimalHeightRangeInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            0)
+    }
+
+    fun getMaxRakeRPMInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            0)
+    }
+
+    fun getMinRakeHeightInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            0)
+    }
+
+    fun getRPMCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            0)
+    }
+
+    fun getHeightCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            0)
+    }
+
+    fun getRecordButtonStatus(): Boolean {
+        return sharedPreferences.getBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            false)
+    }
+
+    fun getNotifications(): List<Notification> {
+        val notificationsSet = sharedPreferences.getStringSet(HomeKeys.NOTIFICATION.toString(), null)
+        return notificationsSet?.mapNotNull { notificationString ->
+            val parts = notificationString.split("|")
+            if (parts.size == 3) {
+                Notification(toNotification(parts[0]), parts[1], parts[2])
+            } else {
+                null
+            }
+        } ?: emptyList()
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -113,8 +180,98 @@ object PreferenceManager {
             isChecked).apply()
     }
 
+    fun setMaxRPMDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxHeightDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalRPMRangeInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalHeightRangeInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxRakeRPMInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            input).apply()
+    }
+
+    fun setMinRakeHeightInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            input).apply()
+    }
+
+    fun setRPMCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setHeightCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setRecordButtonStatus(input: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            input).apply()
+    }
+
+    fun setNotification(notification: Notification) {
+        val notifications = getNotifications().toMutableList()
+        notifications.add(notification)
+        val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+    }
+
+
+    /**
+     * Clears all notifications from SharedPreferences.
+     */
+    fun clearNotifications() {
+        sharedPreferences.edit().remove(HomeKeys.NOTIFICATION.toString()).apply()
+    }
+
     //Enum to Int
     private inline fun <reified T : Enum<T>> T.toFloat(): Float {
         return this.ordinal.toFloat()
+    }
+
+    private fun toNotification(type: String): NotificationTypes {
+        return when (type) {
+            "NOTIFICATION" -> {
+                NotificationTypes.NOTIFICATION
+            }
+
+            "WARNING" -> {
+                NotificationTypes.WARNING
+            }
+
+            "ERROR" -> {
+                NotificationTypes.ERROR
+            }
+
+            else -> {
+                Log.d("PreferenceManager", "String type does not match type: NotificationType")
+                throw IllegalArgumentException("Invalid type: $type")
+            }
+        }
     }
 }
