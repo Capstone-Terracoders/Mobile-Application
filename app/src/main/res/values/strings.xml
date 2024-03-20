@@ -40,11 +40,13 @@
 
     <!-- Strings used for Displayed Values Settings Card-->
 
-    <string name="maxRPMDisplayedTitle">Maximum RPM Displayed</string>
-    <string name="maxHeightDisplayedTitle">Maximum Height Displayed</string>
+    <string name="maxRPMDisplayedTitle">Max RPM Displayed</string>
+    <string name="maxHeightDisplayedTitle">Max Height Displayed</string>
     <string name="optimalRPMRangeTitle">Optimal RPM Range</string>
     <string name="optimalHeightRangeTitle">Optimal Height Range</string>
     <string name="connectedSensorTitle">Connected Sensors</string>
+    <string name="maxDisplayValuesTitle">Max Display Values</string>
+    <string name="optimalRangeValuesTitle">Optimal Range Values</string>
     <string name="plusMinusSign" translatable="false">+/-</string>
 
     <string-array name="connectedSensors">
@@ -60,9 +62,8 @@
     <string name="minRakeHeightTitle">Minimum Rake Height</string>
     <string name="coefficientRPMTitle">RPM Coefficient</string>
     <string name="coefficientHeightTitle">Height Coefficient</string>
-    <string name="safetyParametersTitle">Safety Parameters</string>
-    <string name="optimizationParametersTitle">Operation Parameters</string>
-
+    <string name="safetyValueTitle"> Safety Values</string>
+    <string name="optimizationValueTitle"> Optimization Values</string>
 
     <!-- Strings used for Menus -->
 
