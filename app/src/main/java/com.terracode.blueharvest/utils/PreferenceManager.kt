@@ -71,7 +71,7 @@ object PreferenceManager {
     fun getMaxRPMDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            50)
+            120)
     }
 
     fun getMaxHeightDisplayedInput(): Int {
