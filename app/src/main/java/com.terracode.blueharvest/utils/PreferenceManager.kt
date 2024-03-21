@@ -4,6 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.constants.HomeKeys
+import com.terracode.blueharvest.utils.constants.Notification
+import com.terracode.blueharvest.utils.constants.NotificationTypes
+import com.terracode.blueharvest.utils.constants.PreferenceKeys
+import com.terracode.blueharvest.utils.constants.TextConstants
 
 /**
  * Singleton object for managing SharedPreferences in the application.

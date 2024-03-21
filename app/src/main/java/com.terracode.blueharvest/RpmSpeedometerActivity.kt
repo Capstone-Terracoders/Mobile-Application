@@ -11,14 +11,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.utils.Notification
-import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
-import java.time.Instant
-import java.time.format.DateTimeFormatter
+import com.terracode.blueharvest.utils.Notifications
 import kotlin.math.cos
-import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 
@@ -38,16 +34,12 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         }
     }
 
-    val maxRPMReachedNotification = Notification(
-        NotificationTypes.WARNING,
-        "Maximum RPM REACH SLOW IT DOWN",
-        DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
-    )
-
     private var rpmData: Double? = null
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val red = ContextCompat.getColor(context, R.color.red)
+
+    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
 
     private val DEFAULT_DIAL_WIDTH = 20f
     private val DEFAULT_NEEDLE_WIDTH = 10f
@@ -135,7 +127,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             if (currentSpeed!! > MAX_SPEED){
                 speedAngle = MAX_SPEED.toDouble()
                 rpmValueTextPaint.color = red
-                PreferenceManager.setNotification(maxRPMReachedNotification)
+                PreferenceManager.setNotification(rpmNotificationWarning)
             } else {
                 speedAngle = currentSpeed
             }

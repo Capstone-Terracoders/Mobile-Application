@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.utils
+package com.terracode.blueharvest.utils.constants
 
 /**
  * Enum class to declare conversion constants for units.

@@ -11,8 +11,8 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
-import com.terracode.blueharvest.utils.Notification
-import com.terracode.blueharvest.utils.NotificationTypes
+import com.terracode.blueharvest.utils.constants.Notification
+import com.terracode.blueharvest.utils.constants.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 
 object NotificationManager {
