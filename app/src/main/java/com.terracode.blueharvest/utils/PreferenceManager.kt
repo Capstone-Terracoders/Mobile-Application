@@ -71,13 +71,13 @@ object PreferenceManager {
     fun getMaxRPMDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            0)
+            50)
     }
 
     fun getMaxHeightDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
-            0)
+            50)
     }
 
     fun getOptimalRPMRangeInput(): Int {

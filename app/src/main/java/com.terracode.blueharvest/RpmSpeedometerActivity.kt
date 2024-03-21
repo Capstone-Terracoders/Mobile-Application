@@ -7,8 +7,11 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.ReadJSONObject
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -19,6 +22,17 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
+    //Initialize the sharedPreferences
+    init {
+        PreferenceManager.init(context)
+
+        val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
+        sensorData?.apply {
+            speedData = getSpeed()
+        }
+    }
+
+    private var speedData: Double? = null
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
 
@@ -28,10 +42,10 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var dialWidth: Float = DEFAULT_DIAL_WIDTH
     private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
 
-    private var numTicks = 11
-    private var currentSpeed = 20f
+    private var numTicks = 11 //change this value to display different max value
+    private var currentSpeed = speedData
 
-    private var MAX_SPEED = (numTicks * 5) - 5
+    private var MAX_SPEED = PreferenceManager.getMaxRPMDisplayedInput()
     private val START_ANGLE = 135f
     private val SWEEP_ANGLE = 270f
 
@@ -95,11 +109,22 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         drawRangeIndicator(canvas, centerX, centerY, radius)
 
         // Draw the speedometer needle
-        val angle = START_ANGLE + (currentSpeed / MAX_SPEED) * SWEEP_ANGLE //LOOK HERE FOR NEEDLE ANGLE
-        val needleLength = radius - 40
-        val needleX = centerX + needleLength * cos(Math.toRadians(angle.toDouble())).toFloat()
-        val needleY = centerY + needleLength * sin(Math.toRadians(angle.toDouble())).toFloat()
-        canvas.drawLine(centerX, centerY, needleX, needleY, needlePaint)
+        Log.d("RpmSpeedometerActivity", "Current Speed: $currentSpeed")
+        Log.d("RpmSpeedometerActivity", "Max Speed: $MAX_SPEED")
+        val angle = if (MAX_SPEED != 0 && currentSpeed != null) {
+            START_ANGLE + (currentSpeed!! / MAX_SPEED) * SWEEP_ANGLE
+        } else {
+            0.0
+        }
+        if (angle != null) {
+            val needleLength = radius - 40
+            val needleX = centerX + needleLength * cos(Math.toRadians(angle)).toFloat()
+            val needleY = centerY + needleLength * sin(Math.toRadians(angle)).toFloat()
+            canvas.drawLine(centerX, centerY, needleX, needleY, needlePaint)
+        } else {
+            Log.d("RpmSpeedometerActivity", "Angle for needle is null.")
+        }
+
 
         textPaint.textSize = 40f // Set text size to 40
         //Change text size to what is in preference manager
@@ -159,12 +184,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     }
 
 
-    fun setCurrentSpeed(speed: Float) {
-        if (speed in 0f..MAX_SPEED.toFloat()) {
-            currentSpeed = speed
-            invalidate()
-        }
-    }
+
 
     fun setNeedleRotation(rotation: Float) {
         // Set the rotation angle of the needle

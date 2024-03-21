@@ -6,7 +6,7 @@ import com.terracode.blueharvest.listeners.accessibilityListeners.TextSizeChange
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.TextConstants
 
-object TextSizeService {
+object  TextSizeService {
     fun setup(textSizeSeekBar: SeekBar, activity: AccessibilitySettingsActivity) {
         PreferenceManager.init(activity)
 
