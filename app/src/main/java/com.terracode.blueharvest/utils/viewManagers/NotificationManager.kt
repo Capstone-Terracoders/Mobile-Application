@@ -43,7 +43,7 @@ object NotificationManager {
                     NotificationTypes.WARNING -> {
                         val drawable =
                             ContextCompat.getDrawable(activity, R.drawable.exclamation_triangle_fill)
-                        drawable?.setTint(Color.YELLOW)
+                        drawable?.setTint(ContextCompat.getColor(activity, R.color.orange))
                         drawable
                     }
 

@@ -11,9 +11,14 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.utils.Notification
+import com.terracode.blueharvest.utils.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
+import java.time.Instant
+import java.time.format.DateTimeFormatter
 import kotlin.math.cos
+import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.sin
 
@@ -33,9 +38,16 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         }
     }
 
+    val maxRPMReachedNotification = Notification(
+        NotificationTypes.WARNING,
+        "Maximum RPM REACH SLOW IT DOWN",
+        DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+    )
+
     private var rpmData: Double? = null
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
+    private val red = ContextCompat.getColor(context, R.color.red)
 
     private val DEFAULT_DIAL_WIDTH = 20f
     private val DEFAULT_NEEDLE_WIDTH = 10f
@@ -71,7 +83,14 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to create rounded ends
     }
 
-    private val textPaint: Paint = Paint().apply {
+    private val tickLabelTextPaint: Paint = Paint().apply {
+        color = Color.BLACK
+        textSize = PreferenceManager.getSelectedTextSize()
+        textAlign = Paint.Align.CENTER
+        isAntiAlias = true
+    }
+
+    private val rpmValueTextPaint: Paint = Paint().apply {
         color = Color.BLACK
         textSize = PreferenceManager.getSelectedTextSize()
         textAlign = Paint.Align.CENTER
@@ -115,6 +134,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         val angle = if (MAX_SPEED != 0 && currentSpeed != null) {
             if (currentSpeed!! > MAX_SPEED){
                 speedAngle = MAX_SPEED.toDouble()
+                rpmValueTextPaint.color = red
+                PreferenceManager.setNotification(maxRPMReachedNotification)
             } else {
                 speedAngle = currentSpeed
             }
@@ -132,9 +153,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         }
 
 
-        textPaint.textSize = PreferenceManager.getSelectedTextSize() // Set text size to 40
-        //Change text size to what is in preference manager
-
         // Draw rounded rectangle for RPM value
         val rpmRectWidth = 400f
         val rpmRectHeight = 150f
@@ -149,10 +167,9 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         // Draw RPM value text inside the rounded rectangle
         val rpmText = "Rake RPM $currentSpeed"
         val textRect = Rect()
-        textPaint.color = blackColor
-        textPaint.getTextBounds(rpmText, 0, rpmText.length, textRect)
+        rpmValueTextPaint.getTextBounds(rpmText, 0, rpmText.length, textRect)
         val textY = centerY + radius * 0.8f + (rpmRectHeight + textRect.height()) / 2
-        canvas.drawText(rpmText, centerX, textY, textPaint)
+        canvas.drawText(rpmText, centerX, textY, rpmValueTextPaint)
 
         needleRotationAnimator?.start()
     }
@@ -194,7 +211,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                 val labelX = centerX + labelRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
                 val labelY = centerY + labelRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
                 val labelText = ((MAX_SPEED / 5) * bigTickIndex).toString() // Generate label text
-                canvas.drawText(labelText, labelX, labelY, textPaint) // Display label
+                canvas.drawText(labelText, labelX, labelY, tickLabelTextPaint) // Display label
             }
         }
     }

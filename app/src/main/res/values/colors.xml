@@ -12,7 +12,7 @@
     <color name="lightGrey">#DADBDC</color>
     <!-- Define other light colors -->
     <color name="charcoal">#3D4C5B</color>
-
+    <color name="orange">#FF9308</color>
     <color name="blueGrey">#34474A</color>
     <color name="blueBerry">#2A416F</color>
     <!-- Dark Color Scheme -->
