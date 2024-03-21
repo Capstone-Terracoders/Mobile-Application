@@ -17,12 +17,11 @@
     <string name="optimalRPMRangeTitle">"Plage de régime optimale "</string>
     <string name="optimalHeightRangeTitle">"Plage de hauteur optimale "</string>
     <string name="connectedSensorTitle">"Capteurs connectés "</string>
+    <string name="maxDisplayValuesTitle">Valeurs d\'affichage maximales</string>
     <string name="maxRakeRPMTitle">RPM maximum de râteau</string>
     <string name="minRakeHeightTitle">"Hauteur minimale du râteau "</string>
     <string name="coefficientRPMTitle">"Coefficient de régime "</string>
     <string name="coefficientHeightTitle">"Coefficient de hauteur "</string>
-    <string name="safetyParametersTitle">"Paramètres de sécurité "</string>
-    <string name="optimizationParametersTitle">"Paramètres de fonctionnement "</string>
     <string name="backButtonTitle">"Bouton de retour "</string>
     <string name="settingsTitle">"Paramètres "</string>
     <string name="notificationTitle">Notifications</string>
@@ -33,4 +32,7 @@
     <string name="currentOperationTitle">"Fonctionnement en cours "</string>
     <string name="currentSpeed">Vitesse (km/h)</string>
     <string name="currentBushHeight">"Hauteur de Bush (CM) "</string>
+    <string name="optimalRangeValuesTitle">"Valeurs de plage optimales "</string>
+    <string name="safetyValueTitle">"Valeurs de sécurité "</string>
+    <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
 </resources>

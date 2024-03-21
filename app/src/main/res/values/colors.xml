@@ -9,9 +9,12 @@
     <color name="red">#B94F4F</color>
     <color name="blue">#2A416F</color>
     <color name="green">#70945F</color>
-    <color name="lightGrey">#D9D9D9</color>
+    <color name="lightGrey">#DADBDC</color>
     <!-- Define other light colors -->
+    <color name="charcoal">#3D4C5B</color>
 
+    <color name="blueGrey">#34474A</color>
+    <color name="blueBerry">#2A416F</color>
     <!-- Dark Color Scheme -->
     <color name="dark_primary">#4E6F42</color> <!-- Adjusted Green -->
     <color name="dark_secondary">#3B547E</color> <!-- Adjusted Blue -->
