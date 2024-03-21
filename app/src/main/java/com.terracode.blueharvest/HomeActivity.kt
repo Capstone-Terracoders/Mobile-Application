@@ -36,9 +36,9 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var notificationBellIcon: View
 
     //Declaring the data values
+    private var optimalRakeHeight: Double? = null
+    private var optimalRakeRpm: Double? = null
     private var bushHeightData: Double? = null
-    private var rakeHeightData: Double? = null
-    private var rpmData: Double? = null
     private var speedData: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,20 +83,20 @@ class HomeActivity : AppCompatActivity() {
         //Read data from mock values/bluetooth, and set the data values equal to the declared variables from above.
         val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")
         sensorData?.apply {
-            rpmData = getRPM()
-            rakeHeightData = getRakeHeight()
+            optimalRakeHeight = getOptimalRakeHeight()
+            optimalRakeRpm = getOptimalRakeRPM()
             bushHeightData = getBushHeight()
             speedData = getSpeed()
         }
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
         optimalRakeHeightTextView.text = if (toggleValue) {
-            "$rakeHeightData cm"
+            "$optimalRakeHeight cm"
         } else {
-            "${UnitConverter.convertHeightToImperial(rakeHeightData)} in"
+            "${UnitConverter.convertHeightToImperial(optimalRakeHeight)} in"
         }
 
-        optimalRakeRPMValueTextView.text = "$rpmData"
+        optimalRakeRPMValueTextView.text = "$optimalRakeRpm"
 
         currentBushHeightTextView.text = if (toggleValue) {
             "$bushHeightData cm"

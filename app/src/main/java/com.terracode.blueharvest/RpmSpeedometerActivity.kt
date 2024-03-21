@@ -29,11 +29,11 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
         val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
         sensorData?.apply {
-            speedData = getSpeed()
+            rpmData = getRPM()
         }
     }
 
-    private var speedData: Double? = null
+    private var rpmData: Double? = null
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
 
@@ -44,7 +44,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
 
     private var MAX_SPEED = PreferenceManager.getMaxRPMDisplayedInput()
-    private var currentSpeed = speedData
+    private var currentSpeed = rpmData
 
 
     private val START_ANGLE = 135f
