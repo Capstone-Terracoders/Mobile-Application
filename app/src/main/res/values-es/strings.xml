@@ -37,4 +37,6 @@
     <string name="optimizationValueTitle">"Valores de optimización "</string>
     <string name="currentRPMTitle">RPM del rastrillo</string>
     <string name="speedometerTitle">"Velocímetro "</string>
+    <string name="currentHeightTitle">"Altura del rastrillo "</string>
+    <string name="heightBarTitle">"Barra medidora de altura del rastrillo "</string>
 </resources>

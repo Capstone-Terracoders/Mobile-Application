@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/optimalOperationCard"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardBackgroundColor="@android:color/transparent"
+    app:cardUseCompatPadding="true"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:id="@+id/BoxLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/speedometerTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/speedometerTitle"
+            android:gravity="center" />
+
+        <com.terracode.blueharvest.RpmSpeedometerActivity
+            android:id="@+id/speedometer"
+            android:layout_width="wrap_content"
+            android:layout_height="500dp"/>
+
+        <TextView
+            android:id="@+id/currentRpmValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:background="@drawable/blue_bordered_box"
+            android:text="@string/currentRPMTitle"/>
+
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

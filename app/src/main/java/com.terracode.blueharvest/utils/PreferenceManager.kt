@@ -9,6 +9,7 @@ import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
 import com.terracode.blueharvest.utils.constants.PreferenceKeys
 import com.terracode.blueharvest.utils.constants.TextConstants
+import com.terracode.blueharvest.utils.constants.currentValueState
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -76,7 +77,7 @@ object PreferenceManager {
     fun getMaxRPMDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            120)
+            100)
     }
 
     fun getMaxHeightDisplayedInput(): Int {
@@ -137,6 +138,12 @@ object PreferenceManager {
                 null
             }
         } ?: emptyList()
+    }
+
+    fun getIsCurrentRPMGreaterThanMaximumRPM(): Boolean {
+        return sharedPreferences.getBoolean(
+            currentValueState.RPM.toString(),
+            false)
     }
 
     // Setters ----------------------------------------------------------
@@ -244,6 +251,12 @@ object PreferenceManager {
         notifications.add(notification)
         val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
         sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+    }
+
+    fun setIsCurrentRPMGreaterThanMaximumRPM(input: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            currentValueState.RPM.toString(),
+            input).apply()
     }
 
 

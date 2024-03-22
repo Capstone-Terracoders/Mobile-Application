@@ -1,82 +1,88 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/verticalHomeContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <!-- Dummy anchor view for notification popup -->
-    <View
-        android:id="@+id/notificationAnchorView"
-        android:layout_width="73dp"
-        android:layout_height="121dp"
-        android:layout_gravity="right"
-        android:visibility="gone" />
+    android:layout_height="match_parent">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:background="@color/green">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/recordButton"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="@android:color/transparent"
-            android:textColor="@color/black"
-            app:icon="@drawable/record_circle"
-            app:iconGravity="start"
-            app:iconTint="@color/black"
-            tools:text="@string/recordTitle"
-            />
+        <!-- Dummy anchor view for notification popup -->
+        <View
+            android:id="@+id/notificationAnchorView"
+            android:layout_width="73dp"
+            android:layout_height="121dp"
+            android:layout_gravity="right"
+            android:visibility="gone" />
 
-        <!-- Toolbar -->
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/homeToolbar"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/green"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:menu="@menu/home_menu"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-            app:title=" "
-            app:titleMarginStart="30dp" />
+            android:orientation="horizontal"
+            android:background="@color/green">
+
+            <Button
+                android:id="@+id/recordButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                app:icon="@drawable/record_circle"
+                app:iconGravity="start"
+                app:iconTint="@color/black"
+                tools:text="@string/recordTitle"
+                />
+
+            <!-- Toolbar -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/homeToolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:menu="@menu/home_menu"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title=" "
+                app:titleMarginStart="30dp" />
+        </LinearLayout>
+
+        <!-- Optimal Operation Card, Height Gauge, and Speedometer -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Optimal Operation Card -->
+            <include
+                layout="@layout/optimal_operation_card"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="16dp" />
+
+            <!-- Height Gauge -->
+            <include
+                layout="@layout/height_bar_card"
+                android:id="@+id/heightBar"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="16dp" />
+
+            <!-- Speedometer -->
+            <include
+                layout="@layout/speedometer_card"
+                android:id="@+id/speedometer"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_margin="16dp" />
+
+        </LinearLayout>
+
     </LinearLayout>
-
-    <!-- Optimal Operation Card, Height Gauge, and Speedometer -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <!-- Optimal Operation Card -->
-        <include
-            layout="@layout/optimal_operation_card"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="16dp" />
-
-        <!-- Height Gauge -->
-        <com.terracode.blueharvest.HeightGaugeActivity
-            android:id="@+id/heightGauge"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp" />
-
-        <!-- Speedometer -->
-        <com.terracode.blueharvest.RpmSpeedometerActivity
-            android:id="@+id/speedometer"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_margin="16dp" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</ScrollView>
