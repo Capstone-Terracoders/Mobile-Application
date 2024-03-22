@@ -8,62 +8,86 @@ import android.graphics.Paint
 import android.graphics.Rect
 import android.graphics.RectF
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
-import com.terracode.blueharvest.utils.Notifications
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
 
+@Suppress("PrivatePropertyName")
 class RpmSpeedometerActivity @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
 ) : View(context, attrs, defStyleAttr) {
 
-    //Initialize the sharedPreferences
+    //Initialize Data
     init {
+        //Initialize Preference Manager
         PreferenceManager.init(context)
 
+        //Get data from JSON file (or Bluetooth)
         val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
         sensorData?.apply {
             rpmData = getRPM()
         }
     }
 
-    private var rpmData: Double? = null
-    private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
-    private val blackColor = ContextCompat.getColor(context, R.color.black)
-    private val red = ContextCompat.getColor(context, R.color.red)
-
-    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
-
+    //Constants
     private val DEFAULT_DIAL_WIDTH = 20f
+    private val RECT_WIDTH = 10f
     private val DEFAULT_NEEDLE_WIDTH = 10f
-
-    private var dialWidth: Float = DEFAULT_DIAL_WIDTH
-    private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
-
-    private var MAX_SPEED = PreferenceManager.getMaxRPMDisplayedInput()
-    private var currentSpeed = rpmData
-
 
     private val START_ANGLE = 135f
     private val SWEEP_ANGLE = 270f
+    private var NUM_BIG_TICKS = 6
+    private var NUM_SMALL_TICKS = 4
+    private var ANIMATION_DURATION = 1000L
+    private var RECTANGLE_WIDTH = 375f
+    private var RECTANGLE_HEIGHT = 90f
 
-    private var numBigTicks = 6 //change this value to display different max value
-    private var numSmallTicks = 4
+    //Data
+    private var rpmData: Double? = null
+    private var maxSpeed = PreferenceManager.getMaxRPMDisplayedInput()
+    private var currentSpeed = rpmData
 
+    //Res Values
+    private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
+    private val blackColor = ContextCompat.getColor(context, R.color.black)
+    private val red = ContextCompat.getColor(context, R.color.red)
+    private var rakeRPMTitle = ""
+    private var titleText = ""
+    private val normalTextSize = PreferenceManager.getSelectedTextSize()
+    private val titleTextSize = PreferenceManager.getSelectedTextSize() + 4f
+
+    //Notifications
+    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
+
+    //Do we need?
+    private var dialWidth: Float = DEFAULT_DIAL_WIDTH
+    private var rectWidth: Float = RECT_WIDTH
+    private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
+
+
+
+    //Animator
     private var needleRotationAnimator: ObjectAnimator? = null
 
     // Paint objects
     private val dialPaint = Paint().apply {
         color = blueBerryColor // Use custom color
         style = Paint.Style.STROKE
-        strokeWidth = 30f // Adjust the stroke width as needed
+        strokeWidth = dialWidth // Adjust the stroke width as needed
+        strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
+    }
+
+    private val rectPaint = Paint().apply {
+        color = blueBerryColor // Use custom color
+        style = Paint.Style.STROKE
+        strokeWidth = rectWidth // Adjust the stroke width as needed
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
     }
 
@@ -71,104 +95,147 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         color = blackColor // Use custom color
         style =
             Paint.Style.FILL_AND_STROKE // Use FILL_AND_STROKE to fill the shape and draw its outline
-        strokeWidth = DEFAULT_NEEDLE_WIDTH // Set the stroke width to make the entire needle thicker
+        strokeWidth = needleWidth // Set the stroke width to make the entire needle thicker
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to create rounded ends
     }
 
     private val tickLabelTextPaint: Paint = Paint().apply {
         color = Color.BLACK
-        textSize = PreferenceManager.getSelectedTextSize()
+        textSize = normalTextSize
         textAlign = Paint.Align.CENTER
         isAntiAlias = true
     }
 
     private val rpmValueTextPaint: Paint = Paint().apply {
         color = Color.BLACK
-        textSize = PreferenceManager.getSelectedTextSize()
+        textSize = normalTextSize
         textAlign = Paint.Align.CENTER
         isAntiAlias = true
     }
 
+    // Draw the title "Speedometer"
+    private val titleTextPaint = Paint().apply {
+        color = Color.BLACK
+        textSize = titleTextSize // Adjust text size as needed
+        textAlign = Paint.Align.CENTER
+        isFakeBoldText = true // Make text bold
+    }
+
+    //Initializer for Drawing Speedometer
     init {
-        needleRotationAnimator = ObjectAnimator.ofFloat(this, "needleRotation", 0f, 20f).apply {
-            duration = 1000 // Animation duration in milliseconds
+        //Needle Animation
+        needleRotationAnimator = ObjectAnimator.ofFloat(
+            this,
+            "needleRotation",
+            0f,
+            20f
+        ).apply {
+            duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
             repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
         }
-    }
 
-    init {
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RpmSpeedometer)
+        if (!isInEditMode) {
+            rakeRPMTitle = ContextCompat.getString(context, R.string.currentRPMTitle)
+            titleText = ContextCompat.getString(context, R.string.speedometerTitle)
+        }
+
+            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RpmSpeedometerActivity)
         dialWidth =
-            typedArray.getDimension(R.styleable.RpmSpeedometer_dialWidth, DEFAULT_DIAL_WIDTH)
+            typedArray.getDimension(R.styleable.RpmSpeedometerActivity_dialWidth, DEFAULT_DIAL_WIDTH)
         needleWidth =
-            typedArray.getDimension(R.styleable.RpmSpeedometer_needleWidth, DEFAULT_NEEDLE_WIDTH)
+            typedArray.getDimension(R.styleable.RpmSpeedometerActivity_needleWidth, DEFAULT_NEEDLE_WIDTH)
         typedArray.recycle()
     }
+
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
         // Declare & initialize ark parameters:
-        val centerX = width / 2f
-        val centerY = height / 2f
-        val radius = min(centerX, centerY) - 40
+        val radiusOffset = 0.8f
+        val titleHeightOffset = 1.2f
+        val titleOffset = 1.6f
+        val centerXCoordinate = width / 2f      //X-Coordinate of the center of the activity page
+        val centerYCoordinate = height / 2f     //Y-Coordinate of the center of the activity page
+        val radius = (min(centerXCoordinate, centerYCoordinate) - 40) * radiusOffset
+
+        canvas.drawText(
+            titleText,
+            centerXCoordinate,
+            centerYCoordinate - (radius * titleOffset),
+            titleTextPaint)
 
         canvas.drawArc(
-            centerX - radius, centerY - radius, centerX + radius, centerY + radius,
-            START_ANGLE, SWEEP_ANGLE, false, dialPaint
+            centerXCoordinate - radius,
+            centerYCoordinate - radius,
+            centerXCoordinate + radius,
+            centerYCoordinate + radius,
+            START_ANGLE,
+            SWEEP_ANGLE,
+            false,
+            dialPaint
         )
 
-        drawRangeIndicator(canvas, centerX, centerY, radius)
+        drawRangeIndicator(canvas,
+            centerXCoordinate,
+            centerYCoordinate,
+            radius)
 
         // Draw the speedometer needle
         val speedAngle: Double?
-        val angle = if (MAX_SPEED != 0 && currentSpeed != null) {
-            if (currentSpeed!! > MAX_SPEED){
-                speedAngle = MAX_SPEED.toDouble()
+        val angle = if (maxSpeed != 0 && currentSpeed != null) {
+            if (currentSpeed!! > maxSpeed){
+                speedAngle = maxSpeed.toDouble()
                 rpmValueTextPaint.color = red
                 PreferenceManager.setNotification(rpmNotificationWarning)
             } else {
                 speedAngle = currentSpeed
             }
-            START_ANGLE + (speedAngle!! / MAX_SPEED) * SWEEP_ANGLE
+            START_ANGLE + (speedAngle!! / maxSpeed) * SWEEP_ANGLE
         } else {
             0.0
         }
-        if (angle != null) {
-            val needleLength = radius - 40
-            val needleX = centerX + needleLength * cos(Math.toRadians(angle)).toFloat()
-            val needleY = centerY + needleLength * sin(Math.toRadians(angle)).toFloat()
-            canvas.drawLine(centerX, centerY, needleX, needleY, needlePaint)
-        } else {
-            Log.d("RpmSpeedometerActivity", "Angle for needle is null.")
-        }
-
+        val needleLength = radius - 40
+        val needleX = centerXCoordinate + needleLength * cos(Math.toRadians(angle)).toFloat()
+        val needleY = centerYCoordinate + needleLength * sin(Math.toRadians(angle)).toFloat()
+        canvas.drawLine(
+            centerXCoordinate,
+            centerYCoordinate,
+            needleX,
+            needleY,
+            needlePaint)
 
         // Draw rounded rectangle for RPM value
-        val rpmRectWidth = 400f
-        val rpmRectHeight = 150f
-        val rpmRectLeft = centerX - rpmRectWidth / 2
-        val rpmRectTop = centerY + radius * 0.8f
+        val rpmRectWidth = RECTANGLE_WIDTH
+        val rpmRectHeight = RECTANGLE_HEIGHT
+        val cornerRadius = 20f
+        val rpmRectLeft = centerXCoordinate - (rpmRectWidth / 2)
+        val rpmRectTop = centerYCoordinate + (radius * titleHeightOffset)
         val rpmRectRight = rpmRectLeft + rpmRectWidth
         val rpmRectBottom = rpmRectTop + rpmRectHeight
-        val cornerRadius = 20f // adjust corner radius as needed
         val rpmRect = RectF(rpmRectLeft, rpmRectTop, rpmRectRight, rpmRectBottom)
-        canvas.drawRoundRect(rpmRect, cornerRadius, cornerRadius, dialPaint)
+
+        canvas.drawRoundRect(rpmRect, cornerRadius, cornerRadius, rectPaint)
 
         // Draw RPM value text inside the rounded rectangle
-        val rpmText = "Rake RPM $currentSpeed"
+        val rpmText =  "$rakeRPMTitle $currentSpeed"
         val textRect = Rect()
         rpmValueTextPaint.getTextBounds(rpmText, 0, rpmText.length, textRect)
-        val textY = centerY + radius * 0.8f + (rpmRectHeight + textRect.height()) / 2
-        canvas.drawText(rpmText, centerX, textY, rpmValueTextPaint)
+        val textY = centerYCoordinate + (radius * titleHeightOffset) +
+                (rpmRectHeight + textRect.height()) / 2
+        canvas.drawText(
+            rpmText,
+            centerXCoordinate,
+            textY,
+            rpmValueTextPaint)
 
         needleRotationAnimator?.start()
     }
 
 
     private fun drawRangeIndicator(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) {
-        val angleInterval = SWEEP_ANGLE / ((numBigTicks - 1) * numSmallTicks) // Calculate the angle interval between each tick
+        val angleInterval = SWEEP_ANGLE / ((NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS) // Calculate the angle interval between each tick
         val bigTickLength = 60f // Length of the bigger ticks
         val bigTickWidth = 20f // Width of the bigger ticks
         val smallTickLength = bigTickLength / 2 // Length of the smaller ticks
@@ -176,9 +243,9 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
         val needleLength = radius - 40 // Adjusted needle length
 
-        for (i in 0 until (numBigTicks * numSmallTicks) - (numSmallTicks-1)) {
-            val bigTickIndex = i / numSmallTicks
-            val smallTickIndex = i % numSmallTicks
+        for (i in 0 until (NUM_BIG_TICKS * NUM_SMALL_TICKS) - (NUM_SMALL_TICKS-1)) {
+            val bigTickIndex = i / NUM_SMALL_TICKS
+            val smallTickIndex = i % NUM_SMALL_TICKS
 
             val angle = START_ANGLE + i * angleInterval // Calculate the angle for each tick
 
@@ -202,19 +269,13 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                 val labelRadius = radius + 60 // Radius for placing labels outside the speedometer
                 val labelX = centerX + labelRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
                 val labelY = centerY + labelRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
-                val labelText = ((MAX_SPEED / 5) * bigTickIndex).toString() // Generate label text
+                val labelText = ((maxSpeed / 5) * bigTickIndex).toString() // Generate label text
                 canvas.drawText(labelText, labelX, labelY, tickLabelTextPaint) // Display label
             }
         }
     }
-
-
-
+    @Suppress("unused")
     fun setNeedleRotation(rotation: Float) {
-        // Set the rotation angle of the needle
-        // Adjust rotation as needed
-        // For example:
-        // needlePaint.rotation = rotation
         invalidate()
     }
 }

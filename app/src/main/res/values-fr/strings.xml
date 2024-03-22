@@ -35,4 +35,6 @@
     <string name="optimalRangeValuesTitle">"Valeurs de plage optimales "</string>
     <string name="safetyValueTitle">"Valeurs de sécurité "</string>
     <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
+    <string name="currentRPMTitle">Râteau/tr/min</string>
+    <string name="speedometerTitle">"Compteur de vitesse "</string>
 </resources>

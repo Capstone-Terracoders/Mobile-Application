@@ -83,4 +83,8 @@
     <string name="currentSpeed">Speed</string>
     <string name="currentBushHeight">Bush Height</string>
 
+
+    <!-- Strings used for Speedometer-->
+    <string name="currentRPMTitle">Rake RPM</string>
+    <string name="speedometerTitle">Speedometer</string>
 </resources>

@@ -35,4 +35,6 @@
     <string name="optimalRangeValuesTitle">"Valores de rango óptimo "</string>
     <string name="safetyValueTitle">"Valores de seguridad "</string>
     <string name="optimizationValueTitle">"Valores de optimización "</string>
+    <string name="currentRPMTitle">RPM del rastrillo</string>
+    <string name="speedometerTitle">"Velocímetro "</string>
 </resources>
