@@ -9,7 +9,6 @@ import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
 import com.terracode.blueharvest.utils.constants.PreferenceKeys
 import com.terracode.blueharvest.utils.constants.TextConstants
-import com.terracode.blueharvest.utils.constants.currentValueState
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -140,12 +139,6 @@ object PreferenceManager {
         } ?: emptyList()
     }
 
-    fun getIsCurrentRPMGreaterThanMaximumRPM(): Boolean {
-        return sharedPreferences.getBoolean(
-            currentValueState.RPM.toString(),
-            false)
-    }
-
     // Setters ----------------------------------------------------------
 
     /**
@@ -249,16 +242,11 @@ object PreferenceManager {
     fun setNotification(notification: Notification) {
         val notifications = getNotifications().toMutableList()
         notifications.add(notification)
-        val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
-        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+        val notificationsSet =
+            notifications.map { "${it.type}|${it.message}|${it.timestamp}" }.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet)
+            .apply()
     }
-
-    fun setIsCurrentRPMGreaterThanMaximumRPM(input: Boolean) {
-        sharedPreferences.edit().putBoolean(
-            currentValueState.RPM.toString(),
-            input).apply()
-    }
-
 
     /**
      * Clears all notifications from SharedPreferences.

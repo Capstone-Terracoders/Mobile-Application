@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.services.homeServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
@@ -41,6 +42,7 @@ class HomeActivity : AppCompatActivity() {
     private var optimalRakeRpm: Double? = null
     private var bushHeightData: Double? = null
     private var speedData: Double? = null
+    private var rpmData: Double? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,7 +91,20 @@ class HomeActivity : AppCompatActivity() {
             optimalRakeRpm = getOptimalRakeRPM()
             bushHeightData = getBushHeight()
             speedData = getSpeed()
+            rpmData = getRPM()
         }
+
+        //CurrentValueTitles
+        val maxRpmValue = PreferenceManager.getMaxRPMDisplayedInput()
+        val currentRpmTitle = getString(R.string.currentRPMTitle)
+        val currentRpmText = "$currentRpmTitle $rpmData"
+        currentRPMTextView.text = currentRpmText
+        if (rpmData!! > maxRpmValue){
+            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.red))
+        } else {
+            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+        }
+
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
         optimalRakeHeightTextView.text = if (toggleValue) {

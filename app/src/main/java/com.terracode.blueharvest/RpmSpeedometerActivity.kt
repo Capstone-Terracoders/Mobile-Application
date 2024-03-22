@@ -36,8 +36,9 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Constants
     private val DEFAULT_DIAL_WIDTH = 20f
-    private val RECT_WIDTH = 10f
     private val DEFAULT_NEEDLE_WIDTH = 10f
+    private val BIG_TICK_LENGTH = 40f // Length of the bigger ticks - these will impact size of small ticks too
+    private val BIG_TICK_WIDTH = 15f // Width of the bigger ticks
 
     private val START_ANGLE = 135f
     private val SWEEP_ANGLE = 270f
@@ -61,7 +62,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Width initializers
     private var dialWidth: Float = DEFAULT_DIAL_WIDTH
-    private var rectWidth: Float = RECT_WIDTH
     private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
 
     //Animator
@@ -72,13 +72,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         color = blueBerryColor // Use custom color
         style = Paint.Style.STROKE
         strokeWidth = dialWidth // Adjust the stroke width as needed
-        strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
-    }
-
-    private val rectPaint = Paint().apply {
-        color = blueBerryColor // Use custom color
-        style = Paint.Style.STROKE
-        strokeWidth = rectWidth // Adjust the stroke width as needed
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
     }
 
@@ -158,12 +151,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                 speedAngle = maxSpeed.toDouble()
                 if (!isInEditMode) {
                     PreferenceManager.setNotification(rpmNotificationWarning)
-                    PreferenceManager.setIsCurrentRPMGreaterThanMaximumRPM(true)
                 }
             } else {
-                if (!isInEditMode) {
-                    PreferenceManager.setIsCurrentRPMGreaterThanMaximumRPM(false)
-                }
                 speedAngle = currentSpeed
             }
             START_ANGLE + (speedAngle!! / maxSpeed) * SWEEP_ANGLE
@@ -186,10 +175,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     private fun drawSpeedometerTicksAndLabels(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) {
         val angleInterval = SWEEP_ANGLE / ((NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS) // Calculate the angle interval between each tick
-        val bigTickLength = 60f // Length of the bigger ticks
-        val bigTickWidth = 20f // Width of the bigger ticks
-        val smallTickLength = bigTickLength / 2 // Length of the smaller ticks
-        val smallTickWidth = bigTickWidth / 2 // Width of the smaller ticks
+        val smallTickLength = BIG_TICK_LENGTH / 2 // Length of the smaller ticks
+        val smallTickWidth = BIG_TICK_WIDTH / 3 // Width of the smaller ticks
 
         val needleLength = radius - 40 // Adjusted needle length
 
@@ -201,8 +188,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
             val isBigTick = smallTickIndex == 0
 
-            val tickLength = if (isBigTick) bigTickLength else smallTickLength
-            val tickWidth = if (isBigTick) bigTickWidth else smallTickWidth
+            val tickLength = if (isBigTick) BIG_TICK_LENGTH else smallTickLength
+            val tickWidth = if (isBigTick) BIG_TICK_WIDTH else smallTickWidth
 
             val endX = centerX + needleLength * cos(Math.toRadians(angle.toDouble())).toFloat()
             val endY = centerY + needleLength * sin(Math.toRadians(angle.toDouble())).toFloat()
