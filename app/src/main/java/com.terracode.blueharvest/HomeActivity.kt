@@ -32,6 +32,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
+    private lateinit var currentRPMTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
 
@@ -71,6 +72,7 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
+        currentRPMTextView = findViewById(R.id.currentRpmValue)
         recordButton = findViewById(R.id.recordButton)
         notificationBellIcon = findViewById(R.id.notifications)
 

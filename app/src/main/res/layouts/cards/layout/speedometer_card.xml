@@ -34,7 +34,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:background="@drawable/blue_bordered_box"
-            android:text="@string/currentRPMTitle"/>
+            android:text=" "/>
 
 
     </LinearLayout>
