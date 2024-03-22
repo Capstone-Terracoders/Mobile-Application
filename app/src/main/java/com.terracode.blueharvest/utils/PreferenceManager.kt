@@ -4,6 +4,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
 import androidx.preference.PreferenceManager
+import com.terracode.blueharvest.utils.constants.HomeKeys
+import com.terracode.blueharvest.utils.constants.Notification
+import com.terracode.blueharvest.utils.constants.NotificationTypes
+import com.terracode.blueharvest.utils.constants.PreferenceKeys
+import com.terracode.blueharvest.utils.constants.TextConstants
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -71,13 +76,13 @@ object PreferenceManager {
     fun getMaxRPMDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            0)
+            120)
     }
 
     fun getMaxHeightDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
-            0)
+            50)
     }
 
     fun getOptimalRPMRangeInput(): Int {

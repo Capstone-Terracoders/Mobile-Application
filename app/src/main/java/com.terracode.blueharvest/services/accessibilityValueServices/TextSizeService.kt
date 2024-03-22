@@ -4,9 +4,9 @@ import android.widget.SeekBar
 import com.terracode.blueharvest.AccessibilitySettingsActivity
 import com.terracode.blueharvest.listeners.accessibilityListeners.TextSizeChangeListener
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.TextConstants
+import com.terracode.blueharvest.utils.constants.TextConstants
 
-object TextSizeService {
+object  TextSizeService {
     fun setup(textSizeSeekBar: SeekBar, activity: AccessibilitySettingsActivity) {
         PreferenceManager.init(activity)
 
