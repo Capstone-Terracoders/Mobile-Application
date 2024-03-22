@@ -10,8 +10,6 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
-import kotlin.math.cos
-import kotlin.math.sin
 
 @Suppress("PrivatePropertyName")
 class HeightGaugeActivity @JvmOverloads constructor(
@@ -50,7 +48,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private var labelTextSize = PreferenceManager.getSelectedTextSize()
-    private val titleTextSize = PreferenceManager.getSelectedTextSize() + 4f
     private var rakeHeightTitle = ""
     private var heightBarTitleText = ""
 
@@ -81,15 +78,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
         color = blackColor
         textSize = labelTextSize
         textAlign = Paint.Align.LEFT
-    }
-
-    // Draw "Rake Height (CM)" text
-    private val currentValueTextPaint = Paint().apply {
-        color = blackColor
-        textSize = PreferenceManager.getSelectedTextSize() // Adjust text size as needed
-        textAlign = Paint.Align.LEFT
-        isFakeBoldText = true // Make the text bold
-        strokeWidth = 2f // Increase stroke width for bold effect
     }
 
     private val tickPaint = Paint().apply {
@@ -141,8 +129,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val horizontalBarWidth = barWidth + 10 //Height indicator width
         val horizontalBarHeight = 15f //Height indicator height
         val horizontalBarX = startXCoordinate - 5 // Centered with the vertical bar
-        val horizontalBarY =
-            startYCoordinate + (barHeight - horizontalBarHeight) * (1 - currentHeight!! / maxHeight) //NEED TO CHANGE
+
+        val normalizedHeight = currentHeight?.div(maxHeight) ?: 0f // Calculate the normalized height relative to the max height
+        val horizontalBarY = startYCoordinate + (barHeight - horizontalBarHeight) * (1 - normalizedHeight) // Calculate the Y position based on the normalized height
 
         // Draw rounded rectangle for horizontal bar
         canvas.drawRoundRect(
@@ -184,20 +173,19 @@ class HeightGaugeActivity @JvmOverloads constructor(
             val tickWidth = if (isBigTick) bigTickWidth else smallTickWidth
 
             val newXCoordinate = startXCoordinate - 20f
-            val newYCoordinate = startYCoordinate + barHeight - i * tickSpacingInterval
+            val yCoordinate = startYCoordinate + barHeight - (i * tickSpacingInterval)
             val endXCoordinate = startXCoordinate + tickLength
-            val endYCoordinate = newYCoordinate
 
-            canvas.drawLine(newXCoordinate, newYCoordinate, endXCoordinate, endYCoordinate, tickPaint.apply {
+            canvas.drawLine(newXCoordinate, yCoordinate, endXCoordinate, yCoordinate, tickPaint.apply {
                 strokeWidth = tickWidth
             })
 
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position
-                val labelText = i.toString()
+                val labelText = i.toString()    //Needs to be updated
                 val textWidth = labelTextPaint.measureText(labelText)
-                canvas.drawText(labelText, newXCoordinate - textWidth - 20, endYCoordinate + labelTextSize / 2, labelTextPaint) // Display label
+                canvas.drawText(labelText, newXCoordinate - textWidth - 20, yCoordinate + labelTextSize / 2, labelTextPaint) // Display label
             }
         }
     }
