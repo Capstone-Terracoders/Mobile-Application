@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.Notifications
@@ -35,9 +34,17 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private val BAR_WIDTH_OFFSET = 0.3F
     private val BAR_HEIGHT_OFFSET = 0.8f
     private val BAR_CORNER_RADIUS_OFFSET = 0.1f
+
+    private val HEIGHT_INDICATOR_HEIGHT = 15f
+    private val LABEL_POSITION_OFFSET = 20f
+
     private var NUM_BIG_TICKS = 11
     private var NUM_SMALL_TICKS = 4
+    private val BIG_TICK_LENGTH = 15f
+    private val BIG_TICK_WIDTH = 5f
+
     private val ANIMATION_DURATION = 1000L
+
 
     //Data
     private var heightData: Double? = null
@@ -96,7 +103,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
             this,
             "needleRotation",
             0f,
-            20f
+            LABEL_POSITION_OFFSET
         ).apply {
             duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
@@ -144,16 +151,13 @@ class HeightGaugeActivity @JvmOverloads constructor(
             barPaint
         )
 
-        // Calculate position and dimensions of the height indicator rectangle
-        val horizontalBarHeight = 15f                   //Height indicator height
-
-        //Starting Y-Coordinate for the top left coordinate for the height indicator
+        //Y-Coordinate for the top left coordinate for the height indicator
         val heightRatio = currentHeight!! / maxHeight // Height ratio
-        val heightIndicatorStartYCoordinate = startYCoordinate + barHeight - (heightRatio * barHeight)
+        val heightIndicatorStartYCoordinate = startYCoordinate + barHeight - (heightRatio * barHeight) - (HEIGHT_INDICATOR_HEIGHT/2)
 
-        //Starting Y-Coordinate for the bottom right coordinate for the height indicator
+        //Y-Coordinate for the bottom right coordinate for the height indicator
         val heightIndicatorEndXCoordinate = startXCoordinate + barWidth
-        val heightIndicatorEndYCoordinate = heightIndicatorStartYCoordinate + horizontalBarHeight
+        val heightIndicatorEndYCoordinate = heightIndicatorStartYCoordinate + HEIGHT_INDICATOR_HEIGHT
 
         // Draw rounded rectangle for height indicator
         canvas.drawRoundRect(
@@ -197,23 +201,18 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS
         val tickSpacingInterval = barHeight / (numTicks - 1)
 
-        //Tick label pixel offset
-        val labelPositionOffset = 20f
-
         //Initialize tick length and width
-        val bigTickLength = 15f                     // Length of the bigger ticks
-        val bigTickWidth = 5f                       // Width of the bigger ticks
-        val smallTickLength = bigTickLength / 2     // Length of the smaller ticks
-        val smallTickWidth = bigTickWidth / 2       // Width of the smaller ticks
+        val smallTickLength = BIG_TICK_LENGTH / 2     // Length of the smaller ticks
+        val smallTickWidth = BIG_TICK_WIDTH / 2       // Width of the smaller ticks
 
         for (i in 0 until numTicks) {
             val isBigTick = i % (NUM_SMALL_TICKS + 1) == 0 // Determine if the tick is a big tick
 
             //Determine tick length and width according to what tick it is
-            val tickLength = if (isBigTick) bigTickLength else smallTickLength
-            val tickWidth = if (isBigTick) bigTickWidth else smallTickWidth
+            val tickLength = if (isBigTick) BIG_TICK_LENGTH else smallTickLength
+            val tickWidth = if (isBigTick) BIG_TICK_WIDTH else smallTickWidth
 
-            val tickXCoordinate = startXCoordinate - labelPositionOffset
+            val tickXCoordinate = startXCoordinate - LABEL_POSITION_OFFSET
             val tickYCoordinate = startYCoordinate + barHeight - (i * tickSpacingInterval)
             val endXCoordinate = startXCoordinate + tickLength
 
@@ -233,7 +232,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
                 val textWidth = labelTextPaint.measureText(labelText.toString())
 
                 //Tick Label coordinates
-                val labelXCoordinate = tickXCoordinate - textWidth - labelPositionOffset
+                val labelXCoordinate = tickXCoordinate - textWidth - LABEL_POSITION_OFFSET
                 val labelYCoordinate = tickYCoordinate + (labelTextSize / 2)
 
                 // Display label
