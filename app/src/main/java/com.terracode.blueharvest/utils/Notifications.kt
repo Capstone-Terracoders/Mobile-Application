@@ -16,6 +16,15 @@ object Notifications {
         )
     }
 
+    fun getMaxHeightReachedNotification(): Notification {
+        // Create a new warning notification for currentRpm > maxRPM
+        return Notification(
+            NotificationTypes.WARNING,
+            "Current rake height is greater than maximum height!",
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
     fun getStartRecordingNotification(): Notification {
         // Create a new notification for start recording data
         return Notification(

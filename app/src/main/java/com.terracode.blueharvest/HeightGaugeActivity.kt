@@ -52,7 +52,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var heightBarTitleText = ""
 
     //Notifications
-    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
+    private val heightNotificationWarning = Notifications.getMaxHeightReachedNotification()
 
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
@@ -130,8 +130,16 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val horizontalBarHeight = 15f //Height indicator height
         val horizontalBarX = startXCoordinate - 5 // Centered with the vertical bar
 
-        val normalizedHeight = currentHeight?.div(maxHeight) ?: 0f // Calculate the normalized height relative to the max height
-        val horizontalBarY = startYCoordinate + (barHeight - horizontalBarHeight) * (1 - normalizedHeight) // Calculate the Y position based on the normalized height
+        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS // Total number of ticks including small ticks
+        val tickSpacingInterval = barHeight / (numTicks - 1) // Calculate the interval between each tick
+
+        val normalizedHeight = currentHeight!! / maxHeight // Normalize the current height
+
+        val horizontalBarY = startYCoordinate + barHeight - (normalizedHeight * barHeight)// Calculate the Y position based on the normalized height
+        //Logic for adding a warning if current height > max height
+        if (currentHeight!! > maxHeight){
+            PreferenceManager.setNotification(heightNotificationWarning)
+        }
 
         // Draw rounded rectangle for horizontal bar
         canvas.drawRoundRect(
