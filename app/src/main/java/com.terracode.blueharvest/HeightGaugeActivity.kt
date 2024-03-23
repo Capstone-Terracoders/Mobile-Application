@@ -24,7 +24,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         //Initialize Preference Manager
         PreferenceManager.init(context)
 
-        //Get data from JSON file (or Bluetooth)
+        //Get data from JSON file (or Bluetooth) -- Update with preference manager ticket
         val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
         sensorData?.apply {
             heightData = getRakeHeight()
@@ -44,10 +44,12 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
     private var currentHeight = heightData?.toFloat()
 
-    //Colors && Label sizes
+    //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
+
+    //Labels
     private var labelTextSize = PreferenceManager.getSelectedTextSize()
     private var rakeHeightTitle = ""
     private var heightBarTitleText = ""
@@ -58,7 +60,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
 
-
+    //Create different paints for various components
     private val barPaint = Paint().apply {
         color = blueBerryColor
         style = Paint.Style.FILL
@@ -101,6 +103,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
             repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
         }
 
+        //Allows us to still see the preview in the split screen
         if (!isInEditMode) {
             rakeHeightTitle = ContextCompat.getString(context, R.string.currentHeightTitle)
             heightBarTitleText = ContextCompat.getString(context, R.string.heightBarTitle)
@@ -108,52 +111,69 @@ class HeightGaugeActivity @JvmOverloads constructor(
     }
 
     override fun onDraw(canvas: Canvas) {
+        //Draw canvas
         super.onDraw(canvas)
 
-        //Logic for adding a warning if current height > max height
+        //Logic for adding a warning notification if current height > max height
         if (currentHeight!! > maxHeight){
             PreferenceManager.setNotification(heightNotificationWarning)
             currentHeight = maxHeight
         }
+
+        //Create values for the blue bar width, height, and corner radius
         val barWidth = width.toFloat() * BAR_WIDTH_OFFSET
         val barHeight = height.toFloat() * BAR_HEIGHT_OFFSET
         val cornerRadius = barWidth * BAR_CORNER_RADIUS_OFFSET
 
-        //StartXCoordinate is defined at top of file
+        //These define the top left coordinate of the blue height bar
         val startXCoordinate = (width - barWidth) / 2
         val startYCoordinate = (height - barHeight) / 2
 
-        // Draw rounded rectangle for blue bar
+        //These define the bottom right coordinate of the blue height bar
+        val endXCoordinate = startXCoordinate + barWidth
+        val endYCoordinate = startYCoordinate + barHeight
+
+        // Draw rounded rectangle for blue bar (hover over drawRoundRect for more info)
         canvas.drawRoundRect(
-            startXCoordinate, startYCoordinate,
-            startXCoordinate + barWidth, startYCoordinate + barHeight,
-            cornerRadius, cornerRadius,
+            startXCoordinate,
+            startYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
             barPaint
         )
 
-        // Calculate position and dimensions of the horizontal bar
-        val horizontalBarWidth = barWidth + 10 //Height indicator width
-        val horizontalBarHeight = 15f //Height indicator height
-        val horizontalBarX = startXCoordinate - 5 // Centered with the vertical bar
+        // Calculate position and dimensions of the height indicator rectangle
+        val horizontalBarHeight = 15f                   //Height indicator height
 
+        //Starting Y-Coordinate for the top left coordinate for the height indicator
+        val heightRatio = currentHeight!! / maxHeight // Height ratio
+        val heightIndicatorStartYCoordinate = startYCoordinate + barHeight - (heightRatio * barHeight)
 
-        val normalizedHeight = currentHeight!! / maxHeight // Normalize the current height
+        //Starting Y-Coordinate for the bottom right coordinate for the height indicator
+        val heightIndicatorEndXCoordinate = startXCoordinate + barWidth
+        val heightIndicatorEndYCoordinate = heightIndicatorStartYCoordinate + horizontalBarHeight
 
-        val horizontalBarY = startYCoordinate + barHeight - (normalizedHeight * barHeight)// Calculate the Y position based on the normalized height
-
-        // Draw rounded rectangle for horizontal bar
+        // Draw rounded rectangle for height indicator
         canvas.drawRoundRect(
-            horizontalBarX, horizontalBarY,
-            horizontalBarX + horizontalBarWidth, horizontalBarY + horizontalBarHeight,
-            cornerRadius, cornerRadius,
+            startXCoordinate,
+            heightIndicatorStartYCoordinate,
+            heightIndicatorEndXCoordinate,
+            heightIndicatorEndYCoordinate,
+            cornerRadius,
+            cornerRadius,
             lightGreyBarPaint
         )
 
         // Draw outline for horizontal bar
         canvas.drawRoundRect(
-            horizontalBarX, horizontalBarY,
-            horizontalBarX + horizontalBarWidth, horizontalBarY + horizontalBarHeight,
-            cornerRadius, cornerRadius,
+            startXCoordinate,
+            heightIndicatorStartYCoordinate,
+            heightIndicatorEndXCoordinate,
+            heightIndicatorEndYCoordinate,
+            cornerRadius,
+            cornerRadius,
             blackOutlinePaint
         )
 
@@ -163,41 +183,65 @@ class HeightGaugeActivity @JvmOverloads constructor(
             startXCoordinate,
             startYCoordinate,
             barHeight
-        ) //Change start x coord to not be constant?
+        )
     }
 
-    private fun drawTicksAndLabels(canvas: Canvas, startXCoordinate: Float, startYCoordinate: Float, barHeight: Float) {
-        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS // Total number of ticks including small ticks
-        val tickSpacingInterval = barHeight / (numTicks - 1) // Calculate the interval between each tick
-        val bigTickLength = 15f // Length of the bigger ticks
-        val bigTickWidth = 5f // Width of the bigger ticks
-        val smallTickLength = bigTickLength / 2 // Length of the smaller ticks
-        val smallTickWidth = bigTickWidth / 2 // Width of the smaller ticks
+    //Function to draw the ticks and the labels for the big ticks
+    private fun drawTicksAndLabels(
+        canvas: Canvas,
+        startXCoordinate: Float,
+        startYCoordinate: Float,
+        barHeight: Float
+    ){
+        //Calculate total number of ticks and the space between them
+        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS
+        val tickSpacingInterval = barHeight / (numTicks - 1)
+
+        //Tick label pixel offset
+        val labelPositionOffset = 20f
+
+        //Initialize tick length and width
+        val bigTickLength = 15f                     // Length of the bigger ticks
+        val bigTickWidth = 5f                       // Width of the bigger ticks
+        val smallTickLength = bigTickLength / 2     // Length of the smaller ticks
+        val smallTickWidth = bigTickWidth / 2       // Width of the smaller ticks
 
         for (i in 0 until numTicks) {
             val isBigTick = i % (NUM_SMALL_TICKS + 1) == 0 // Determine if the tick is a big tick
 
+            //Determine tick length and width according to what tick it is
             val tickLength = if (isBigTick) bigTickLength else smallTickLength
             val tickWidth = if (isBigTick) bigTickWidth else smallTickWidth
 
-            val newXCoordinate = startXCoordinate - 20f
-            val yCoordinate = startYCoordinate + barHeight - (i * tickSpacingInterval)
+            val tickXCoordinate = startXCoordinate - labelPositionOffset
+            val tickYCoordinate = startYCoordinate + barHeight - (i * tickSpacingInterval)
             val endXCoordinate = startXCoordinate + tickLength
 
-            canvas.drawLine(newXCoordinate, yCoordinate, endXCoordinate, yCoordinate, tickPaint.apply {
+            canvas.drawLine(
+                tickXCoordinate,
+                tickYCoordinate,
+                endXCoordinate,
+                tickYCoordinate,
+                tickPaint.apply {
                 strokeWidth = tickWidth
             })
 
             // Draw label for big ticks only
             if (isBigTick) {
-                // Calculate label position
-                Log.d("HeightLabels - Max Txt", maxHeight.toString())
-                Log.d("HeightLabels - Num Ticks", (numTicks-1).toString())
-                Log.d("HeightLabels - i", i.toString())
+                // Calculate label position and label value
                 val labelText = ((maxHeight/(numTicks-1)) * i).toInt()
-                Log.d("HeightLabels", labelText.toString())
                 val textWidth = labelTextPaint.measureText(labelText.toString())
-                canvas.drawText(labelText.toString(), newXCoordinate - textWidth - 20, yCoordinate + labelTextSize / 2, labelTextPaint) // Display label
+
+                //Tick Label coordinates
+                val labelXCoordinate = tickXCoordinate - textWidth - labelPositionOffset
+                val labelYCoordinate = tickYCoordinate + (labelTextSize / 2)
+
+                // Display label
+                canvas.drawText(
+                    labelText.toString(),
+                    labelXCoordinate,
+                    labelYCoordinate,
+                    labelTextPaint)
             }
         }
     }
