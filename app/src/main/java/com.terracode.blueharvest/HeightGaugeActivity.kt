@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.Notifications
@@ -40,7 +41,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
     //Data
     private var heightData: Double? = null
-    private var maxHeight = PreferenceManager.getMaxRPMDisplayedInput()
+    private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
     private var currentHeight = heightData?.toFloat()
 
     //Colors && Label sizes
@@ -109,6 +110,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        //Logic for adding a warning if current height > max height
+        if (currentHeight!! > maxHeight){
+            PreferenceManager.setNotification(heightNotificationWarning)
+            currentHeight = maxHeight
+        }
         val barWidth = width.toFloat() * BAR_WIDTH_OFFSET
         val barHeight = height.toFloat() * BAR_HEIGHT_OFFSET
         val cornerRadius = barWidth * BAR_CORNER_RADIUS_OFFSET
@@ -130,16 +136,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val horizontalBarHeight = 15f //Height indicator height
         val horizontalBarX = startXCoordinate - 5 // Centered with the vertical bar
 
-        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS // Total number of ticks including small ticks
-        val tickSpacingInterval = barHeight / (numTicks - 1) // Calculate the interval between each tick
 
         val normalizedHeight = currentHeight!! / maxHeight // Normalize the current height
 
         val horizontalBarY = startYCoordinate + barHeight - (normalizedHeight * barHeight)// Calculate the Y position based on the normalized height
-        //Logic for adding a warning if current height > max height
-        if (currentHeight!! > maxHeight){
-            PreferenceManager.setNotification(heightNotificationWarning)
-        }
 
         // Draw rounded rectangle for horizontal bar
         canvas.drawRoundRect(
@@ -191,9 +191,13 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position
-                val labelText = i.toString()    //Needs to be updated
-                val textWidth = labelTextPaint.measureText(labelText)
-                canvas.drawText(labelText, newXCoordinate - textWidth - 20, yCoordinate + labelTextSize / 2, labelTextPaint) // Display label
+                Log.d("HeightLabels - Max Txt", maxHeight.toString())
+                Log.d("HeightLabels - Num Ticks", (numTicks-1).toString())
+                Log.d("HeightLabels - i", i.toString())
+                val labelText = ((maxHeight/(numTicks-1)) * i).toInt()
+                Log.d("HeightLabels", labelText.toString())
+                val textWidth = labelTextPaint.measureText(labelText.toString())
+                canvas.drawText(labelText.toString(), newXCoordinate - textWidth - 20, yCoordinate + labelTextSize / 2, labelTextPaint) // Display label
             }
         }
     }

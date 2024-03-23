@@ -133,6 +133,8 @@ class HomeActivity : AppCompatActivity() {
         if (toggleValue) {
             val optimalRakeHeightText = "$optimalRakeHeight $cm"
             optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "$optimalRakeRpm $cm"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "$bushHeightData $cm"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $kmph"
@@ -145,6 +147,8 @@ class HomeActivity : AppCompatActivity() {
         } else {
             val optimalRakeHeightText = "${UnitConverter.convertHeightToImperial(optimalRakeHeight)} $inch"
             optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "${UnitConverter.convertHeightToImperial(optimalRakeRpm)} $inch"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "${UnitConverter.convertHeightToImperial(bushHeightData)} $inch"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "${UnitConverter.convertSpeedToImperial(speedData)} $mph"

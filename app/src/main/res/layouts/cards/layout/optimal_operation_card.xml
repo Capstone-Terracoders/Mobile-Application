@@ -61,7 +61,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/optimalRakeRPM"
                 android:textColor="@color/white" />
 
@@ -123,7 +122,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:gravity="center"
-                android:paddingBottom="20dp"
                 android:text="@string/currentBushHeight"
                 android:textColor="@color/white" />
 
