@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.services.homeServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
@@ -32,6 +33,8 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
+    private lateinit var currentRPMTextView: TextView
+    private lateinit var currentHeightTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
 
@@ -40,6 +43,18 @@ class HomeActivity : AppCompatActivity() {
     private var optimalRakeRpm: Double? = null
     private var bushHeightData: Double? = null
     private var speedData: Double? = null
+    private var rpmData: Double? = null
+    private var rakeHeightData: Double? = null
+
+    //Declare value types
+    private var cm = "cm"
+    private var inch = "in"
+    private var kmph = "km/h"
+    private var mph = "mph"
+
+    //Declare colors
+//    private var redColor = ContextCompat.getColor(this, R.color.red)
+//    private var blackColor = ContextCompat.getColor(this, R.color.black)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +86,8 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
+        currentRPMTextView = findViewById(R.id.currentRpmValue)
+        currentHeightTextView = findViewById(R.id.currentHeightValue)
         recordButton = findViewById(R.id.recordButton)
         notificationBellIcon = findViewById(R.id.notifications)
 
@@ -87,28 +104,58 @@ class HomeActivity : AppCompatActivity() {
             optimalRakeRpm = getOptimalRakeRPM()
             bushHeightData = getBushHeight()
             speedData = getSpeed()
+            rpmData = getRPM()
+            rakeHeightData = getRakeHeight()
         }
+
+        //CurrentValueTitles
+        val maxRpmValue = PreferenceManager.getMaxRPMDisplayedInput()
+        val maxHeightValue = PreferenceManager.getMaxHeightDisplayedInput()
+        val currentHeightTitle = getString(R.string.currentHeightTitle)
+        val currentRpmTitle = getString(R.string.currentRPMTitle)
+        val currentRpmText = "$currentRpmTitle $rpmData"
+        currentRPMTextView.text = currentRpmText
+
+        if (rakeHeightData!! > maxHeightValue) {
+            currentHeightTextView.setTextColor(ContextCompat.getColor(this, R.color.red))
+        } else {
+            currentHeightTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+        }
+
+        if (rpmData!! > maxRpmValue) {
+            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.red))
+        } else {
+            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+        }
+
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
-        optimalRakeHeightTextView.text = if (toggleValue) {
-            "$optimalRakeHeight cm"
-        } else {
-            "${UnitConverter.convertHeightToImperial(optimalRakeHeight)} in"
-        }
+        if (toggleValue) {
+            val optimalRakeHeightText = "$optimalRakeHeight $cm"
+            optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "$optimalRakeRpm $cm"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
+            val currentBushHeightText = "$bushHeightData $cm"
+            currentBushHeightTextView.text = currentBushHeightText
+            val currentSpeedText = "$speedData $kmph"
+            currentSpeedTextView.text = currentSpeedText
+            val currentHeightText = "$currentHeightTitle $rakeHeightData $cm"
+            currentHeightTextView.text = currentHeightText
 
-        optimalRakeRPMValueTextView.text = "$optimalRakeRpm"
 
-        currentBushHeightTextView.text = if (toggleValue) {
-            "$bushHeightData cm"
-        } else {
-            "${UnitConverter.convertHeightToImperial(bushHeightData)} in"
-        }
 
-        currentSpeedTextView.text = if (toggleValue) {
-            "$speedData km/h"
         } else {
-            //Needs function
-            "${UnitConverter.convertSpeedToImperial(speedData)} mph"
+            val optimalRakeHeightText = "${UnitConverter.convertHeightToImperial(optimalRakeHeight)} $inch"
+            optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "${UnitConverter.convertHeightToImperial(optimalRakeRpm)} $inch"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
+            val currentBushHeightText = "${UnitConverter.convertHeightToImperial(bushHeightData)} $inch"
+            currentBushHeightTextView.text = currentBushHeightText
+            val currentSpeedText = "${UnitConverter.convertSpeedToImperial(speedData)} $mph"
+            currentSpeedTextView.text = currentSpeedText
+            val currentHeightText = "$currentHeightTitle ${UnitConverter.convertSpeedToImperial(rakeHeightData)} $inch"
+            currentHeightTextView.text = currentHeightText
+
         }
     }
 

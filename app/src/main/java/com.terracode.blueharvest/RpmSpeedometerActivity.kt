@@ -5,8 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.Rect
-import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -37,65 +35,63 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     }
 
     //Constants
-    private val DEFAULT_DIAL_WIDTH = 20f
-    private val RECT_WIDTH = 10f
+    //Default widths
+    private val DEFAULT_STROKE_WIDTH = 20f
     private val DEFAULT_NEEDLE_WIDTH = 10f
 
+    //Offsets for adjusting length of needle
+    private val NEEDLE_LENGTH_OFFSET = 40f
+
+    //Radius offset for placing labels outside the speedometer
+    private val LABEL_OFFSET = 60f
+
+    //Length of the bigger ticks (will also impact size of small ticks)
+    private val BIG_TICK_LENGTH = 40f
+    private val BIG_TICK_WIDTH = 15f
+
+    //Angles of arc
     private val START_ANGLE = 135f
     private val SWEEP_ANGLE = 270f
+
+    //Number of ticks - both small and big
     private var NUM_BIG_TICKS = 6
-    private var NUM_SMALL_TICKS = 4
+    private var NUM_SMALL_TICKS = 5
+
+    //Animation duration in milliseconds
     private var ANIMATION_DURATION = 1000L
-    private var RECTANGLE_WIDTH = 375f
-    private var RECTANGLE_HEIGHT = 90f
 
     //Data
     private var rpmData: Double? = null
-    private var maxSpeed = PreferenceManager.getMaxRPMDisplayedInput()
-    private var currentSpeed = rpmData
+    private var maxRpm = PreferenceManager.getMaxRPMDisplayedInput()
+    private var currentRpm = rpmData
+    private var rpm: Double? = currentRpm
 
-    //Res Values
+    //Colors
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
-    private val red = ContextCompat.getColor(context, R.color.red)
-    private var rakeRPMTitle = ""
-    private var titleText = ""
+
+    //Labels
     private val normalTextSize = PreferenceManager.getSelectedTextSize()
-    private val titleTextSize = PreferenceManager.getSelectedTextSize() + 4f
 
     //Notifications
     private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
-
-    //Do we need?
-    private var dialWidth: Float = DEFAULT_DIAL_WIDTH
-    private var rectWidth: Float = RECT_WIDTH
-    private var needleWidth: Float = DEFAULT_NEEDLE_WIDTH
-
-
 
     //Animator
     private var needleRotationAnimator: ObjectAnimator? = null
 
     // Paint objects
-    private val dialPaint = Paint().apply {
-        color = blueBerryColor // Use custom color
+    private val dialAndTickPaint = Paint().apply {
+        color = blueBerryColor
         style = Paint.Style.STROKE
-        strokeWidth = dialWidth // Adjust the stroke width as needed
-        strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
-    }
-
-    private val rectPaint = Paint().apply {
-        color = blueBerryColor // Use custom color
-        style = Paint.Style.STROKE
-        strokeWidth = rectWidth // Adjust the stroke width as needed
+        strokeWidth = DEFAULT_STROKE_WIDTH
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
     }
 
     private val needlePaint = Paint().apply {
-        color = blackColor // Use custom color
+        color = blackColor
         style =
             Paint.Style.FILL_AND_STROKE // Use FILL_AND_STROKE to fill the shape and draw its outline
-        strokeWidth = needleWidth // Set the stroke width to make the entire needle thicker
+        strokeWidth = DEFAULT_NEEDLE_WIDTH
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to create rounded ends
     }
 
@@ -106,171 +102,150 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         isAntiAlias = true
     }
 
-    private val rpmValueTextPaint: Paint = Paint().apply {
-        color = Color.BLACK
-        textSize = normalTextSize
-        textAlign = Paint.Align.CENTER
-        isAntiAlias = true
-    }
-
-    // Draw the title "Speedometer"
-    private val titleTextPaint = Paint().apply {
-        color = Color.BLACK
-        textSize = titleTextSize // Adjust text size as needed
-        textAlign = Paint.Align.CENTER
-        isFakeBoldText = true // Make text bold
-    }
-
     //Initializer for Drawing Speedometer
     init {
+        if (currentRpm!! > maxRpm){
+            rpm = maxRpm.toDouble()
+            //Allows us to continue seeing the preview in split mode
+            if (!isInEditMode) {
+                PreferenceManager.setNotification(rpmNotificationWarning)
+            }
+        } else {
+            rpm = currentRpm
+        }
+
         //Needle Animation
         needleRotationAnimator = ObjectAnimator.ofFloat(
             this,
             "needleRotation",
-            0f,
-            20f
+            rpm!!.toFloat()
         ).apply {
             duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
             repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
         }
-
-        if (!isInEditMode) {
-            rakeRPMTitle = ContextCompat.getString(context, R.string.currentRPMTitle)
-            titleText = ContextCompat.getString(context, R.string.speedometerTitle)
-        }
-
-            val typedArray = context.obtainStyledAttributes(attrs, R.styleable.RpmSpeedometerActivity)
-        dialWidth =
-            typedArray.getDimension(R.styleable.RpmSpeedometerActivity_dialWidth, DEFAULT_DIAL_WIDTH)
-        needleWidth =
-            typedArray.getDimension(R.styleable.RpmSpeedometerActivity_needleWidth, DEFAULT_NEEDLE_WIDTH)
-        typedArray.recycle()
     }
 
 
     override fun onDraw(canvas: Canvas) {
+        //Draw canvas
         super.onDraw(canvas)
 
         // Declare & initialize ark parameters:
         val radiusOffset = 0.8f
-        val titleHeightOffset = 1.2f
-        val titleOffset = 1.6f
         val centerXCoordinate = width / 2f      //X-Coordinate of the center of the activity page
         val centerYCoordinate = height / 2f     //Y-Coordinate of the center of the activity page
-        val radius = (min(centerXCoordinate, centerYCoordinate) - 40) * radiusOffset
+        val radius = min(centerXCoordinate, centerYCoordinate) * radiusOffset
 
-        canvas.drawText(
-            titleText,
-            centerXCoordinate,
-            centerYCoordinate - (radius * titleOffset),
-            titleTextPaint)
+        //Create top-left coordinates of the arc
+        val arcStartXCoordinate = centerXCoordinate - radius
+        val arcStartYCoordinate = centerYCoordinate - radius
 
+        //Create the bottom-right coordinates of the arc
+        val arcEndXCoordinate = centerXCoordinate + radius
+        val arcEndYCoordinate = centerYCoordinate + radius
+
+        //Draw the arc for the speedometer
         canvas.drawArc(
-            centerXCoordinate - radius,
-            centerYCoordinate - radius,
-            centerXCoordinate + radius,
-            centerYCoordinate + radius,
+            arcStartXCoordinate,
+            arcStartYCoordinate,
+            arcEndXCoordinate,
+            arcEndYCoordinate,
             START_ANGLE,
             SWEEP_ANGLE,
             false,
-            dialPaint
+            dialAndTickPaint
         )
 
-        drawRangeIndicator(canvas,
+        //Function to draw the speedometer ticks and labels for RPM
+        drawSpeedometerTicksAndLabels(canvas,
             centerXCoordinate,
             centerYCoordinate,
             radius)
 
-        // Draw the speedometer needle
-        val speedAngle: Double?
-        val angle = if (maxSpeed != 0 && currentSpeed != null) {
-            if (currentSpeed!! > maxSpeed){
-                speedAngle = maxSpeed.toDouble()
-                rpmValueTextPaint.color = red
-                PreferenceManager.setNotification(rpmNotificationWarning)
-            } else {
-                speedAngle = currentSpeed
-            }
-            START_ANGLE + (speedAngle!! / maxSpeed) * SWEEP_ANGLE
+        //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
+        val angle = if (maxRpm != 0 && currentRpm != null) {
+            START_ANGLE + (rpm!! / maxRpm) * SWEEP_ANGLE
         } else {
             0.0
         }
-        val needleLength = radius - 40
-        val needleX = centerXCoordinate + needleLength * cos(Math.toRadians(angle)).toFloat()
-        val needleY = centerYCoordinate + needleLength * sin(Math.toRadians(angle)).toFloat()
+
+        //Sets up needle length/ending coordinates
+        val needleLength = radius - NEEDLE_LENGTH_OFFSET
+        val needleLengthXCoordinate = centerXCoordinate + needleLength * cos(Math.toRadians(angle)).toFloat()
+        val needleLengthYCoordinate = centerYCoordinate + needleLength * sin(Math.toRadians(angle)).toFloat()
+
+        //Draw the speedometer needle
         canvas.drawLine(
             centerXCoordinate,
             centerYCoordinate,
-            needleX,
-            needleY,
+            needleLengthXCoordinate,
+            needleLengthYCoordinate,
             needlePaint)
-
-        // Draw rounded rectangle for RPM value
-        val rpmRectWidth = RECTANGLE_WIDTH
-        val rpmRectHeight = RECTANGLE_HEIGHT
-        val cornerRadius = 20f
-        val rpmRectLeft = centerXCoordinate - (rpmRectWidth / 2)
-        val rpmRectTop = centerYCoordinate + (radius * titleHeightOffset)
-        val rpmRectRight = rpmRectLeft + rpmRectWidth
-        val rpmRectBottom = rpmRectTop + rpmRectHeight
-        val rpmRect = RectF(rpmRectLeft, rpmRectTop, rpmRectRight, rpmRectBottom)
-
-        canvas.drawRoundRect(rpmRect, cornerRadius, cornerRadius, rectPaint)
-
-        // Draw RPM value text inside the rounded rectangle
-        val rpmText =  "$rakeRPMTitle $currentSpeed"
-        val textRect = Rect()
-        rpmValueTextPaint.getTextBounds(rpmText, 0, rpmText.length, textRect)
-        val textY = centerYCoordinate + (radius * titleHeightOffset) +
-                (rpmRectHeight + textRect.height()) / 2
-        canvas.drawText(
-            rpmText,
-            centerXCoordinate,
-            textY,
-            rpmValueTextPaint)
 
         needleRotationAnimator?.start()
     }
 
 
-    private fun drawRangeIndicator(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) {
-        val angleInterval = SWEEP_ANGLE / ((NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS) // Calculate the angle interval between each tick
-        val bigTickLength = 60f // Length of the bigger ticks
-        val bigTickWidth = 20f // Width of the bigger ticks
-        val smallTickLength = bigTickLength / 2 // Length of the smaller ticks
-        val smallTickWidth = bigTickWidth / 2 // Width of the smaller ticks
+    private fun drawSpeedometerTicksAndLabels(canvas: Canvas, centerX: Float, centerY: Float, radius: Float) {
+        //Declare the interval between each tick
+        val angleInterval = SWEEP_ANGLE / ((NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS)
 
-        val needleLength = radius - 40 // Adjusted needle length
+        //Declare small tick length && width
+        val smallTickLength = BIG_TICK_LENGTH / 2
+        val smallTickWidth = BIG_TICK_WIDTH / 3
 
-        for (i in 0 until (NUM_BIG_TICKS * NUM_SMALL_TICKS) - (NUM_SMALL_TICKS-1)) {
-            val bigTickIndex = i / NUM_SMALL_TICKS
-            val smallTickIndex = i % NUM_SMALL_TICKS
+        //Declare needle length
+        val needleLength = radius - NEEDLE_LENGTH_OFFSET
 
-            val angle = START_ANGLE + i * angleInterval // Calculate the angle for each tick
-
+        //Create all the ticks
+        for (tick in 0 until (NUM_BIG_TICKS * NUM_SMALL_TICKS) - (NUM_SMALL_TICKS-1)) {
+            //Declare if tick is big or small based off index
+            val bigTickIndex = tick / NUM_SMALL_TICKS
+            val smallTickIndex = tick % NUM_SMALL_TICKS
             val isBigTick = smallTickIndex == 0
 
-            val tickLength = if (isBigTick) bigTickLength else smallTickLength
-            val tickWidth = if (isBigTick) bigTickWidth else smallTickWidth
+            //Tick angle
+            val angle = START_ANGLE + tick * angleInterval // Calculate the angle for each tick
 
-            val endX = centerX + needleLength * cos(Math.toRadians(angle.toDouble())).toFloat()
-            val endY = centerY + needleLength * sin(Math.toRadians(angle.toDouble())).toFloat()
-            val startX = centerX + (needleLength - tickLength) * cos(Math.toRadians(angle.toDouble())).toFloat()
-            val startY = centerY + (needleLength - tickLength) * sin(Math.toRadians(angle.toDouble())).toFloat()
+            //Determine what tick length and width to use
+            val tickLength = if (isBigTick) BIG_TICK_LENGTH else smallTickLength
+            val tickWidth = if (isBigTick) BIG_TICK_WIDTH else smallTickWidth
 
-            canvas.drawLine(startX, startY, endX, endY, dialPaint.apply {
+            //Declare top-left coordinate of tick
+            val startTickXCoordinate = centerX + (needleLength - tickLength) * cos(Math.toRadians(angle.toDouble())).toFloat()
+            val startTickYCoordinate = centerY + (needleLength - tickLength) * sin(Math.toRadians(angle.toDouble())).toFloat()
+
+            //Declare bottom-right coordinate of tick
+            val endTickXCoordinate = centerX + needleLength * cos(Math.toRadians(angle.toDouble())).toFloat()
+            val endTickYCoordinate = centerY + needleLength * sin(Math.toRadians(angle.toDouble())).toFloat()
+
+            //Draw the tick
+            canvas.drawLine(
+                startTickXCoordinate,
+                startTickYCoordinate,
+                endTickXCoordinate,
+                endTickYCoordinate,
+                dialAndTickPaint.apply {
                 strokeWidth = tickWidth
             })
 
             // Draw label for big ticks only
             if (isBigTick) {
-                // Calculate label position
-                val labelRadius = radius + 60 // Radius for placing labels outside the speedometer
-                val labelX = centerX + labelRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
-                val labelY = centerY + labelRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
-                val labelText = ((maxSpeed / 5) * bigTickIndex).toString() // Generate label text
-                canvas.drawText(labelText, labelX, labelY, tickLabelTextPaint) // Display label
+                //Calculate label position
+                val labelRadius = radius + LABEL_OFFSET
+                val labelXCoordinate = centerX + labelRadius * cos(Math.toRadians(angle.toDouble())).toFloat()
+                val labelYCoordinate = centerY + labelRadius * sin(Math.toRadians(angle.toDouble())).toFloat()
+
+                //Generate label text
+                val labelText = ((maxRpm / 5) * bigTickIndex).toString()
+
+                // Draw label
+                canvas.drawText(
+                    labelText,
+                    labelXCoordinate,
+                    labelYCoordinate,
+                    tickLabelTextPaint)
             }
         }
     }

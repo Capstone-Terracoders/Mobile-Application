@@ -63,3 +63,8 @@ enum class NotificationTypes {
     WARNING,
     ERROR
 }
+
+enum class currentValueState {
+    RPM,
+    HEIGHT
+}

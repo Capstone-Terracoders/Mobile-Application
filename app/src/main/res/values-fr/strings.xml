@@ -37,4 +37,6 @@
     <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
     <string name="currentRPMTitle">Râteau/tr/min</string>
     <string name="speedometerTitle">"Compteur de vitesse "</string>
+    <string name="currentHeightTitle">"Barre de jauge de hauteur de râteau "</string>
+    <string name="heightBarTitle">"Barre de jauge de hauteur de râteau "</string>
 </resources>

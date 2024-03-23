@@ -85,6 +85,10 @@
 
 
     <!-- Strings used for Speedometer-->
-    <string name="currentRPMTitle">Rake RPM</string>
+    <string name="currentRPMTitle">Current RPM</string>
     <string name="speedometerTitle">Speedometer</string>
+
+    <!-- Strings used for Height Gauge-->
+    <string name="currentHeightTitle">Rake Height</string>
+    <string name="heightBarTitle">Rake Height Gauge Bar</string>
 </resources>

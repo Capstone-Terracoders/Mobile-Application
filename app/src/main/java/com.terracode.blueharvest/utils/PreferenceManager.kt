@@ -76,7 +76,7 @@ object PreferenceManager {
     fun getMaxRPMDisplayedInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
-            120)
+            100)
     }
 
     fun getMaxHeightDisplayedInput(): Int {
@@ -242,10 +242,11 @@ object PreferenceManager {
     fun setNotification(notification: Notification) {
         val notifications = getNotifications().toMutableList()
         notifications.add(notification)
-        val notificationsSet = notifications.map { "${it.type}|${it.message}|${it.timestamp}"}.toSet()
-        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet).apply()
+        val notificationsSet =
+            notifications.map { "${it.type}|${it.message}|${it.timestamp}" }.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet)
+            .apply()
     }
-
 
     /**
      * Clears all notifications from SharedPreferences.
