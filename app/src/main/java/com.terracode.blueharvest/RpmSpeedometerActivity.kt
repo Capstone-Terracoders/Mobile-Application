@@ -64,6 +64,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var rpmData: Double? = null
     private var maxRpm = PreferenceManager.getMaxRPMDisplayedInput()
     private var currentRpm = rpmData
+    private var rpm: Double? = currentRpm
 
     //Colors
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
@@ -103,12 +104,21 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Initializer for Drawing Speedometer
     init {
+        if (currentRpm!! > maxRpm){
+            rpm = maxRpm.toDouble()
+            //Allows us to continue seeing the preview in split mode
+            if (!isInEditMode) {
+                PreferenceManager.setNotification(rpmNotificationWarning)
+            }
+        } else {
+            rpm = currentRpm
+        }
+
         //Needle Animation
         needleRotationAnimator = ObjectAnimator.ofFloat(
             this,
             "needleRotation",
-            0f,
-            20f                                         //WUTTTTT
+            rpm!!.toFloat()
         ).apply {
             duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
@@ -153,20 +163,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             centerYCoordinate,
             radius)
 
-        // Initialize rpm value
-        val rpm: Double?
-
         //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
         val angle = if (maxRpm != 0 && currentRpm != null) {
-            if (currentRpm!! > maxRpm){
-                rpm = maxRpm.toDouble()
-                //Allows us to continue seeing the preview in split mode
-                if (!isInEditMode) {
-                    PreferenceManager.setNotification(rpmNotificationWarning)
-                }
-            } else {
-                rpm = currentRpm
-            }
             START_ANGLE + (rpm!! / maxRpm) * SWEEP_ANGLE
         } else {
             0.0

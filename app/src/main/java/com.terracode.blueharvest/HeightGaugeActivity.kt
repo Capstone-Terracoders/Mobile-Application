@@ -98,16 +98,23 @@ class HeightGaugeActivity @JvmOverloads constructor(
     }
 
     init {
+        //Logic for adding a warning notification if current height > max height
+        if (currentHeight!! > maxHeight){
+            PreferenceManager.setNotification(heightNotificationWarning)
+            currentHeight = maxHeight
+        }
+
         //Needle Animation
-        gaugeAnimator = ObjectAnimator.ofFloat(
-            this,
-            "needleRotation",
-            0f,
-            LABEL_POSITION_OFFSET
-        ).apply {
-            duration = ANIMATION_DURATION // Animation duration in milliseconds
-            repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
-            repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+        gaugeAnimator = currentHeight?.let {
+            ObjectAnimator.ofFloat(
+                this,
+                "needleRotation",
+                it
+            ).apply {
+                duration = ANIMATION_DURATION // Animation duration in milliseconds
+                repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
+                repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+            }
         }
 
         //Allows us to still see the preview in the split screen
@@ -120,12 +127,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         //Draw canvas
         super.onDraw(canvas)
-
-        //Logic for adding a warning notification if current height > max height
-        if (currentHeight!! > maxHeight){
-            PreferenceManager.setNotification(heightNotificationWarning)
-            currentHeight = maxHeight
-        }
 
         //Create values for the blue bar width, height, and corner radius
         val barWidth = width.toFloat() * BAR_WIDTH_OFFSET
