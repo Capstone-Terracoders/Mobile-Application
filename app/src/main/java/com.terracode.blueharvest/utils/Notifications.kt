@@ -26,7 +26,7 @@ object Notifications {
     }
 
     fun getMinHeightReachedNotification(context: Context): Notification {
-        val minHeightReachedNotification = R.string.maxHeightReachedNotification
+        val minHeightReachedNotification = R.string.minHeightReachedNotification
         return Notification(
             NotificationTypes.WARNING,
             context.getString(minHeightReachedNotification),
@@ -35,7 +35,7 @@ object Notifications {
     }
 
     fun getHeightBelowZeroNotification(context: Context): Notification {
-        val heightBelowZeroNotification = R.string.maxHeightReachedNotification
+        val heightBelowZeroNotification = R.string.heightBelowZeroNotification
         return Notification(
             NotificationTypes.ERROR,
             context.getString(heightBelowZeroNotification),
