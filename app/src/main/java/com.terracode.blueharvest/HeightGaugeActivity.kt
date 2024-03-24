@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 
@@ -70,9 +69,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var heightBarTitleText = ""
 
     //Notifications
-    private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification()
-    private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification()
-    private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification()
+    private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
+    private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification(context)
+    private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification(context)
 
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
@@ -219,19 +218,19 @@ class HeightGaugeActivity @JvmOverloads constructor(
         )
 
         //Values to figure out position of lower and upper range ticks
-        val upperTickRangeValue = optimalHeightData!! + optimalHeightRange
-        val lowerTickRangeValue = optimalHeightData!! - optimalHeightRange
+        val upperTickRangeValue = optimalHeight!! + optimalHeightRange
+        val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
 
-        val upperTickHeightRatio = (upperTickRangeValue).toFloat() / maxHeight // Height ratio
+        val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
 
         //Error logic for if optimal value && range > maxHeight
-        var upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
+        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
             startYCoordinate
         } else {
             startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
         }
 
-        val lowerTickHeightRatio = (lowerTickRangeValue).toFloat() / maxHeight // Height ratio
+        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
         val lowerTickYCoordinate = startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
 
         //Draw rounded rectangle for optimal rake height
