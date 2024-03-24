@@ -30,7 +30,7 @@ object NotificationManager {
         // Add notifications dynamically to the container layout
         if (notifications.isEmpty()){
             val textView = TextView(activity)
-            textView.text = "No Notifications Yet!"
+            textView.text = activity.getString(R.string.maxHeightReachedNotification)
             containerLayout.addView(textView)
         } else {
             notifications.forEach { notification ->

@@ -66,6 +66,7 @@ class HomeActivity : AppCompatActivity() {
         val currentTheme = ThemeManager.getCurrentTheme(this)
         ThemeManager.setColorOverlayTheme(this, currentTheme)
 
+        //Set language
         val currentLanguagePosition = PreferenceManager.getSelectedLanguagePosition()
         val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
         LocaleManager.setLocale(this, languagePosition)

@@ -1,5 +1,5 @@
-package com.terracode.blueharvest.utils
-
+import android.content.Context
+import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
 import java.time.Instant
@@ -7,38 +7,38 @@ import java.time.format.DateTimeFormatter
 
 object Notifications {
 
-    fun getMaxRPMReachedNotification(): Notification {
-        // Create a new warning notification for currentRpm > maxRPM
+    fun getMaxRPMReachedNotification(context: Context): Notification {
+        val maxRpmReachedNotification = R.string.maxRPMReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            "Current RPM is greater than maximum RPM!",
+            context.getString(maxRpmReachedNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
-    fun getMaxHeightReachedNotification(): Notification {
-        // Create a new warning notification for currentRpm > maxRPM
+    fun getMaxHeightReachedNotification(context: Context): Notification {
+        val maxHeightReachedNotification = R.string.maxHeightReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            "Current rake height is greater than maximum height!",
+            context.getString(maxHeightReachedNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
-    fun getStartRecordingNotification(): Notification {
-        // Create a new notification for start recording data
+    fun getStartRecordingNotification(context: Context): Notification {
+        val startedRecordingNotification = R.string.startedRecordingNotification
         return Notification(
             NotificationTypes.NOTIFICATION,
-            "Started Recording Data",
+            context.getString(startedRecordingNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
-    fun getStopRecordingNotification(): Notification {
-        // Create a new notification for stopping recording data
+    fun getStopRecordingNotification(context: Context): Notification {
+        val stoppedRecordingNotification = R.string.stoppedRecordingNotification
         return Notification(
             NotificationTypes.NOTIFICATION,
-            "Stopped Recording Data",
+            context.getString(stoppedRecordingNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
