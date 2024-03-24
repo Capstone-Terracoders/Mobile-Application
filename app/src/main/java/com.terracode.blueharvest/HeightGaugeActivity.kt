@@ -121,7 +121,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         if (currentHeight!! > maxHeight){
             PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
             currentHeight = maxHeight
-        } else if (currentHeight!! < minHeight){
+        } else if (currentHeight!! < minHeight && currentHeight!! > 0){
             PreferenceManager.setNotification(heightBelowMinNotificationWarning)
         } else if (currentHeight!! < 0){
             PreferenceManager.setNotification(heightBelowZeroNotificationError)
@@ -333,7 +333,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val labelText = ((maxHeight/(numTicks-1)) * i).toInt()
+                val labelText = ((maxHeight/(numTicks-1)) * i)
                 val textWidth = labelTextPaint.measureText(labelText.toString())
 
                 //Tick Label coordinates
