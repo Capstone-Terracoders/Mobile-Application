@@ -44,4 +44,6 @@
     <string name="maxHeightReachedNotification">ADVERTENCIA: ¡La altura actual del rastrillo es mayor que la altura máxima!</string>
     <string name="startedRecordingNotification">"Comenzó a registrar datos. "</string>
     <string name="stoppedRecordingNotification">"Dejó de grabar datos. "</string>
+    <string name="minHeightReachedNotification">"\"ADVERTENCIA: ¡La altura actual del rastrillo es inferior o igual a la altura mínima!\" "</string>
+    <string name="heightBelowZeroNotification">"ERROR: La altura actual del rastrillo es inferior a cero; consulte el manual del usuario. "</string>
 </resources>

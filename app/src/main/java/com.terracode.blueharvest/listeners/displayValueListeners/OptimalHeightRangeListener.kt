@@ -20,7 +20,7 @@ class OptimalHeightRangeListener(private val activity: ConfigurationSettingsActi
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
-                val value = input.toIntOrNull()
+                val value = input.toFloatOrNull()
                 value?.let {
                     PreferenceManager.setOptimalHeightRangeInput(it)
                 }

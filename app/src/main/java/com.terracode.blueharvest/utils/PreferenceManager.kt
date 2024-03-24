@@ -85,16 +85,16 @@ object PreferenceManager {
             50)
     }
 
-    fun getOptimalRPMRangeInput(): Int {
-        return sharedPreferences.getInt(
+    fun getOptimalRPMRangeInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
-            0)
+            0f)
     }
 
-    fun getOptimalHeightRangeInput(): Int {
-        return sharedPreferences.getInt(
+    fun getOptimalHeightRangeInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
-            0)
+            0f)
     }
 
     fun getMaxRakeRPMInput(): Int {
@@ -197,14 +197,14 @@ object PreferenceManager {
             input).apply()
     }
 
-    fun setOptimalRPMRangeInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setOptimalRPMRangeInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
             input).apply()
     }
 
-    fun setOptimalHeightRangeInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setOptimalHeightRangeInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
             input).apply()
     }

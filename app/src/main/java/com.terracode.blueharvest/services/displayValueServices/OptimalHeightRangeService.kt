@@ -10,10 +10,10 @@ object OptimalHeightRangeService {
         PreferenceManager.init(activity)
 
         val optimalHeightRangeListener = OptimalHeightRangeListener(activity)
-        val optimalHeightRange: Int = PreferenceManager.getOptimalHeightRangeInput()
+        val optimalHeightRange: Float = PreferenceManager.getOptimalHeightRangeInput()
 
         optimalHeightRange.let {
-            // Convert the Int value to String since setText() expects a String
+            // Convert the Float value to String since setText() expects a String
             optimalHeightRangeInput.setText(it.toString())
         }
 

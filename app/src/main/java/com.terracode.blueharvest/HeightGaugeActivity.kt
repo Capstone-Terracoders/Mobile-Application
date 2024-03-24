@@ -26,6 +26,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
         sensorData?.apply {
             heightData = getRakeHeight()
+            optimalHeightData = getOptimalRakeHeight()
         }
     }
 
@@ -47,13 +48,19 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
     //Data
     private var heightData: Double? = null
+    private var optimalHeightData: Double? = null
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
+    private var minHeight = PreferenceManager.getMinRakeHeightInput()
+    private var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
+    private var optimalHeight = optimalHeightData?.toFloat()
     private var currentHeight = heightData?.toFloat()
 
     //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
+    private val redColor = ContextCompat.getColor(context, R.color.red)
+    private val greenColor = ContextCompat.getColor(context, R.color.green)
 
     //Labels
     private var labelTextSize = PreferenceManager.getSelectedTextSize()
@@ -61,7 +68,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var heightBarTitleText = ""
 
     //Notifications
-    private val heightNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
+    private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
+    private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification(context)
+    private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification(context)
 
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
@@ -74,6 +83,16 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
     private val lightGreyBarPaint = Paint().apply {
         color = lightGreyColor
+        style = Paint.Style.FILL
+    }
+
+    private val redMinValuePaint = Paint().apply {
+        color = redColor
+        style = Paint.Style.FILL
+    }
+
+    private val greenOptimalValuePaint = Paint().apply {
+        color = greenColor
         style = Paint.Style.FILL
     }
 
@@ -99,8 +118,13 @@ class HeightGaugeActivity @JvmOverloads constructor(
     init {
         //Logic for adding a warning notification if current height > max height
         if (currentHeight!! > maxHeight){
-            PreferenceManager.setNotification(heightNotificationWarning)
+            PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
             currentHeight = maxHeight
+        } else if (currentHeight!! < minHeight && currentHeight!! > 0){
+            PreferenceManager.setNotification(heightBelowMinNotificationWarning)
+        } else if (currentHeight!! < 0){
+            PreferenceManager.setNotification(heightBelowZeroNotificationError)
+            currentHeight = 0f
         }
 
         //Needle Animation
@@ -132,6 +156,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val barHeight = height.toFloat() * BAR_HEIGHT_OFFSET
         val cornerRadius = barWidth * BAR_CORNER_RADIUS_OFFSET
 
+        //Calculate total number of ticks and the space between them
+        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS
+        val tickSpacingInterval = barHeight / (numTicks - 1)
+
         //These define the top left coordinate of the blue height bar
         val startXCoordinate = (width - barWidth) / 2
         val startYCoordinate = (height - barHeight) / 2
@@ -149,6 +177,91 @@ class HeightGaugeActivity @JvmOverloads constructor(
             cornerRadius,
             cornerRadius,
             barPaint
+        )
+
+        // Draw black outline for blue bar
+        canvas.drawRoundRect(
+            startXCoordinate,
+            startYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Y-Coordinate for the top left coordinate for the minimum safety height
+        val safetyValueRatio = minHeight / maxHeight // Height ratio
+        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+
+        //Draw rounded rectangle for safety min height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            minHeightStartYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            redMinValuePaint
+        )
+
+        // Draw black outline for safety min height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            minHeightStartYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Values to figure out position of lower and upper range ticks
+        val upperTickRangeValue = optimalHeight!! + optimalHeightRange
+        val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
+
+        val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
+
+        //Error logic for if optimal value && range > maxHeight
+        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
+            startYCoordinate
+        } else {
+            startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
+        }
+
+        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
+        val lowerTickYCoordinate = startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
+
+        //Draw rounded rectangle for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            greenOptimalValuePaint
+        )
+
+        // Draw black outline for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Draw Horizontal Ticks
+        drawTicksAndLabels(
+            canvas,
+            startXCoordinate,
+            startYCoordinate,
+            barHeight,
+            numTicks,
+            tickSpacingInterval
         )
 
         //Y-Coordinate for the top left coordinate for the height indicator
@@ -170,7 +283,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
             lightGreyBarPaint
         )
 
-        // Draw outline for horizontal bar
+        // Draw black outline for height indicator
         canvas.drawRoundRect(
             startXCoordinate,
             heightIndicatorStartYCoordinate,
@@ -180,14 +293,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
             cornerRadius,
             blackOutlinePaint
         )
-
-        //Draw Horizontal Ticks
-        drawTicksAndLabels(
-            canvas,
-            startXCoordinate,
-            startYCoordinate,
-            barHeight
-        )
     }
 
     //Function to draw the ticks and the labels for the big ticks
@@ -195,11 +300,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
         canvas: Canvas,
         startXCoordinate: Float,
         startYCoordinate: Float,
-        barHeight: Float
+        barHeight: Float,
+        numTicks: Int,
+        tickSpacingInterval: Float
     ){
-        //Calculate total number of ticks and the space between them
-        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS
-        val tickSpacingInterval = barHeight / (numTicks - 1)
 
         //Initialize tick length and width
         val smallTickLength = BIG_TICK_LENGTH / 2     // Length of the smaller ticks
@@ -228,8 +332,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val labelText = ((maxHeight/(numTicks-1)) * i).toInt()
-                val textWidth = labelTextPaint.measureText(labelText.toString())
+                val labelText = ((maxHeight / (numTicks - 1)) * i)
+                val formattedLabelText = String.format("%.1f", labelText) // Round to 1 decimal place
+                val textWidth = labelTextPaint.measureText(formattedLabelText)
 
                 //Tick Label coordinates
                 val labelXCoordinate = tickXCoordinate - textWidth - LABEL_POSITION_OFFSET

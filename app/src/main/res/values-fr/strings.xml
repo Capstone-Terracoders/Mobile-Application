@@ -44,4 +44,6 @@
     <string name="maxHeightReachedNotification">AVERTISSEMENT : la hauteur actuelle du râteau est supérieure à la hauteur maximale !</string>
     <string name="startedRecordingNotification">Début de l\'enregistrement des données.</string>
     <string name="stoppedRecordingNotification">Arrêt de l\'enregistrement des données.</string>
+    <string name="minHeightReachedNotification">"\"AVERTISSEMENT : la hauteur de coupe actuelle est inférieure/ou égale à la hauteur minimale !\" "</string>
+    <string name="heightBelowZeroNotification">"ERREUR : La hauteur de coupe actuelle est inférieure à zéro, veuillez vous référer au manuel d'utilisation ! "</string>
 </resources>

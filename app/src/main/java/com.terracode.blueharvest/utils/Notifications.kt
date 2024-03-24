@@ -25,6 +25,24 @@ object Notifications {
         )
     }
 
+    fun getMinHeightReachedNotification(context: Context): Notification {
+        val minHeightReachedNotification = R.string.minHeightReachedNotification
+        return Notification(
+            NotificationTypes.WARNING,
+            context.getString(minHeightReachedNotification),
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getHeightBelowZeroNotification(context: Context): Notification {
+        val heightBelowZeroNotification = R.string.heightBelowZeroNotification
+        return Notification(
+            NotificationTypes.ERROR,
+            context.getString(heightBelowZeroNotification),
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
     fun getStartRecordingNotification(context: Context): Notification {
         val startedRecordingNotification = R.string.startedRecordingNotification
         return Notification(
