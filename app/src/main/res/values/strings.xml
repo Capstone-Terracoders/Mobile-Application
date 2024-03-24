@@ -91,4 +91,11 @@
     <!-- Strings used for Height Gauge-->
     <string name="currentHeightTitle">Rake Height</string>
     <string name="heightBarTitle">Rake Height Gauge Bar</string>
+
+    <!-- Strings for Notifications-->
+    <string name="noNotificationText">No notifications yet :(</string>
+    <string name="maxRPMReachedNotification">WARNING: Current RPM is greater than maximum RPM!</string>
+    <string name="maxHeightReachedNotification">WARNING: Current rake height is greater than maximum height!</string>
+    <string name="startedRecordingNotification">Started Recording Data.</string>
+    <string name="stoppedRecordingNotification">Stopped Recording Data.</string>
 </resources>

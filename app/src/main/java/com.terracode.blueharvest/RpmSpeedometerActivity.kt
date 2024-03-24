@@ -8,7 +8,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 import kotlin.math.cos
@@ -74,7 +73,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private val normalTextSize = PreferenceManager.getSelectedTextSize()
 
     //Notifications
-    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification()
+    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification(context)
 
     //Animator
     private var needleRotationAnimator: ObjectAnimator? = null

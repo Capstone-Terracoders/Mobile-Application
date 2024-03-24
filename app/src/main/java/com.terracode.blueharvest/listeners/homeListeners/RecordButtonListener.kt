@@ -3,14 +3,13 @@ package com.terracode.blueharvest.listeners.homeListeners
 import android.view.View
 import android.view.View.OnClickListener
 import com.terracode.blueharvest.HomeActivity
-import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 
 class RecordButtonListener(private val activity: HomeActivity) : OnClickListener {
 
     override fun onClick(view: View?) {
-        val startRecordNotification = Notifications.getStartRecordingNotification()
-        val stopRecordNotification = Notifications.getStopRecordingNotification()
+        val startRecordNotification = Notifications.getStartRecordingNotification(activity)
+        val stopRecordNotification = Notifications.getStopRecordingNotification(activity)
 
         // Get the current status from SharedPreferences
         val currentStatus = PreferenceManager.getRecordButtonStatus()

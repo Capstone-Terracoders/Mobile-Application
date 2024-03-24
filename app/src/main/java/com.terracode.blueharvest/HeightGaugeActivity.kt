@@ -7,7 +7,6 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.utils.Notifications
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.ReadJSONObject
 
@@ -62,7 +61,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var heightBarTitleText = ""
 
     //Notifications
-    private val heightNotificationWarning = Notifications.getMaxHeightReachedNotification()
+    private val heightNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
 
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
