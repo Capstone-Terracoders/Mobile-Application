@@ -30,6 +30,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
         sensorData?.apply {
             rpmData = getRPM()
+            optimalRpmData = getOptimalRakeRPM()
         }
     }
 
@@ -61,13 +62,17 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Data
     private var rpmData: Double? = null
+    private var optimalRpmData: Double? = null
+    private var currentRpm: Double? = rpmData
+    private var optimalRpm: Double? = optimalRpmData
     private var maxRpm = PreferenceManager.getMaxRPMDisplayedInput()
-    private var currentRpm = rpmData
-    private var rpm: Double? = currentRpm
+    private var optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
 
     //Colors
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
+    private val redColor = ContextCompat.getColor(context, R.color.red)
+    private val greenColor = ContextCompat.getColor(context, R.color.green)
 
     //Labels
     private val normalTextSize = PreferenceManager.getSelectedTextSize()
@@ -81,6 +86,20 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     // Paint objects
     private val dialAndTickPaint = Paint().apply {
         color = blueBerryColor
+        style = Paint.Style.STROKE
+        strokeWidth = DEFAULT_STROKE_WIDTH
+        strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
+    }
+
+    private val minRpmPaint = Paint().apply {
+        color = redColor
+        style = Paint.Style.STROKE
+        strokeWidth = DEFAULT_STROKE_WIDTH
+        strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
+    }
+
+    private val optimalRpmPaint = Paint().apply {
+        color = greenColor
         style = Paint.Style.STROKE
         strokeWidth = DEFAULT_STROKE_WIDTH
         strokeCap = Paint.Cap.ROUND // Set the stroke cap to round to make the ticks rounded
@@ -104,20 +123,20 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     //Initializer for Drawing Speedometer
     init {
         if (currentRpm!! > maxRpm){
-            rpm = maxRpm.toDouble()
+            currentRpm = maxRpm.toDouble()
             //Allows us to continue seeing the preview in split mode
             if (!isInEditMode) {
                 PreferenceManager.setNotification(rpmNotificationWarning)
             }
         } else {
-            rpm = currentRpm
+            currentRpm = rpmData
         }
 
         //Needle Animation
         needleRotationAnimator = ObjectAnimator.ofFloat(
             this,
             "needleRotation",
-            rpm!!.toFloat()
+            currentRpm!!.toFloat()
         ).apply {
             duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
@@ -162,9 +181,11 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             centerYCoordinate,
             radius)
 
+        //INSERT MIN AND OPTIMAL RPM HERE
+
         //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
         val angle = if (maxRpm != 0 && currentRpm != null) {
-            START_ANGLE + (rpm!! / maxRpm) * SWEEP_ANGLE
+            START_ANGLE + (currentRpm!! / maxRpm) * SWEEP_ANGLE
         } else {
             0.0
         }
