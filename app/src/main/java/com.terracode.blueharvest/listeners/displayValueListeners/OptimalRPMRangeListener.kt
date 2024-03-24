@@ -20,7 +20,7 @@ class OptimalRPMRangeListener(private val activity: ConfigurationSettingsActivit
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
-                val value = input.toIntOrNull()
+                val value = input.toFloatOrNull()
                 value?.let {
                     PreferenceManager.setOptimalRPMRangeInput(it)
                 }

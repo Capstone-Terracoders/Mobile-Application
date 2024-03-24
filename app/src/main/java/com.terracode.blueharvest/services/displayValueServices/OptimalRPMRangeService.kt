@@ -10,10 +10,10 @@ object OptimalRPMRangeService {
         PreferenceManager.init(activity)
 
         val optimalRPMRangeListener = OptimalRPMRangeListener(activity)
-        val optimalRPMRange: Int = PreferenceManager.getOptimalRPMRangeInput()
+        val optimalRPMRange: Float = PreferenceManager.getOptimalRPMRangeInput()
 
         optimalRPMRange.let {
-            // Convert the Int value to String since setText() expects a String
+            // Convert the Float value to String since setText() expects a String
             optimalRPMRangeInput.setText(it.toString())
         }
 

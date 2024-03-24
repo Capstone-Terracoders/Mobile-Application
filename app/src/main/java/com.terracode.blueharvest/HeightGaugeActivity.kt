@@ -49,12 +49,14 @@ class HeightGaugeActivity @JvmOverloads constructor(
     //Data
     private var heightData: Double? = null
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
+    private var minHeight = PreferenceManager.getMinRakeHeightInput()
     private var currentHeight = heightData?.toFloat()
 
     //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
+    private val redColor = ContextCompat.getColor(context, R.color.red)
 
     //Labels
     private var labelTextSize = PreferenceManager.getSelectedTextSize()
@@ -75,6 +77,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
     private val lightGreyBarPaint = Paint().apply {
         color = lightGreyColor
+        style = Paint.Style.FILL
+    }
+
+    private val redMinValuePaint = Paint().apply {
+        color = redColor
         style = Paint.Style.FILL
     }
 
@@ -171,7 +178,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
             lightGreyBarPaint
         )
 
-        // Draw outline for horizontal bar
+        // Draw black outline for height indicator
         canvas.drawRoundRect(
             startXCoordinate,
             heightIndicatorStartYCoordinate,
@@ -180,6 +187,21 @@ class HeightGaugeActivity @JvmOverloads constructor(
             cornerRadius,
             cornerRadius,
             blackOutlinePaint
+        )
+
+        //Y-Coordinate for the top left coordinate for the minimum safety height
+        val safetyValueRatio = minHeight / maxHeight // Height ratio
+        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+
+        //Draw rounded rectangle for safety min height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            minHeightStartYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            redMinValuePaint
         )
 
         //Draw Horizontal Ticks
