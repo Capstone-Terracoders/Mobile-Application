@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.PreferenceManager
@@ -333,8 +332,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val labelText = ((maxHeight/(numTicks-1)) * i)
-                val textWidth = labelTextPaint.measureText(labelText.toString())
+                val labelText = ((maxHeight / (numTicks - 1)) * i)
+                val formattedLabelText = String.format("%.1f", labelText) // Round to 1 decimal place
+                val textWidth = labelTextPaint.measureText(formattedLabelText)
 
                 //Tick Label coordinates
                 val labelXCoordinate = tickXCoordinate - textWidth - LABEL_POSITION_OFFSET
