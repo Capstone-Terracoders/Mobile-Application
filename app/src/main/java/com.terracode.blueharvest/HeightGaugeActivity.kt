@@ -70,7 +70,9 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var heightBarTitleText = ""
 
     //Notifications
-    private val heightNotificationWarning = Notifications.getMaxHeightReachedNotification()
+    private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification()
+    private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification()
+    private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification()
 
     //Animator
     private var gaugeAnimator: ObjectAnimator? = null
@@ -118,8 +120,13 @@ class HeightGaugeActivity @JvmOverloads constructor(
     init {
         //Logic for adding a warning notification if current height > max height
         if (currentHeight!! > maxHeight){
-            PreferenceManager.setNotification(heightNotificationWarning)
+            PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
             currentHeight = maxHeight
+        } else if (currentHeight!! < minHeight){
+            PreferenceManager.setNotification(heightBelowMinNotificationWarning)
+        } else if (currentHeight!! < 0){
+            PreferenceManager.setNotification(heightBelowZeroNotificationError)
+            currentHeight = 0f
         }
 
         //Needle Animation
@@ -174,6 +181,91 @@ class HeightGaugeActivity @JvmOverloads constructor(
             barPaint
         )
 
+        // Draw black outline for blue bar
+        canvas.drawRoundRect(
+            startXCoordinate,
+            startYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Y-Coordinate for the top left coordinate for the minimum safety height
+        val safetyValueRatio = minHeight / maxHeight // Height ratio
+        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+
+        //Draw rounded rectangle for safety min height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            minHeightStartYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            redMinValuePaint
+        )
+
+        // Draw black outline for safety min height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            minHeightStartYCoordinate,
+            endXCoordinate,
+            endYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Values to figure out position of lower and upper range ticks
+        val upperTickRangeValue = optimalHeightData!! + optimalHeightRange
+        val lowerTickRangeValue = optimalHeightData!! - optimalHeightRange
+
+        val upperTickHeightRatio = (upperTickRangeValue).toFloat() / maxHeight // Height ratio
+
+        //Error logic for if optimal value && range > maxHeight
+        var upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
+            startYCoordinate
+        } else {
+            startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
+        }
+
+        val lowerTickHeightRatio = (lowerTickRangeValue).toFloat() / maxHeight // Height ratio
+        val lowerTickYCoordinate = startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
+
+        //Draw rounded rectangle for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            greenOptimalValuePaint
+        )
+
+        // Draw black outline for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
+        //Draw Horizontal Ticks
+        drawTicksAndLabels(
+            canvas,
+            startXCoordinate,
+            startYCoordinate,
+            barHeight,
+            numTicks,
+            tickSpacingInterval
+        )
+
         //Y-Coordinate for the top left coordinate for the height indicator
         val heightRatio = currentHeight!! / maxHeight // Height ratio
         val heightIndicatorStartYCoordinate = startYCoordinate + barHeight - (heightRatio * barHeight) - (HEIGHT_INDICATOR_HEIGHT/2)
@@ -202,56 +294,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
             cornerRadius,
             cornerRadius,
             blackOutlinePaint
-        )
-
-        //Y-Coordinate for the top left coordinate for the minimum safety height
-        val safetyValueRatio = minHeight / maxHeight // Height ratio
-        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
-
-        //Draw rounded rectangle for safety min height
-        canvas.drawRoundRect(
-            startXCoordinate,
-            minHeightStartYCoordinate,
-            endXCoordinate,
-            endYCoordinate,
-            cornerRadius,
-            cornerRadius,
-            redMinValuePaint
-        )
-
-        //Value for the center-Y coordinate for the optimal rake height
-        val optimalHeightRatio = (optimalHeightData!!).toFloat() / maxHeight // Height ratio
-        val optimalHeightCenterYCoordinate = startYCoordinate + barHeight - (optimalHeightRatio * barHeight)
-
-        //Values to figure out position of lower and upper range ticks
-        val upperTickRangeValue = optimalHeightData!! + optimalHeightRange
-        val lowerTickRangeValue = optimalHeightData!! - optimalHeightRange
-
-        val upperTickHeightRatio = (upperTickRangeValue).toFloat() / maxHeight // Height ratio
-        val upperTickYCoordinate = startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
-
-        val lowerTickHeightRatio = (lowerTickRangeValue).toFloat() / maxHeight // Height ratio
-        val lowerTickYCoordinate = startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
-
-        //Draw rounded rectangle for optimal rake height
-        canvas.drawRoundRect(
-            startXCoordinate,
-            upperTickYCoordinate,
-            endXCoordinate,
-            lowerTickYCoordinate,
-            cornerRadius,
-            cornerRadius,
-            greenOptimalValuePaint
-        )
-
-        //Draw Horizontal Ticks
-        drawTicksAndLabels(
-            canvas,
-            startXCoordinate,
-            startYCoordinate,
-            barHeight,
-            numTicks,
-            tickSpacingInterval
         )
     }
 
