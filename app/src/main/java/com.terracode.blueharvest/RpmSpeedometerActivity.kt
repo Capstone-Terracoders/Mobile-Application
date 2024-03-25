@@ -1,5 +1,6 @@
 package com.terracode.blueharvest
 
+import Notifications
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -166,7 +167,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         super.onDraw(canvas)
 
         // Declare & initialize ark parameters:
-        val radiusOffset = 0.8f
+        val radiusOffset = 0.7f
         val centerXCoordinate = width / 2f      //X-Coordinate of the center of the activity page
         val centerYCoordinate = height / 2f     //Y-Coordinate of the center of the activity page
         val radius = min(centerXCoordinate, centerYCoordinate) * radiusOffset
