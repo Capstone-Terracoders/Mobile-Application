@@ -17,6 +17,7 @@ object PreferenceManager {
 
     // SharedPreferences instance to manage preferences
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sensorData: ReadJSONObject
 
     /**
      * Initializes the PreferenceManager with the application context.
@@ -25,9 +26,70 @@ object PreferenceManager {
      */
     fun init(context: Context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")!!
     }
 
     // Getters ----------------------------------------------------------
+
+    fun getOptimalRakeHeight(): Double?{
+        var optimalRakeHeight: Double?
+        sensorData.apply {
+            optimalRakeHeight = getOptimalRakeHeight()
+        }
+        if (!getSelectedUnit()){
+            optimalRakeHeight = UnitConverter.convertHeightToImperial(optimalRakeHeight)
+        }
+        return optimalRakeHeight
+    }
+
+    fun getOptimalRakeRpm(): Double?{
+        var optimalRakeRpm: Double?
+        sensorData.apply {
+            optimalRakeRpm = getOptimalRakeRPM()
+        }
+        return optimalRakeRpm
+    }
+
+    fun getBushHeight(): Double?{
+        var bushHeightData: Double?
+        sensorData.apply {
+            bushHeightData = getBushHeight()
+        }
+        if (!getSelectedUnit()){
+            bushHeightData = UnitConverter.convertHeightToImperial(bushHeightData)
+        }
+        return bushHeightData
+    }
+
+    fun getSpeed(): Double?{
+        var speedData: Double?
+        sensorData.apply {
+            speedData = getSpeed()
+        }
+        if (!getSelectedUnit()){
+            speedData = UnitConverter.convertSpeedToImperial(speedData)
+        }
+        return speedData
+    }
+
+    fun getRpm(): Double?{
+        var rpmData: Double?
+        sensorData.apply {
+            rpmData = getRPM()
+        }
+        return rpmData
+    }
+
+    fun getRakeHeight(): Double?{
+        var rakeHeightData: Double?
+        sensorData.apply {
+            rakeHeightData = getRakeHeight()
+        }
+        if (!getSelectedUnit()){
+            rakeHeightData = UnitConverter.convertHeightToImperial(rakeHeightData)
+        }
+        return rakeHeightData
+    }
 
     /**
      * Retrieves the selected color position from SharedPreferences.
@@ -80,9 +142,13 @@ object PreferenceManager {
     }
 
     fun getMaxHeightDisplayedInput(): Int {
-        return sharedPreferences.getInt(
+        var maxHeight = sharedPreferences.getInt(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
             50)
+        if (!getSelectedUnit()){
+            maxHeight = UnitConverter.convertHeightToImperial(maxHeight.toDouble())!!.toInt()
+        }
+        return maxHeight
     }
 
     fun getOptimalRPMRangeInput(): Float {

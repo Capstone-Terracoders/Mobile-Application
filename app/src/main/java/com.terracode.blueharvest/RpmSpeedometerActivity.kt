@@ -10,7 +10,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.ReadJSONObject
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
@@ -26,13 +25,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     init {
         //Initialize Preference Manager
         PreferenceManager.init(context)
-
-        //Get data from JSON file (or Bluetooth)
-        val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
-        sensorData?.apply {
-            rpmData = getRPM()
-            optimalRpmData = getOptimalRakeRPM()
-        }
     }
 
     //Constants
@@ -62,10 +54,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var ANIMATION_DURATION = 1000L
 
     //Data
-    private var rpmData: Double? = null
-    private var optimalRpmData: Double? = null
-    private var currentRpm: Double? = rpmData
-    private var optimalRpm: Double? = optimalRpmData
+    private var currentRpm = PreferenceManager.getRpm()
+    private var optimalRpm = PreferenceManager.getOptimalRakeRpm()
     private var maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
     private var maxRakeRpm = PreferenceManager.getMaxRakeRPMInput()
     private var optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
@@ -141,8 +131,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                 currentRpm = 0.0
                 PreferenceManager.setNotification(rpmBelowZeroNotification)
             }
-        } else {
-            currentRpm = rpmData
         }
 
         if (maxRakeRpm > maxRpmDisplayed){

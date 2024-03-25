@@ -12,8 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.services.homeServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.ReadJSONObject
-import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
@@ -38,23 +36,12 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
 
-    //Declaring the data values
-    private var optimalRakeHeight: Double? = null
-    private var optimalRakeRpm: Double? = null
-    private var bushHeightData: Double? = null
-    private var speedData: Double? = null
-    private var rpmData: Double? = null
-    private var rakeHeightData: Double? = null
-
     //Declare value types
     private var cm = "cm"
     private var inch = "in"
     private var kmph = "km/h"
     private var mph = "mph"
 
-    //Declare colors
-//    private var redColor = ContextCompat.getColor(this, R.color.red)
-//    private var blackColor = ContextCompat.getColor(this, R.color.black)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,16 +85,14 @@ class HomeActivity : AppCompatActivity() {
         //Get the value of the toggle from AccessibilitySettings XML file.
         val toggleValue = PreferenceManager.getSelectedUnit()
 
-        //Read data from mock values/bluetooth, and set the data values equal to the declared variables from above.
-        val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")
-        sensorData?.apply {
-            optimalRakeHeight = getOptimalRakeHeight()
-            optimalRakeRpm = getOptimalRakeRPM()
-            bushHeightData = getBushHeight()
-            speedData = getSpeed()
-            rpmData = getRPM()
-            rakeHeightData = getRakeHeight()
-        }
+        //Read data from mock values/bluetooth, which we locate in the preference manager
+        val rpmData = PreferenceManager.getRpm()
+        val rakeHeightData = PreferenceManager.getRakeHeight()
+        val bushHeightData = PreferenceManager.getBushHeight()
+        val speedData = PreferenceManager.getSpeed()
+        val optimalRakeHeight = PreferenceManager.getOptimalRakeHeight()
+        val optimalRakeRpm = PreferenceManager.getOptimalRakeRpm()
+
 
         //CurrentValueTitles
         val maxRpmValue = PreferenceManager.getMaxRPMDisplayedInput()
@@ -143,18 +128,16 @@ class HomeActivity : AppCompatActivity() {
             val currentHeightText = "$currentHeightTitle $rakeHeightData $cm"
             currentHeightTextView.text = currentHeightText
 
-
-
         } else {
-            val optimalRakeHeightText = "${UnitConverter.convertHeightToImperial(optimalRakeHeight)} $inch"
+            val optimalRakeHeightText = "$optimalRakeHeight $inch"
             optimalRakeHeightTextView.text = optimalRakeHeightText
-            val optimalRakeRpmText = "${UnitConverter.convertHeightToImperial(optimalRakeRpm)} $inch"
+            val optimalRakeRpmText = "$optimalRakeRpm $inch"
             optimalRakeRPMValueTextView.text = optimalRakeRpmText
-            val currentBushHeightText = "${UnitConverter.convertHeightToImperial(bushHeightData)} $inch"
+            val currentBushHeightText = "$bushHeightData $inch"
             currentBushHeightTextView.text = currentBushHeightText
-            val currentSpeedText = "${UnitConverter.convertSpeedToImperial(speedData)} $mph"
+            val currentSpeedText = "$speedData $mph"
             currentSpeedTextView.text = currentSpeedText
-            val currentHeightText = "$currentHeightTitle ${UnitConverter.convertSpeedToImperial(rakeHeightData)} $inch"
+            val currentHeightText = "$currentHeightTitle $rakeHeightData $inch"
             currentHeightTextView.text = currentHeightText
 
         }

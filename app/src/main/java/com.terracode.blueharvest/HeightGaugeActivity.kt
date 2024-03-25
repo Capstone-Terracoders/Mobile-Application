@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.ReadJSONObject
 
 @Suppress("PrivatePropertyName")
 class HeightGaugeActivity @JvmOverloads constructor(
@@ -22,13 +21,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
     init {
         //Initialize Preference Manager
         PreferenceManager.init(context)
-
-        //Get data from JSON file (or Bluetooth) -- Update with preference manager ticket
-        val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
-        sensorData?.apply {
-            heightData = getRakeHeight()
-            optimalHeightData = getOptimalRakeHeight()
-        }
     }
 
     //Constants
@@ -48,13 +40,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
 
     //Data
-    private var heightData: Double? = null
-    private var optimalHeightData: Double? = null
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
     private var minHeight = PreferenceManager.getMinRakeHeightInput()
     private var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
-    private var optimalHeight = optimalHeightData?.toFloat()
-    private var currentHeight = heightData?.toFloat()
+    private var optimalHeight = PreferenceManager.getOptimalRakeHeight()?.toFloat()
+    private var currentHeight = PreferenceManager.getRakeHeight()?.toFloat()
 
     //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
