@@ -1,8 +1,8 @@
 {
   "bushHeight": 25.0,
   "rakeHeight": 15,
-  "RPM": 30.0,
+  "RPM": 40.0,
   "speed": 5.0,
-  "optimalRakeHeight": 1,
+  "optimalRakeHeight": 30,
   "optimalRakeRPM": 10
 }

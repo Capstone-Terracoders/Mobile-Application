@@ -96,6 +96,7 @@
     <string name="noNotificationText">No notifications yet :(</string>
     <string name="maxRPMReachedNotification">WARNING: Current RPM is greater than maximum RPM!</string>
     <string name="maxRPMDisplayedReachedNotification">WARNING: Current RPM is greater than maximum RPM Displayed!</string>
+    <string name="rpmBelowZeroNotification">ERROR: Current RPM is below zero, please refer to user manual!</string>
     <string name="maxHeightReachedNotification">WARNING: Current rake height is greater than maximum height!</string>
     <string name="minHeightReachedNotification">"WARNING: Current rake height is under/or equal to minimum height!"</string>
     <string name="heightBelowZeroNotification">"ERROR: Current rake height is below zero, please refer to user manual!"</string>

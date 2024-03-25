@@ -8,10 +8,10 @@ import java.time.format.DateTimeFormatter
 object Notifications {
 
     fun getMaxRPMDisplayedReachedNotification(context: Context): Notification {
-        val maxRpmReachedNotification = R.string.maxRPMDisplayedReachedNotification
+        val maxRpmDisplayedReachedNotification = R.string.maxRPMDisplayedReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            context.getString(maxRpmReachedNotification),
+            context.getString(maxRpmDisplayedReachedNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
@@ -21,6 +21,15 @@ object Notifications {
         return Notification(
             NotificationTypes.WARNING,
             context.getString(maxRpmReachedNotification),
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getRpmBelowZeroNotification(context: Context): Notification {
+        val rpmBelowZeroNotification = R.string.rpmBelowZeroNotification
+        return Notification(
+            NotificationTypes.ERROR,
+            context.getString(rpmBelowZeroNotification),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
