@@ -41,6 +41,7 @@
     <string name="heightBarTitle">"Barre de jauge de hauteur de râteau "</string>
     <string name="noNotificationText">" Aucune notification pour l'instant :("</string>
     <string name="maxRPMReachedNotification">AVERTISSEMENT : le régime actuel est supérieur au régime maximum!</string>
+    <string name="maxRPMDisplayedReachedNotification">"AVERTISSEMENT : le régime actuel est supérieur au régime maximum affiché ! "</string>
     <string name="maxHeightReachedNotification">AVERTISSEMENT : la hauteur actuelle du râteau est supérieure à la hauteur maximale !</string>
     <string name="startedRecordingNotification">Début de l\'enregistrement des données.</string>
     <string name="stoppedRecordingNotification">Arrêt de l\'enregistrement des données.</string>

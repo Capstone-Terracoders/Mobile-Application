@@ -41,6 +41,7 @@
     <string name="heightBarTitle">"Barra medidora de altura del rastrillo "</string>
     <string name="noNotificationText">" Aún no hay notificaciones :("</string>
     <string name="maxRPMReachedNotification">" ADVERTENCIA: ¡Las RPM actuales son mayores que las RPM máximas!"</string>
+    <string name="maxRPMDisplayedReachedNotification">"ADVERTENCIA: ¡Las RPM actuales son mayores que las RPM máximas mostradas! "</string>
     <string name="maxHeightReachedNotification">ADVERTENCIA: ¡La altura actual del rastrillo es mayor que la altura máxima!</string>
     <string name="startedRecordingNotification">"Comenzó a registrar datos. "</string>
     <string name="stoppedRecordingNotification">"Dejó de grabar datos. "</string>

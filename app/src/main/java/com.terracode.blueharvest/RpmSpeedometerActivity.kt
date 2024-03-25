@@ -79,7 +79,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private val normalTextSize = PreferenceManager.getSelectedTextSize()
 
     //Notifications
-    private val rpmNotificationWarning = Notifications.getMaxRPMReachedNotification(context)
+    private val maxRPMDisplayedReachedNotification = Notifications.getMaxRPMDisplayedReachedNotification(context)
+    private val maxRPMReachedNotification = Notifications.getMaxRPMReachedNotification(context)
 
     //Animator
     private var needleRotationAnimator: ObjectAnimator? = null
@@ -123,13 +124,17 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Initializer for Drawing Speedometer
     init {
-        if (currentRpm!! > maxRpmDisplayed){
+        if (currentRpm!! > maxRpmDisplayed) {
             currentRpm = maxRpmDisplayed.toDouble()
             //Allows us to continue seeing the preview in split mode
             if (!isInEditMode) {
-                PreferenceManager.setNotification(rpmNotificationWarning)
+                PreferenceManager.setNotification(maxRPMDisplayedReachedNotification)
             }
-        } else {
+        } else if (currentRpm!! > maxRakeRpm) {
+            if (!isInEditMode) {
+                PreferenceManager.setNotification(maxRPMReachedNotification)
+            }
+        }else {
             currentRpm = rpmData
         }
 
@@ -149,9 +154,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         //Draw canvas
         super.onDraw(canvas)
-
-        //Number of ticks total
-        val numTicks = NUM_BIG_TICKS + (NUM_BIG_TICKS - 1) * NUM_SMALL_TICKS
 
         // Declare & initialize ark parameters:
         val radiusOffset = 0.8f
@@ -185,8 +187,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             centerYCoordinate,
             radius)
 
-        //-----------------------------------------------------------INSERT MIN AND OPTIMAL RPM HERE
-
+        //Draw arc for safety max rpm
         val safetyValueRatio = maxRakeRpm.toFloat() / maxRpmDisplayed.toFloat()
         val maxRpmStartAngle = START_ANGLE + (safetyValueRatio) * SWEEP_ANGLE
         val maxRpmEndAngle = (START_ANGLE + SWEEP_ANGLE) - maxRpmStartAngle
@@ -201,6 +202,37 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             false,
             minRpmPaint
         )
+
+        //Draw arc for optimal rpm
+        var lowerRange = optimalRpm!!.toFloat() - optimalRpmRange
+        var upperRange = optimalRpm!!.toFloat() + optimalRpmRange
+
+        if (lowerRange < 0){
+            lowerRange = 0f
+        }
+
+        if (upperRange > maxRakeRpm){
+            upperRange = maxRakeRpm.toFloat()
+        }
+
+        val optimalRangeValueRatioStart = (lowerRange) / maxRpmDisplayed.toFloat()
+        val optimalRangeValueRatioEnd = (upperRange) / maxRpmDisplayed.toFloat()
+
+        val optimalRpmStartAngle = START_ANGLE + (optimalRangeValueRatioStart) * SWEEP_ANGLE
+        val optimalRpmEndAngle = (START_ANGLE + (optimalRangeValueRatioEnd) * SWEEP_ANGLE)
+        val finalRangeAngle = optimalRpmEndAngle - optimalRpmStartAngle
+
+        canvas.drawArc(
+            arcStartXCoordinate,
+            arcStartYCoordinate,
+            arcEndXCoordinate,
+            arcEndYCoordinate,
+            optimalRpmStartAngle,
+            finalRangeAngle,
+            false,
+            optimalRpmPaint
+        )
+
 
         //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
         val angle = if (maxRpmDisplayed != 0 && currentRpm != null) {

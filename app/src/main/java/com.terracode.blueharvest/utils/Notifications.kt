@@ -7,6 +7,15 @@ import java.time.format.DateTimeFormatter
 
 object Notifications {
 
+    fun getMaxRPMDisplayedReachedNotification(context: Context): Notification {
+        val maxRpmReachedNotification = R.string.maxRPMDisplayedReachedNotification
+        return Notification(
+            NotificationTypes.WARNING,
+            context.getString(maxRpmReachedNotification),
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
     fun getMaxRPMReachedNotification(context: Context): Notification {
         val maxRpmReachedNotification = R.string.maxRPMReachedNotification
         return Notification(

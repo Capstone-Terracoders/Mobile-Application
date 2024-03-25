@@ -3,6 +3,6 @@
   "rakeHeight": 15,
   "RPM": 30.0,
   "speed": 5.0,
-  "optimalRakeHeight": 10,
+  "optimalRakeHeight": 1,
   "optimalRakeRPM": 10
 }
