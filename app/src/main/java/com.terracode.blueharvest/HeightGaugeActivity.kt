@@ -1,5 +1,6 @@
 package com.terracode.blueharvest
 
+import Notifications
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -127,6 +128,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
             currentHeight = 0f
         }
 
+        if (optimalHeight!! > maxHeight){
+            optimalHeight = maxHeight
+        }
+
         //Needle Animation
         gaugeAnimator = currentHeight?.let {
             ObjectAnimator.ofFloat(
@@ -190,6 +195,48 @@ class HeightGaugeActivity @JvmOverloads constructor(
             blackOutlinePaint
         )
 
+        //Values to figure out position of lower and upper range ticks
+        val upperTickRangeValue = optimalHeight!! + optimalHeightRange
+        val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
+
+        val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
+
+        //Error logic for if optimal value && range > maxHeight
+        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
+            startYCoordinate
+        } else {
+            startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
+        }
+
+        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
+        val lowerTickYCoordinate = if (upperTickRangeValue > maxHeight){
+            startYCoordinate
+        } else {
+            startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
+        }
+
+        //Draw rounded rectangle for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            greenOptimalValuePaint
+        )
+
+        // Draw black outline for optimal rake height
+        canvas.drawRoundRect(
+            startXCoordinate,
+            upperTickYCoordinate,
+            endXCoordinate,
+            lowerTickYCoordinate,
+            cornerRadius,
+            cornerRadius,
+            blackOutlinePaint
+        )
+
         //Y-Coordinate for the top left coordinate for the minimum safety height
         val safetyValueRatio = minHeight / maxHeight // Height ratio
         val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
@@ -211,44 +258,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
             minHeightStartYCoordinate,
             endXCoordinate,
             endYCoordinate,
-            cornerRadius,
-            cornerRadius,
-            blackOutlinePaint
-        )
-
-        //Values to figure out position of lower and upper range ticks
-        val upperTickRangeValue = optimalHeight!! + optimalHeightRange
-        val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
-
-        val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
-
-        //Error logic for if optimal value && range > maxHeight
-        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
-            startYCoordinate
-        } else {
-            startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
-        }
-
-        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
-        val lowerTickYCoordinate = startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
-
-        //Draw rounded rectangle for optimal rake height
-        canvas.drawRoundRect(
-            startXCoordinate,
-            upperTickYCoordinate,
-            endXCoordinate,
-            lowerTickYCoordinate,
-            cornerRadius,
-            cornerRadius,
-            greenOptimalValuePaint
-        )
-
-        // Draw black outline for optimal rake height
-        canvas.drawRoundRect(
-            startXCoordinate,
-            upperTickYCoordinate,
-            endXCoordinate,
-            lowerTickYCoordinate,
             cornerRadius,
             cornerRadius,
             blackOutlinePaint

@@ -100,7 +100,7 @@ object PreferenceManager {
     fun getMaxRakeRPMInput(): Int {
         return sharedPreferences.getInt(
             PreferenceKeys.MAX_RAKE_RPM.toString(),
-            0)
+            40)
     }
 
     fun getMinRakeHeightInput(): Int {
