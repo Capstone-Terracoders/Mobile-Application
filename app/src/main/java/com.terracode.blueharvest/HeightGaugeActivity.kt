@@ -9,7 +9,6 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.ReadJSONObject
 
 @Suppress("PrivatePropertyName")
 class HeightGaugeActivity @JvmOverloads constructor(
@@ -22,13 +21,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
     init {
         //Initialize Preference Manager
         PreferenceManager.init(context)
-
-        //Get data from JSON file (or Bluetooth) -- Update with preference manager ticket
-        val sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")
-        sensorData?.apply {
-            heightData = getRakeHeight()
-            optimalHeightData = getOptimalRakeHeight()
-        }
     }
 
     //Constants
@@ -48,13 +40,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
 
     //Data
-    private var heightData: Double? = null
-    private var optimalHeightData: Double? = null
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
     private var minHeight = PreferenceManager.getMinRakeHeightInput()
     private var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
-    private var optimalHeight = optimalHeightData?.toFloat()
-    private var currentHeight = heightData?.toFloat()
+    private var optimalHeight = PreferenceManager.getOptimalRakeHeight()?.toFloat()
+    private var currentHeight = PreferenceManager.getRakeHeight()?.toFloat()
 
     //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
@@ -200,6 +190,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
 
         val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
+        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
 
         //Error logic for if optimal value && range > maxHeight
         val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
@@ -208,9 +199,8 @@ class HeightGaugeActivity @JvmOverloads constructor(
             startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
         }
 
-        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
-        val lowerTickYCoordinate = if (upperTickRangeValue > maxHeight){
-            startYCoordinate
+        val lowerTickYCoordinate = if (lowerTickRangeValue < 0){
+            endYCoordinate
         } else {
             startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
         }
@@ -239,7 +229,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
         //Y-Coordinate for the top left coordinate for the minimum safety height
         val safetyValueRatio = minHeight / maxHeight // Height ratio
-        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+        var minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+
+        if (minHeight > maxHeight){
+            minHeightStartYCoordinate = startYCoordinate
+        }
 
         //Draw rounded rectangle for safety min height
         canvas.drawRoundRect(
@@ -341,9 +335,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val labelText = ((maxHeight / (numTicks - 1)) * i)
-                val formattedLabelText = String.format("%.1f", labelText) // Round to 1 decimal place
-                val textWidth = labelTextPaint.measureText(formattedLabelText)
+                val tickValue = ((maxHeight * 10) / (numTicks - 1) * i) / 10 // Using integer arithmetic to maintain accuracy
+                val labelText = String.format("%.1f", tickValue) // Format to one decimal place
+
+                val textWidth = labelTextPaint.measureText(labelText)
 
                 //Tick Label coordinates
                 val labelXCoordinate = tickXCoordinate - textWidth - LABEL_POSITION_OFFSET
@@ -351,7 +346,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
                 // Display label
                 canvas.drawText(
-                    labelText.toString(),
+                    labelText,
                     labelXCoordinate,
                     labelYCoordinate,
                     labelTextPaint)
