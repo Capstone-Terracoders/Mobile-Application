@@ -190,6 +190,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val lowerTickRangeValue = optimalHeight!! - optimalHeightRange
 
         val upperTickHeightRatio = (upperTickRangeValue) / maxHeight // Height ratio
+        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
 
         //Error logic for if optimal value && range > maxHeight
         val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
@@ -198,9 +199,8 @@ class HeightGaugeActivity @JvmOverloads constructor(
             startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
         }
 
-        val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
-        val lowerTickYCoordinate = if (upperTickRangeValue > maxHeight){
-            startYCoordinate
+        val lowerTickYCoordinate = if (lowerTickRangeValue < 0){
+            endYCoordinate
         } else {
             startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
         }
@@ -229,7 +229,11 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
         //Y-Coordinate for the top left coordinate for the minimum safety height
         val safetyValueRatio = minHeight / maxHeight // Height ratio
-        val minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+        var minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+
+        if (minHeight > maxHeight){
+            minHeightStartYCoordinate = startYCoordinate
+        }
 
         //Draw rounded rectangle for safety min height
         canvas.drawRoundRect(
@@ -331,9 +335,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val labelText = ((maxHeight / (numTicks - 1)) * i)
-                val formattedLabelText = String.format("%.1f", labelText) // Round to 1 decimal place
-                val textWidth = labelTextPaint.measureText(formattedLabelText)
+                val tickValue = ((maxHeight * 10) / (numTicks - 1) * i) / 10 // Using integer arithmetic to maintain accuracy
+                val labelText = String.format("%.1f", tickValue) // Format to one decimal place
+
+                val textWidth = labelTextPaint.measureText(labelText)
 
                 //Tick Label coordinates
                 val labelXCoordinate = tickXCoordinate - textWidth - LABEL_POSITION_OFFSET
@@ -341,7 +346,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
                 // Display label
                 canvas.drawText(
-                    labelText.toString(),
+                    labelText,
                     labelXCoordinate,
                     labelYCoordinate,
                     labelTextPaint)
