@@ -116,6 +116,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     //Initializer for Drawing Speedometer
     init {
+        //Logic for notifications:
         if (currentRpm!! > maxRpmDisplayed) {
             currentRpm = maxRpmDisplayed.toDouble()
             //Allows us to continue seeing the preview in split mode

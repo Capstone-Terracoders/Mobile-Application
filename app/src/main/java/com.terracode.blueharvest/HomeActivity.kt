@@ -95,23 +95,48 @@ class HomeActivity : AppCompatActivity() {
 
 
         //CurrentValueTitles
-        val maxRpmValue = PreferenceManager.getMaxRPMDisplayedInput()
         val maxHeightValue = PreferenceManager.getMaxHeightDisplayedInput()
+        val minHeightSafetyValue = PreferenceManager.getMinRakeHeightInput()
+        val maxRpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
+        val optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
+        val optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
+
+        //Configure lower and upper ranges for optimal height and rpm
+        val rpmUpperRange = optimalRakeRpm?.plus(optimalRpmRange)
+        val rpmLowerRange = optimalRakeRpm?.minus(optimalRpmRange)
+
+        val heightUpperRange = optimalRakeHeight?.plus(optimalHeightRange)
+        val heightLowerRange = optimalRakeHeight?.minus(optimalHeightRange)
+
+        //Setting Titles
         val currentHeightTitle = getString(R.string.currentHeightTitle)
         val currentRpmTitle = getString(R.string.currentRPMTitle)
         val currentRpmText = "$currentRpmTitle $rpmData"
         currentRPMTextView.text = currentRpmText
 
-        if (rakeHeightData!! > maxHeightValue) {
-            currentHeightTextView.setTextColor(ContextCompat.getColor(this, R.color.red))
-        } else {
-            currentHeightTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+        //Settings colors
+        val redColor = ContextCompat.getColor(this, R.color.red)
+        val blackColor = ContextCompat.getColor(this, R.color.black)
+        val greenColor = ContextCompat.getColor(this, R.color.green)
+
+        //Current value text color logic - Height
+        if (rakeHeightData != null) {
+            if (rakeHeightData > maxHeightValue || rakeHeightData < minHeightSafetyValue) {
+                currentHeightTextView.setTextColor(redColor)
+            } else if (rakeHeightData > heightLowerRange!! && rakeHeightData < heightUpperRange!!) {
+                currentHeightTextView.setTextColor(greenColor)
+            } else {
+                currentHeightTextView.setTextColor(blackColor)
+            }
         }
 
-        if (rpmData!! > maxRpmValue) {
-            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.red))
+        //Current value text color logic - RPM
+        if (rpmData!! > maxRpmSafetyValue || rpmData < 0) {
+            currentRPMTextView.setTextColor(redColor)
+        } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
+            currentRPMTextView.setTextColor(greenColor)
         } else {
-            currentRPMTextView.setTextColor(ContextCompat.getColor(this, R.color.black))
+            currentRPMTextView.setTextColor(blackColor)
         }
 
 
