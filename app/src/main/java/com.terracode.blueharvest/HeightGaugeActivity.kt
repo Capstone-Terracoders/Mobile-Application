@@ -107,7 +107,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     }
 
     init {
-        //Logic for adding a warning notification if current height > max height
+        //Logic for notifications:
         if (currentHeight!! > maxHeight){
             PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
             currentHeight = maxHeight
