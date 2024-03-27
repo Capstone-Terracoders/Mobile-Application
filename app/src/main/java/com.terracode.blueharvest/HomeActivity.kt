@@ -117,14 +117,14 @@ class HomeActivity : AppCompatActivity() {
         //Settings colors
         val redColor = ContextCompat.getColor(this, R.color.red)
         val blackColor = ContextCompat.getColor(this, R.color.black)
-        val greenColor = ContextCompat.getColor(this, R.color.green)
+        val darkGreenColor = ContextCompat.getColor(this, R.color.dark_green)
 
         //Current value text color logic - Height
         if (rakeHeightData != null) {
             if (rakeHeightData > maxHeightValue || rakeHeightData < minHeightSafetyValue) {
                 currentHeightTextView.setTextColor(redColor)
             } else if (rakeHeightData > heightLowerRange!! && rakeHeightData < heightUpperRange!!) {
-                currentHeightTextView.setTextColor(greenColor)
+                currentHeightTextView.setTextColor(darkGreenColor)
             } else {
                 currentHeightTextView.setTextColor(blackColor)
             }
@@ -134,7 +134,7 @@ class HomeActivity : AppCompatActivity() {
         if (rpmData!! > maxRpmSafetyValue || rpmData < 0) {
             currentRPMTextView.setTextColor(redColor)
         } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
-            currentRPMTextView.setTextColor(greenColor)
+            currentRPMTextView.setTextColor(darkGreenColor)
         } else {
             currentRPMTextView.setTextColor(blackColor)
         }
