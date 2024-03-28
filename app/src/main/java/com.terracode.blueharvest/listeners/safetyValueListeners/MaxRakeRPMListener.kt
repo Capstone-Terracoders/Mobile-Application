@@ -2,6 +2,7 @@ package com.terracode.blueharvest.listeners.safetyValueListeners
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.utils.PreferenceManager
 
@@ -22,7 +23,11 @@ class MaxRakeRPMListener(private val activity: ConfigurationSettingsActivity) :
             if (input.isNotEmpty()) {
                 val value = input.toIntOrNull()
                 value?.let {
-                    PreferenceManager.setMaxRakeRPMInput(it)
+                    if (it > 10000){
+                        Toast.makeText(activity, "Rake RPM should not exceed 10,000", Toast.LENGTH_SHORT).show()
+                    } else {
+                        PreferenceManager.setMaxRakeRPMInput(it)
+                    }
                 }
             }
         }
