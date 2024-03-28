@@ -2,7 +2,7 @@ package com.terracode.blueharvest.services.displayValueServices
 
 import android.widget.EditText
 import com.terracode.blueharvest.ConfigurationSettingsActivity
-import com.terracode.blueharvest.listeners.displayValueListeners.OptimalHeightRangeListener
+import com.terracode.blueharvest.listeners.optimalRangeValueListeners.OptimalHeightRangeListener
 import com.terracode.blueharvest.utils.PreferenceManager
 
 object OptimalHeightRangeService {
