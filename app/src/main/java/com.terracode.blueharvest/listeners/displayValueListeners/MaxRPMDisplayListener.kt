@@ -19,6 +19,7 @@ class MaxRPMDisplayListener(
 
     //Colors
     private val redColor = ContextCompat.getColor(activity, R.color.red)
+    private val orangeColor = ContextCompat.getColor(activity, R.color.orange)
     private val blackColor = ContextCompat.getColor(activity, R.color.black)
 
     //Constants
@@ -51,7 +52,17 @@ class MaxRPMDisplayListener(
                         val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
-                    //Else, save input
+                    //Else if value is not divisible by 5
+                    } else if (it % 5 != 0){
+                        val notDivisibleByFiveNotification = Notifications.notDivisibleByFiveNotification(configName, it)
+                        PreferenceManager.setNotification(notDivisibleByFiveNotification)
+                        //Make border and text color orange
+                        maxRPMDisplayedInput.setTextColor(orangeColor)
+                        maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        //Create warning toast
+                        CustomToasts.notDivisibleByFiveNotification(activity)
+                        //Still save the value
+                        PreferenceManager.setMaxRPMDisplayedInput(it)
                     } else {
                         maxRPMDisplayedInput.setTextColor(blackColor)
                         maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_normal)

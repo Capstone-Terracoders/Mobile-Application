@@ -115,4 +115,13 @@ object Notifications {
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
+
+    fun notDivisibleByFiveNotification(inputName: String, value: Int): Notification {
+        val notificationMessage = "WARNING: Input: $value for $inputName is not divisible by 5. \n Please enter a number divisible by 5 for easy viewing."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
 }
