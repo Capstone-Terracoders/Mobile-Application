@@ -1,4 +1,4 @@
-package com.terracode.blueharvest.services.displayValueServices
+package com.terracode.blueharvest.services.optimalRangeValueServices
 
 import android.widget.EditText
 import com.terracode.blueharvest.ConfigurationSettingsActivity

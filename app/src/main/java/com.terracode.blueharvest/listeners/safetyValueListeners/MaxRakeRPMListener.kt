@@ -23,7 +23,7 @@ class MaxRakeRPMListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxRakeRPMTitle)
-    private val maxUserInput = MaxUserInput.MAX_INPUT.value
+    private val maxUserInput = MaxUserInput.MAX_RPM_INPUT.value
 
     //Current Value
     private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()

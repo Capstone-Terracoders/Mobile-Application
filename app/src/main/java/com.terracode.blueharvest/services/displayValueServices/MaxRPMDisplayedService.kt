@@ -9,7 +9,7 @@ object MaxRPMDisplayedService {
     fun setup(maxRPMDisplayedInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val maxRPMDisplayedListener = MaxRPMDisplayListener(activity)
+        val maxRPMDisplayedListener = MaxRPMDisplayListener(activity, maxRPMDisplayedInput)
         val maxRPMDisplayed: Int = PreferenceManager.getMaxRPMDisplayedInput()
 
         maxRPMDisplayed.let {

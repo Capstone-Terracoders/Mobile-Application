@@ -10,8 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.services.displayValueServices.MaxHeightDisplayedService
 import com.terracode.blueharvest.services.displayValueServices.MaxRPMDisplayedService
-import com.terracode.blueharvest.services.displayValueServices.OptimalHeightRangeService
-import com.terracode.blueharvest.services.displayValueServices.OptimalRPMRangeService
+import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalHeightRangeService
+import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalRPMRangeService
 import com.terracode.blueharvest.services.operationValueServices.HeightCoefficientService
 import com.terracode.blueharvest.services.operationValueServices.RPMCoefficientService
 import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService

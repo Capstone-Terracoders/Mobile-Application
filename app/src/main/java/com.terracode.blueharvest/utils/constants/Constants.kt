@@ -65,5 +65,7 @@ enum class NotificationTypes {
 }
 
 enum class MaxUserInput(val value: Int) {
-    MAX_INPUT(100000),
+    MAX_RPM_INPUT(100000),
+    MAX_HEIGHT_INPUT(300)
+
 }

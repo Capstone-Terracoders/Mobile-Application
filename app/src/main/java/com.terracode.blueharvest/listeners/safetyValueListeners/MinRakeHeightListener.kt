@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.constants.MaxUserInput
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
@@ -23,13 +24,18 @@ class MinRakeHeightListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.minRakeHeightTitle)
-    private val maxUserInput = MaxUserInput.MAX_INPUT.value
+    private var maxUserInput = MaxUserInput.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
     private val maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
+    private val unitToggle = PreferenceManager.getSelectedUnit()
+
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
+        if (!unitToggle){
+            maxUserInput = UnitConverter.convertHeightToImperial(maxUserInput)!!
+        }
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
