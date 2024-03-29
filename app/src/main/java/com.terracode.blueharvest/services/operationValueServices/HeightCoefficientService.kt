@@ -9,7 +9,7 @@ object HeightCoefficientService {
     fun setup(heightCoefficientInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val heightCoefficientListener = HeightCoefficientListener(activity)
+        val heightCoefficientListener = HeightCoefficientListener(activity, heightCoefficientInput)
         val heightCoefficient: Int = PreferenceManager.getHeightCoefficientInput()
 
         heightCoefficient.let {

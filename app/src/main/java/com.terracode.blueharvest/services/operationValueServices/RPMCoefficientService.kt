@@ -9,7 +9,7 @@ object RPMCoefficientService {
     fun setup(rpmCoefficientInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val rpmCoefficientListener = RPMCoefficientListener(activity)
+        val rpmCoefficientListener = RPMCoefficientListener(activity, rpmCoefficientInput)
         val rpmCoefficient: Int = PreferenceManager.getRPMCoefficientInput()
 
         rpmCoefficient.let {

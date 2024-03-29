@@ -2,14 +2,36 @@ package com.terracode.blueharvest.listeners.operationValueListeners
 
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.EditText
+import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
+import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.UnitConverter
+import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.objects.CustomToasts
+import com.terracode.blueharvest.utils.objects.Notifications
 
-class HeightCoefficientListener(private val activity: ConfigurationSettingsActivity) :
+class HeightCoefficientListener(
+    private val activity: ConfigurationSettingsActivity,
+    private val heightCoefficientInput: EditText
+) :
     TextWatcher {
+    //Colors
+    private val redColor = ContextCompat.getColor(activity, R.color.red)
+    private val blackColor = ContextCompat.getColor(activity, R.color.black)
 
+    //Constants
+    private val configName = ContextCompat.getString(activity, R.string.coefficientHeightTitle)
+    private var maxUserInput = MaxUserInput.MAX_RPM_INPUT.value.toDouble()
+
+    //Current Value
+    private val unitToggle = PreferenceManager.getSelectedUnit()
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
+        if (!unitToggle){
+            maxUserInput = UnitConverter.convertHeightToImperial(maxUserInput)!!
+        }
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -22,7 +44,23 @@ class HeightCoefficientListener(private val activity: ConfigurationSettingsActiv
             if (input.isNotEmpty()) {
                 val value = input.toIntOrNull()
                 value?.let {
-                    PreferenceManager.setHeightCoefficientInput(it)
+                    //If user input > what we defined as a maximum user input
+                    if (it > maxUserInput){
+                        //Make border and text color red
+                        heightCoefficientInput.setTextColor(redColor)
+                        heightCoefficientInput.setBackgroundResource(R.drawable.edit_text_red_border)
+                        //Create warning toast
+                        CustomToasts.maximumValueToast(activity)
+                        //Create notification
+                        val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
+                        PreferenceManager.setNotification(maxValueNotification)
+
+                    //Else, save value
+                    } else {
+                        heightCoefficientInput.setTextColor(blackColor)
+                        heightCoefficientInput.setBackgroundResource(R.drawable.edit_text_normal)
+                        PreferenceManager.setHeightCoefficientInput(it)
+                    }
                 }
             }
         }
