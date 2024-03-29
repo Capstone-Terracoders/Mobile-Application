@@ -6,6 +6,7 @@ import android.bluetooth.BluetoothManager
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terracode.blueharvest.AccessibilitySettingsActivity
@@ -25,39 +26,79 @@ import com.terracode.blueharvest.utils.PreferenceManager
 
 class serviceBLE() : Service() {
 
-    //var isBound = isServiceBound()
+
+    private val binder = LocalBinder()
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BleDevice>
-    private var adapter = BleDeviceAdapter(foundDevices)
 
+    // var adapter = BleDeviceAdapter(foundDevices) this should be in activity??
+    private lateinit var btManager: BluetoothManager
 
     override fun onCreate() {
         super.onCreate()
-        PreferenceManager.init(this)
+        Log.d("serviBLE", "onCreate LOG!")
+
+        foundDevices = BleDevice.createBleDevicesList()
+        // adapter = BleDeviceAdapter(foundDevices) this should be in activity??
+        btManager = getSystemService(BluetoothManager::class.java)
 
 
     }
 
-    override fun onBind(intent: Intent?): IBinder {
-        initBleScanManager(adapter) // Ensure initialization when bound
-        return  LocalBinder()
-    }
-    inner class LocalBinder : Binder() {
-        val service: serviceBLE
-            get() = this@serviceBLE
-    }
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        return super.onStartCommand(intent, flags, startId)
+        Log.d("serviBLE", "onStartCommand!")
+
+        return START_STICKY // If the service is killed, it will be automatically restarted
     }
 
+    inner class LocalBinder : Binder() {
+        // Return this instance of LocalService so clients can call public methods.
+        fun getService(): serviceBLE = this@serviceBLE
 
-    fun initBleScanManager(adapter: BleDeviceAdapter)
-    {
-        val btManager = getSystemService(BluetoothManager::class.java)
+    }
+
+    override fun onBind(intent: Intent): IBinder {
+        Log.d("serviBLE", "onBind LOG!")
+       return binder
+    }
+
+    /*
+    private fun performLongTask() {
+        // Imagine doing something that takes a long time here
+        Log.d("serviBLE", "preformLongTask LOG!")
+        Thread.sleep(5000)
+    }*/
+
+    override fun onDestroy() {
+        super.onDestroy()//make sure to unbind from activity
+        Log.d("serviBLE", "onDestroy LOG!")
+    }
+
+    fun requestBleScan(adapter: BleDeviceAdapter) {
+        Log.d("RequestBLEScan", "Call LOG!")
+        initBleScanManager(adapter)
+        bleScanManager.scanBleDevices()
+        // Initialize and start scan here
+
+        // You can inform the activity or show an error message here.
+
+    }
+
+    fun getFoundDevices(): MutableList<BleDevice> {
+        return foundDevices
+    }
+
+    fun getBtManager(): BluetoothManager {
+        return btManager
+    }
+
+    fun initBleScanManager(adapter: BleDeviceAdapter) {
+
+
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback({
             val name = it?.device?.address
             if (name.isNullOrBlank()) return@BleScanCallback
-           // val adapter = BleDeviceAdapter(foundDevices)
+            // val adapter = BleDeviceAdapter(foundDevices)
             val device = BleDevice(name)
             if (!foundDevices.contains(device)) {
                 foundDevices.add(device)
@@ -65,30 +106,4 @@ class serviceBLE() : Service() {
             }
         }))
     }
-    fun requestBleScan(adapter: BleDeviceAdapter) {
-
-       // initBleScanManager()
-        bleScanManager.scanBleDevices()
-           // Initialize and start scan here
-            // Handle permission not granted case (optional)
-            // You can inform the activity or show an error message here.
-
-    }
-//for state management, update and retrive value of isbounb
-/*you can access the binding state from outside the service using serviceBLE.isServiceBound()
-but cannot directly modify it from outside. To update the state, call serviceBLE.setBound(true)
-within your service when necessary. */
-companion object {
-    private var isBound: Boolean = false
-
-    fun isServiceBound(): Boolean {
-        return isBound
-    }
-
-    fun setBound(bound: Boolean) {
-        isBound = bound
-    }
 }
-}
-    // ... (other service methods)
-
