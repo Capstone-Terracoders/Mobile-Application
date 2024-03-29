@@ -9,7 +9,7 @@ object MinRakeHeightService {
     fun setup(minRakeHeightInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val minRakeHeightListener = MinRakeHeightListener(activity)
+        val minRakeHeightListener = MinRakeHeightListener(activity, minRakeHeightInput)
         val maxRakeRPM: Int = PreferenceManager.getMinRakeHeightInput()
 
         maxRakeRPM.let {

@@ -16,14 +16,16 @@ class MaxRakeRPMListener(
     private val maxRakeRPMInput: EditText) :
     TextWatcher {
 
+        //Colors
     private val redColor = ContextCompat.getColor(activity, R.color.red)
     private val orangeColor = ContextCompat.getColor(activity, R.color.orange)
     private val blackColor = ContextCompat.getColor(activity, R.color.black)
 
-
+    //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxRakeRPMTitle)
-    private val maxRpmUserInput = MaxUserInput.MAX_RPM_DISPLAYED.value
+    private val maxUserInput = MaxUserInput.MAX_INPUT.value
 
+    //Current Value
     private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -41,7 +43,7 @@ class MaxRakeRPMListener(
                 val value = input.toIntOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
-                    if (it > maxRpmUserInput){
+                    if (it > maxUserInput){
                         //Make border and text color red
                         maxRakeRPMInput.setTextColor(redColor)
                         maxRakeRPMInput.setBackgroundResource(R.drawable.edit_text_red_border)
