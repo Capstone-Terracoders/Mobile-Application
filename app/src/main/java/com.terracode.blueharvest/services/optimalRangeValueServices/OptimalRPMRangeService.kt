@@ -9,7 +9,7 @@ object OptimalRPMRangeService {
     fun setup(optimalRPMRangeInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val optimalRPMRangeListener = OptimalRPMRangeListener(activity)
+        val optimalRPMRangeListener = OptimalRPMRangeListener(activity, optimalRPMRangeInput)
         val optimalRPMRange: Float = PreferenceManager.getOptimalRPMRangeInput()
 
         optimalRPMRange.let {

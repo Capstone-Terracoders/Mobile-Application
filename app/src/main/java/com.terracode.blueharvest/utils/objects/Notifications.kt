@@ -89,8 +89,26 @@ object Notifications {
         )
     }
 
+    fun getMaxInputFloatNotification(inputName: String, value: Float): Notification {
+        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
     fun safetyValueGreaterThanDisplayValueNotification(inputName: String, value: Int): Notification {
         val notificationMessage = "WARNING: Input: $value for $inputName is greater than Display Value."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun rangeOutOfBoundsNotification(inputName: String, value: Float): Notification {
+        val notificationMessage = "WARNING: Input: $value for $inputName makes optimal values out of bounds of viewing area."
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,

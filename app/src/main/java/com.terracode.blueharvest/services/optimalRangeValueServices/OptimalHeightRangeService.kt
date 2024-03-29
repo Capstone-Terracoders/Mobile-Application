@@ -9,7 +9,7 @@ object OptimalHeightRangeService {
     fun setup(optimalHeightRangeInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val optimalHeightRangeListener = OptimalHeightRangeListener(activity)
+        val optimalHeightRangeListener = OptimalHeightRangeListener(activity, optimalHeightRangeInput)
         val optimalHeightRange: Float = PreferenceManager.getOptimalHeightRangeInput()
 
         optimalHeightRange.let {
