@@ -64,7 +64,11 @@ enum class NotificationTypes {
     ERROR
 }
 
-enum class currentValueState {
-    RPM,
-    HEIGHT
+enum class MaxUserInput(val value: Int) {
+    MAX_RPM_DISPLAYED(100000),
+//    MAX_HEIGHT_DISPLAYED(300),
+//    MAX_RPM_OPTIMAL_RANGE_PERCENT(0.5f),
+//    MAX_HEIGHT_OPTIMAL_RANGE_PERCENT(0.5f),
+//    MAX_RPM_COEFFICIENT(100000),
+//    MAX_HEIGHT_COEFFICIENT(100000)
 }

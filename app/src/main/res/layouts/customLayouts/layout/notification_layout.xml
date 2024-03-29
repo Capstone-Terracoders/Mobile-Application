@@ -15,6 +15,6 @@
         android:textColor="@color/black"
         android:textColorLink="#000000" />
 
-    <!-- Notifications will be added dynamically here -->
+    <!-- com.terracode.blueharvest.utils.objects.Notifications will be added dynamically here -->
 
 </LinearLayout>

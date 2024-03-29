@@ -11,9 +11,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
-import com.terracode.blueharvest.utils.constants.Notification
-import com.terracode.blueharvest.utils.constants.NotificationTypes
 import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.objects.Notification
+import com.terracode.blueharvest.utils.constants.NotificationTypes
 
 object NotificationManager {
     @SuppressLint("InflateParams", "SetTextI18n")
@@ -30,7 +30,7 @@ object NotificationManager {
         // Add notifications dynamically to the container layout
         if (notifications.isEmpty()){
             val textView = TextView(activity)
-            textView.text = activity.getString(R.string.maxHeightReachedNotification)
+            textView.text = activity.getString(R.string.noNotificationText)
             containerLayout.addView(textView)
         } else {
             notifications.forEach { notification ->
@@ -72,7 +72,7 @@ object NotificationManager {
             }
         }
 
-        // Set up Listener for Clearing Notifications
+        // Set up Listener for Clearing com.terracode.blueharvest.utils.objects.Notifications
         clearNotificationButton.setOnClickListener {
             // Call the method to clear notifications
             PreferenceManager.clearNotifications()

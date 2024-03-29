@@ -1,6 +1,6 @@
 package com.terracode.blueharvest
 
-import Notifications
+import com.terracode.blueharvest.utils.objects.Notifications
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -58,7 +58,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private var rakeHeightTitle = ""
     private var heightBarTitleText = ""
 
-    //Notifications
+    //com.terracode.blueharvest.utils.objects.Notifications
     private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
     private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification(context)
     private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification(context)

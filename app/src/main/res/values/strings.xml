@@ -49,12 +49,6 @@
     <string name="optimalRangeValuesTitle">Optimal Range Values</string>
     <string name="plusMinusSign" translatable="false">+/-</string>
 
-    <string-array name="connectedSensors">
-        <item>Sensor 1</item>
-        <item>Sensor 2</item>
-        <item>Sensor 3</item>
-    </string-array>
-
 
     <!-- Strings used for Operation Parameters Settings Card-->
 
@@ -92,7 +86,7 @@
     <string name="currentHeightTitle">Rake Height</string>
     <string name="heightBarTitle">Rake Height Gauge Bar</string>
 
-    <!-- Strings for Notifications-->
+    <!-- Strings for com.terracode.blueharvest.utils.objects.Notifications-->
     <string name="noNotificationText">No notifications yet :(</string>
     <string name="maxRPMReachedNotification">WARNING: Current RPM is greater than maximum RPM!</string>
     <string name="maxRPMDisplayedReachedNotification">WARNING: Current RPM is greater than maximum RPM Displayed!</string>
@@ -102,4 +96,8 @@
     <string name="heightBelowZeroNotification">"ERROR: Current rake height is below zero, please refer to user manual!"</string>
     <string name="startedRecordingNotification">Started Recording Data.</string>
     <string name="stoppedRecordingNotification">Stopped Recording Data.</string>
+
+
+    <!-- Strings for Toasts-->
+    <string name="maximumValueToast">Rake RPM should not exceed 100,000.</string>
 </resources>

@@ -9,7 +9,7 @@ object MaxRakeRPMService {
     fun setup(maxRakeRPMInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val maxRakeRPMListener = MaxRakeRPMListener(activity)
+        val maxRakeRPMListener = MaxRakeRPMListener(activity, maxRakeRPMInput)
         val maxRakeRPM: Int = PreferenceManager.getMaxRakeRPMInput()
 
         maxRakeRPM.let {

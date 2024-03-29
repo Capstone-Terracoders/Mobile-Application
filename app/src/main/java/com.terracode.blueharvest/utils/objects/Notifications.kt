@@ -1,6 +1,7 @@
+package com.terracode.blueharvest.utils.objects
+
 import android.content.Context
 import com.terracode.blueharvest.R
-import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
 import java.time.Instant
 import java.time.format.DateTimeFormatter
@@ -75,6 +76,15 @@ object Notifications {
         return Notification(
             NotificationTypes.NOTIFICATION,
             context.getString(stoppedRecordingNotification),
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getMaxInputNotification(inputName: String, value: Int): Notification {
+        val maxInputNotification = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+        return Notification(
+            NotificationTypes.WARNING,
+            maxInputNotification,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
