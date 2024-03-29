@@ -86,7 +86,7 @@
     <string name="currentHeightTitle">Rake Height</string>
     <string name="heightBarTitle">Rake Height Gauge Bar</string>
 
-    <!-- Strings for com.terracode.blueharvest.utils.objects.Notifications-->
+    <!-- Strings for Notifications-->
     <string name="noNotificationText">No notifications yet :(</string>
     <string name="maxRPMReachedNotification">WARNING: Current RPM is greater than maximum RPM!</string>
     <string name="maxRPMDisplayedReachedNotification">WARNING: Current RPM is greater than maximum RPM Displayed!</string>
@@ -100,4 +100,5 @@
 
     <!-- Strings for Toasts-->
     <string name="maximumValueToast">Rake RPM should not exceed 100,000.</string>
+    <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Safety Value Greater Than Maximum Displayed Value.</string>
 </resources>

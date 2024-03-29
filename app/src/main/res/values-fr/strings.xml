@@ -49,4 +49,5 @@
     <string name="minHeightReachedNotification">"\"AVERTISSEMENT : la hauteur de coupe actuelle est inférieure/ou égale à la hauteur minimale !\" "</string>
     <string name="heightBelowZeroNotification">"ERREUR : La hauteur de coupe actuelle est inférieure à zéro, veuillez vous référer au manuel d'utilisation ! "</string>
     <string name="maximumValueToast">" Le régime de râteau ne doit pas dépasser 100,000."</string>
+    <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Valeur de sécurité supérieure à la valeur maximale affichée.</string>
 </resources>

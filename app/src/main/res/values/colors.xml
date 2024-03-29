@@ -15,6 +15,8 @@
     <color name="orange">#FF9308</color>
     <color name="blueGrey">#34474A</color>
     <color name="blueBerry">#2A416F</color>
+    <color name="error_red">#FFCCCC</color>
+    <color name="warning_orange">#FBBF90</color>
     <!-- Dark Color Scheme -->
     <color name="dark_primary">#4E6F42</color> <!-- Adjusted Green -->
     <color name="dark_secondary">#3B547E</color> <!-- Adjusted Blue -->

@@ -17,9 +17,14 @@ class MaxRakeRPMListener(
     TextWatcher {
 
     private val redColor = ContextCompat.getColor(activity, R.color.red)
+    private val orangeColor = ContextCompat.getColor(activity, R.color.orange)
+    private val blackColor = ContextCompat.getColor(activity, R.color.black)
+
 
     private val configName = ContextCompat.getString(activity, R.string.maxRakeRPMTitle)
     private val maxRpmUserInput = MaxUserInput.MAX_RPM_DISPLAYED.value
+
+    private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
@@ -43,10 +48,26 @@ class MaxRakeRPMListener(
                         //Create warning toast
                         CustomToasts.maximumValueToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputNotification(configName, value)
+                        val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
+
+                        //If user input > max rpm displayed
+                    } else if (it > maxRpmDisplayed) {
+                        //Create the notification for safety value > displayed value
+                        val safetyValueGreaterThanDisplayValueNotification = Notifications.safetyValueGreaterThanDisplayValueNotification(configName, it)
+                        PreferenceManager.setNotification(safetyValueGreaterThanDisplayValueNotification)
+                        //Make border and text color orange
+                        maxRakeRPMInput.setTextColor(orangeColor)
+                        maxRakeRPMInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        //Create warning toast
+                        CustomToasts.safetyValueGreaterThanDisplayedValueToast(activity)
+                        //Still save the value
+                        PreferenceManager.setMaxRakeRPMInput(it)
+
+                        //Else, save without notifications/toasts
                     } else {
-                        //Else, save value
+                        maxRakeRPMInput.setTextColor(blackColor)
+                        maxRakeRPMInput.setBackgroundResource(R.drawable.edit_text_normal)
                         PreferenceManager.setMaxRakeRPMInput(it)
                     }
                 }

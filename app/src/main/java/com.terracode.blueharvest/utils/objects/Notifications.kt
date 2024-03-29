@@ -9,82 +9,91 @@ import java.time.format.DateTimeFormatter
 object Notifications {
 
     fun getMaxRPMDisplayedReachedNotification(context: Context): Notification {
-        val maxRpmDisplayedReachedNotification = R.string.maxRPMDisplayedReachedNotification
+        val notificationMessage = R.string.maxRPMDisplayedReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            context.getString(maxRpmDisplayedReachedNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getMaxRPMReachedNotification(context: Context): Notification {
-        val maxRpmReachedNotification = R.string.maxRPMReachedNotification
+        val notificationMessage = R.string.maxRPMReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            context.getString(maxRpmReachedNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getRpmBelowZeroNotification(context: Context): Notification {
-        val rpmBelowZeroNotification = R.string.rpmBelowZeroNotification
+        val notificationMessage = R.string.rpmBelowZeroNotification
         return Notification(
             NotificationTypes.ERROR,
-            context.getString(rpmBelowZeroNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getMaxHeightReachedNotification(context: Context): Notification {
-        val maxHeightReachedNotification = R.string.maxHeightReachedNotification
+        val notificationMessage = R.string.maxHeightReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            context.getString(maxHeightReachedNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getMinHeightReachedNotification(context: Context): Notification {
-        val minHeightReachedNotification = R.string.minHeightReachedNotification
+        val notificationMessage = R.string.minHeightReachedNotification
         return Notification(
             NotificationTypes.WARNING,
-            context.getString(minHeightReachedNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getHeightBelowZeroNotification(context: Context): Notification {
-        val heightBelowZeroNotification = R.string.heightBelowZeroNotification
+        val notificationMessage = R.string.heightBelowZeroNotification
         return Notification(
             NotificationTypes.ERROR,
-            context.getString(heightBelowZeroNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getStartRecordingNotification(context: Context): Notification {
-        val startedRecordingNotification = R.string.startedRecordingNotification
+        val notificationMessage = R.string.startedRecordingNotification
         return Notification(
             NotificationTypes.NOTIFICATION,
-            context.getString(startedRecordingNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getStopRecordingNotification(context: Context): Notification {
-        val stoppedRecordingNotification = R.string.stoppedRecordingNotification
+        val notificationMessage = R.string.stoppedRecordingNotification
         return Notification(
             NotificationTypes.NOTIFICATION,
-            context.getString(stoppedRecordingNotification),
+            context.getString(notificationMessage),
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
 
     fun getMaxInputNotification(inputName: String, value: Int): Notification {
-        val maxInputNotification = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
         return Notification(
             NotificationTypes.WARNING,
-            maxInputNotification,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun safetyValueGreaterThanDisplayValueNotification(inputName: String, value: Int): Notification {
+        val notificationMessage = "WARNING: Input: $value for $inputName is greater than Display Value."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
