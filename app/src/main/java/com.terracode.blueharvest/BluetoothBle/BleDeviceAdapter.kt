@@ -9,8 +9,17 @@ import com.terracode.blueharvest.R
 
 // Adapter for displaying a list of Bluetooth LE devices in a RecyclerView
 class BleDeviceAdapter (private val devices: List<BleDevice>) : RecyclerView.Adapter<BleDeviceAdapter.ViewHolder>() {
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val deviceNameTextView: TextView = itemView.findViewById<TextView>(R.id.device_name)
+//    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+//        val deviceNameTextView: TextView = itemView.findViewById<TextView>(R.id.device_name)
+//    }
+
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val textView: TextView
+
+        init {
+            // Define click listener for the ViewHolder's View
+            textView = view.findViewById(R.id.device_name)
+        }
     }
 
     // Called when a new view holder is needed to display a device
@@ -23,7 +32,7 @@ class BleDeviceAdapter (private val devices: List<BleDevice>) : RecyclerView.Ada
     // Called to bind data to an existing view holder for a specific position
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val device = devices[position]
-        val textView = holder.deviceNameTextView
+        val textView = holder.textView
         textView.text = device.name
     }
     // Returns the total number of devices in the list

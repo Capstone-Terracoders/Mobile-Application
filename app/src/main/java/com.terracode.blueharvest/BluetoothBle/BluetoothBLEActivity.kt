@@ -1,6 +1,5 @@
 package com.terracode.blueharvest.BluetoothBle
 
-import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.content.ComponentName
 import android.content.Context
@@ -18,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
 import com.terracode.blueharvest.R
-import com.terracode.blueharvest.BluetoothBle.serviceBLE
-import com.terracode.blueharvest.BluetoothBle.serviceBLE.Companion.isServiceBound
 import com.terracode.blueharvest.utils.PreferenceManager
 
 
@@ -39,6 +36,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         // Initialize RecyclerView and adapter
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
         foundDevices = BleDevice.createBleDevicesList()
+        //Adapter is supposed to be the created recycle view
         adapter = BleDeviceAdapter(foundDevices)
         rvFoundDevices.adapter = adapter
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
