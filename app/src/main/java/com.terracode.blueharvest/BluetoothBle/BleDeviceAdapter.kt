@@ -15,7 +15,7 @@ class BleDeviceAdapter (private val devices: List<BluetoothDevice>) : RecyclerVi
 //    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 //        val deviceNameTextView: TextView = itemView.findViewById<TextView>(R.id.device_name)
 //    }
-
+    private var onClickListener: OnClickListener? = null
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
 
@@ -24,6 +24,7 @@ class BleDeviceAdapter (private val devices: List<BluetoothDevice>) : RecyclerVi
             textView = view.findViewById(R.id.device_name)
         }
     }
+
 
     // Called when a new view holder is needed to display a device
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -39,12 +40,24 @@ class BleDeviceAdapter (private val devices: List<BluetoothDevice>) : RecyclerVi
         val textView = holder.textView
         textView.text = device.address
         Log.d("BLeDeviceAddapter", "Device"+textView.text)
-        holder.textView.setOnClickListener(View.OnClickListener() {
-            Log.d("BLeDeviceAddapter", "Connecting to device...."+textView.text)
-        })
+        holder.textView.setOnClickListener{
+            Log.d("BLeDeviceAddapter", "Connecting to device...." + textView.text)
+            if (onClickListener != null) {
+                onClickListener!!.onClick(position, device)
+                Log.d("BLeDeviceAddapter", "Connecting to device...." + textView.text)
+            }
+        }
     }
     // Returns the total number of devices in the list
     override fun getItemCount(): Int {
         return devices.size
+    }
+    // A function to bind the onclickListener.
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
+    // onClickListener Interface
+    interface OnClickListener {
+        fun onClick(position: Int, device: BluetoothDevice)
     }
 }
