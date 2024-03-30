@@ -195,5 +195,9 @@ class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickList
         Log.d("BLEActivity", "Clicked Item "+device.address)
         myBLEService.setSelectedDevice(device)
         myBLEService.connectToDevice(this)
+        var myDevice = myBLEService.getSelectedCharacteristic()
+        if (myDevice != null) {
+            Log.d("BLEActivity", "Clicked Item "+myDevice.uuid.toString())
+        }
     }
 }
