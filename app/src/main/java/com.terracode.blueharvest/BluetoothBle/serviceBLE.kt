@@ -63,9 +63,9 @@ class serviceBLE() : Service() {
         Log.d("serviBLE", "onDestroy LOG!")
     }
 
-    fun requestBleScan(adapter: BleDeviceAdapter, activity: Activity) {
+    fun requestBleScan() {
         Log.d("serviceBle", "Called requestBleScan LOG!")
-        initBleScanManager(adapter, activity)
+        initBleScanManager()
 
         bleScanManager.scanBleDevices()
         // Initialize and start scan here
@@ -78,27 +78,17 @@ class serviceBLE() : Service() {
         return btManager
     }
 
-    fun getFoundDevices(): MutableList<BleDevice> {
-        Log.d("FoundDevices RETURNED", foundDevices.toString())
-        return foundDevices
-    }
-
-    @SuppressLint("SuspiciousIndentation")
-    fun initBleScanManager(adapter: BleDeviceAdapter, activity: Activity) {
-        PreferenceManager.init(activity)
+    fun initBleScanManager() {
+        Log.d("serviceBLE", "innit Blescanman!")
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
                 val name = it?.device?.address
-                    if (name.isNullOrBlank()) return@BleScanCallback
-                    //val adapter = BleDeviceAdapter(foundDevices)
+                if (name.isNullOrBlank()) return@BleScanCallback
                 val device = BleDevice(name)//todo this is where I think I can get a whole device, not just name
-                    if (!foundDevices.contains(device)) {
-                        foundDevices.add(device)
-                        Log.d("FoundDevices-01", foundDevices.toString())
-                        adapter.notifyItemInserted(foundDevices.size - 1)
-            }
-            }))
-        Log.d("FoundDevices-02", foundDevices.toString())
-        PreferenceManager.setFoundDevices(foundDevices)
+                if (!foundDevices.contains(device)) {
+                    foundDevices.add(device)
+                    Log.d("ServieBLE_device", getFoundDevices().toString())
+                }
+        }))
     }
 }

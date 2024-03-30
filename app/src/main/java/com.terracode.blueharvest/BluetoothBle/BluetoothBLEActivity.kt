@@ -67,16 +67,18 @@ class BluetoothBLEActivity : ComponentActivity() {
         btnStartScan = findViewById(R.id.btn_start_scan)
         btnStartScan.setOnClickListener {
             handleStartScanButtonClick()
+            adapter = BleDeviceAdapter(foundDevices)
+            adapter.notifyItemInserted(foundDevices.count()-1)
+            Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
+            rvFoundDevices.adapter = adapter
+            rvFoundDevices.layoutManager = LinearLayoutManager(this)
         }
 
-        foundDevices = PreferenceManager.getFoundDevices() ?: mutableListOf()
-        Log.d("BluetoothBLEActivity - Line 75", "HERE: foundDevices: $foundDevices")
-        adapter = BleDeviceAdapter(foundDevices)
+//        this.foundDevices = BleDevice.createBleDevicesList()
+//        this.adapter = BleDeviceAdapter(foundDevices)
 
-        Log.d("BluetoothBLEActivity - line 78", "adapter - BLE Activity: $adapter")
+//        Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
 
-        rvFoundDevices.adapter = adapter
-        rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -89,7 +91,9 @@ class BluetoothBLEActivity : ComponentActivity() {
             true -> {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
-                    myBLEService.requestBleScan(adapter, this)
+                    myBLEService.requestBleScan()
+                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
+                    Log.d("BluetoothBLEActivity_Devices", foundDevices.toString())
                 }
             }
 
@@ -112,9 +116,8 @@ class BluetoothBLEActivity : ComponentActivity() {
             myBLEBound = true
             Log.d("BluetoothBLEActivity", "connection ");
 
-            foundDevices.clear() // Clear the existing list
-            foundDevices = PreferenceManager.getFoundDevices() ?: mutableListOf()
-            Log.d("BluetoothBLEActivity", "foundDevices: $foundDevices")
+            foundDevices = myBLEService.getFoundDevices()
+            adapter = BleDeviceAdapter(foundDevices)
 
         }
 
@@ -139,7 +142,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         dispatchOnRequestPermissionsResult(
             requestCode,
             grantResults,
-            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan(adapter, this) }),
+            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan() }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
                 "Some permissions were not granted, please grant them and try again",
                 Toast.LENGTH_LONG).show() })
