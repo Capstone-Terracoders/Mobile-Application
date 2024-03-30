@@ -16,6 +16,7 @@ import com.terracode.blueharvest.services.accessibilityValueServices.TextSizeSer
 import com.terracode.blueharvest.services.accessibilityValueServices.UnitService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -32,6 +33,9 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     private lateinit var languageSpinner: Spinner
     private lateinit var textSizeSeekBar: SeekBar
     private lateinit var unitSwitch: SwitchCompat
+
+    private lateinit var notificationBellIcon: View
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +59,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         TextSizeManager.setTextSizeView(this, rootView)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Initialized variables:
@@ -73,7 +77,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 
@@ -94,6 +98,13 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
             R.id.accessibilitySettings -> {
                 true // Do nothing, already in accessibility settings
+            }
+
+            R.id.notifications -> {
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
             }
 
             else -> super.onOptionsItemSelected(item)

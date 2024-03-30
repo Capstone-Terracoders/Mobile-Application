@@ -62,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.homeToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Set the text size

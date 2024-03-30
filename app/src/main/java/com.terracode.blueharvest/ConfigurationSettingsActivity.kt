@@ -18,6 +18,7 @@ import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
 import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -41,6 +42,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
     private lateinit var rpmCoefficientInput: EditText
     private lateinit var heightCoefficientInput: EditText
 
+    private lateinit var notificationBellIcon: View
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,7 +63,7 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_configuration_settings)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Set the text size
@@ -96,7 +100,7 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 
@@ -118,6 +122,13 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
             R.id.accessibilitySettings -> {
                 val accessibilitySettings = Intent(this, AccessibilitySettingsActivity::class.java)
                 startActivity(accessibilitySettings)
+                true
+            }
+
+            R.id.notifications -> {
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
                 true
             }
 
