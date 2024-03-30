@@ -13,6 +13,7 @@ import android.os.IBinder
 import android.util.Log
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
+import android.content.Context
 import com.terracode.blueharvest.utils.PreferenceManager
 
 
@@ -21,6 +22,8 @@ class serviceBLE() : Service() {
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BluetoothDevice>
     private var selectedDevice: BluetoothDevice? = null
+    //Our connection to the selected device
+    private var gatt: BluetoothGatt? = null
 
     // var adapter = BleDeviceAdapter(foundDevices) this should be in activity??
     private lateinit var btManager: BluetoothManager
@@ -98,6 +101,29 @@ class serviceBLE() : Service() {
                     }
                 }
         }))
+    }
+@SuppressLint("MissingPermission")
+fun connectToDevice(context: Context){
+    gatt = selectedDevice!!.connectGatt(context, false, callback)
+}
+    //Whatever we do with our Bluetooth device connection, whether now or later, we will get the
+//results in this callback object, which can become massive.
+    private val callback = object: BluetoothGattCallback() {
+        //We will override more methods here as we add functionality.
+
+        override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
+            super.onConnectionStateChange(gatt, status, newState)
+            //This tells us when we're connected or disconnected from the peripheral.
+
+            if (status != BluetoothGatt.GATT_SUCCESS) {
+                //TODO: handle error
+                return
+            }
+
+            if (newState == BluetoothGatt.STATE_CONNECTED) {
+                //TODO: handle the fact that we've just connected
+            }
+        }
     }
 
 }
