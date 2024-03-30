@@ -76,13 +76,13 @@ class BluetoothBLEActivity : ComponentActivity() {
 
     @RequiresApi(Build.VERSION_CODES.S)
     private fun handleStartScanButtonClick() {
-      /*  when (PermissionsUtilities.checkPermissionsGranted(
+        when (PermissionsUtilities.checkPermissionsGranted(
             this,
             BleScanRequiredPermissions.permissions
         )) {
             true -> {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
-                if (serviceBLEBound) {
+                if (myBLEBound) {
                     myBLEService.requestBleScan(adapter)
                 }
             }
@@ -92,12 +92,8 @@ class BluetoothBLEActivity : ComponentActivity() {
                 this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
             )
 
-        }*/
-        Log.d("BluetoothBLEActivity", "handle start scan button LOG!");
-        if (myBLEBound) {
-            Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
-            myBLEService.requestBleScan(adapter)
         }
+
 
     }
 

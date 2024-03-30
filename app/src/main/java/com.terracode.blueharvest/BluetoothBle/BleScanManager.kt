@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.bluetooth.BluetoothManager
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
+
 /**
  * This class manages Bluetooth LE scans for discovering nearby devices.
  * It provides methods to start and stop scans, configure scan duration, and
@@ -54,7 +56,7 @@ class BleScanManager(
     @SuppressLint("MissingPermission")//best to remove these for security,, implement later
     fun scanBleDevices() {
 
-
+        Log.d("serviceBLE", "scan BLEdevices, from manager LOG!")
         // scans for bluetooth LE devices
         if (scanning) {
             stopScan()
