@@ -92,8 +92,14 @@ class BluetoothBLEActivity : ComponentActivity() {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
                     myBLEService.requestBleScan()
-                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
-                    Log.d("BluetoothBLEActivity_Devices", foundDevices.toString())
+                    for(device in foundDevices){
+                        if (!foundDevices.contains(device)) {
+                            foundDevices.add(device)
+//                            Log.d("ServieBLE_device", getFoundDevices().toString())
+                        }
+                    }
+//                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
+                    Log.d("BluetoothBLEActivity_Devices", foundDevices.count().toString()+" "+foundDevices.toString())
                 }
             }
 
