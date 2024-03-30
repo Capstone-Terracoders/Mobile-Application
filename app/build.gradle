@@ -67,4 +67,6 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
     implementation "androidx.preference:preference-ktx:1.1.1"
     implementation "com.google.android.material:material:1.11.0"
+    implementation 'com.google.code.gson:gson:2.8.8' // Use the latest version available
+
 }
