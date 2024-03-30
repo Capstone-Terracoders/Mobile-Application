@@ -48,4 +48,5 @@
     <string name="stoppedRecordingNotification">"Dejó de grabar datos. "</string>
     <string name="minHeightReachedNotification">"\"ADVERTENCIA: ¡La altura actual del rastrillo es inferior o igual a la altura mínima!\" "</string>
     <string name="heightBelowZeroNotification">"ERROR: La altura actual del rastrillo es inferior a cero; consulte el manual del usuario. "</string>
+    <string name="homeButtonText">Hogar</string>
 </resources>

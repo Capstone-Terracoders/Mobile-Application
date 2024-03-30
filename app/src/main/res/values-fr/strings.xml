@@ -48,4 +48,5 @@
     <string name="stoppedRecordingNotification">Arrêt de l\'enregistrement des données.</string>
     <string name="minHeightReachedNotification">"\"AVERTISSEMENT : la hauteur de coupe actuelle est inférieure/ou égale à la hauteur minimale !\" "</string>
     <string name="heightBelowZeroNotification">"ERREUR : La hauteur de coupe actuelle est inférieure à zéro, veuillez vous référer au manuel d'utilisation ! "</string>
+    <string name="homeButtonText">Maison</string>
 </resources>
