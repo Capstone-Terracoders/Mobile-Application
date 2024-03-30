@@ -17,5 +17,6 @@ object BleScanRequiredPermissions {
         Manifest.permission.ACCESS_FINE_LOCATION,
         Manifest.permission.BLUETOOTH_ADMIN,
         Manifest.permission.BLUETOOTH_CONNECT,
+        Manifest.permission.ACCESS_BACKGROUND_LOCATION
     )
 }
