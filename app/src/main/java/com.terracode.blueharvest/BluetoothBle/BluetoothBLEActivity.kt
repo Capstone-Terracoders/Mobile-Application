@@ -66,24 +66,12 @@ class BluetoothBLEActivity : ComponentActivity() {
         // Initialize the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
         btnStartScan.setOnClickListener {
-            handleStartScanButtonClick()
-            adapter = BleDeviceAdapter(foundDevices)
-            adapter.notifyItemInserted(foundDevices.count()-1)
-            Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
-            rvFoundDevices.adapter = adapter
-            rvFoundDevices.layoutManager = LinearLayoutManager(this)
+                handleStartScanButtonClick(rvFoundDevices)
         }
-
-//        this.foundDevices = BleDevice.createBleDevicesList()
-//        this.adapter = BleDeviceAdapter(foundDevices)
-
-//        Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
-
-
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
-    private fun handleStartScanButtonClick() {
+    private fun handleStartScanButtonClick(rvFoundDevices: RecyclerView) {
         when (PermissionsUtilities.checkPermissionsGranted(
             this,
             BleScanRequiredPermissions.permissions
@@ -92,12 +80,11 @@ class BluetoothBLEActivity : ComponentActivity() {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
                     myBLEService.requestBleScan()
-                    for(device in foundDevices){
-                        if (!foundDevices.contains(device)) {
-                            foundDevices.add(device)
-//                            Log.d("ServieBLE_device", getFoundDevices().toString())
-                        }
-                    }
+                    Log.d("BluetoothBLEActivity", "BLE scan requested")
+
+                    // Wait for the scan to complete before updating UI
+                    waitForScanToComplete(rvFoundDevices)
+
 //                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
                     Log.d("BluetoothBLEActivity_Devices", foundDevices.count().toString()+" "+foundDevices.toString())
                 }
@@ -110,6 +97,38 @@ class BluetoothBLEActivity : ComponentActivity() {
         }
 
 
+    }
+    private fun waitForScanToComplete(rvFoundDevices: RecyclerView) {
+        Thread {
+            // Wait for the scan to complete or a timeout (if necessary)
+            // For simplicity, let's assume it takes some time and then returns the scanned devices
+
+            // Simulate a delay for demonstration purposes
+            Thread.sleep(1000)
+
+            // Retrieve the scanned devices
+            val scannedDevices = myBLEService.getFoundDevices()
+
+            // Update the UI with the scanned devices on the main thread
+            runOnUiThread {
+                Log.d("BluetoothBLEActivity", "Updating UI with scanned devices: $scannedDevices")
+
+                // Update foundDevices and notify adapter
+                for(device in foundDevices){
+                    if (!foundDevices.contains(device)) {
+                        foundDevices.add(device)
+//                            Log.d("ServieBLE_device", getFoundDevices().toString())
+                    }
+                }
+
+                adapter = BleDeviceAdapter(foundDevices)
+                adapter.notifyItemInserted(foundDevices.count()-1) // Notify adapter of data changes
+
+                Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
+                rvFoundDevices.adapter = adapter
+                rvFoundDevices.layoutManager = LinearLayoutManager(this)
+            }
+        }.start()
     }
 
 
