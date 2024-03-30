@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -16,6 +17,7 @@ import com.terracode.blueharvest.services.operationValueServices.HeightCoefficie
 import com.terracode.blueharvest.services.operationValueServices.RPMCoefficientService
 import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
 import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
+import com.terracode.blueharvest.services.toolbarServices.BackButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
@@ -43,6 +45,7 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
     private lateinit var heightCoefficientInput: EditText
 
     private lateinit var notificationBellIcon: View
+    private lateinit var backButton: Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,6 +87,11 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         rpmCoefficientInput = findViewById(R.id.coefficientRPMNumber)
         heightCoefficientInput = findViewById(R.id.coefficientHeightNumber)
 
+        //Toolbar items
+        backButton = findViewById(R.id.backButton)
+        notificationBellIcon = findViewById(R.id.notifications)
+
+
         //Initialize Display Value Services
         MaxRPMDisplayedService.setup(maxRPMDisplayedInput, this)
         MaxHeightDisplayedService.setup(maxHeightDisplayedInput, this)
@@ -97,6 +105,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         //Initialize Operation Param Services
         RPMCoefficientService.setup(rpmCoefficientInput, this)
         HeightCoefficientService.setup(heightCoefficientInput, this)
+
+        //Back Button Service
+        BackButtonService.setup(backButton, this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -107,11 +118,6 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             //This needs to be changed to include a card for notifications
-            R.id.backButton -> {
-                val home = Intent(this, HomeActivity::class.java)
-                startActivity(home)
-                true
-            }
 
             R.id.configurationSettings -> {
                 val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
