@@ -193,5 +193,7 @@ class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickList
 
     override fun onItemClick(position: Int, device: BluetoothDevice) {
         Log.d("BLEActivity", "Clicked Item "+device.address)
+        myBLEService.setSelectedDevice(device)
+        myBLEService.connectToDevice(this)
     }
 }

@@ -15,6 +15,7 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.content.Context
 import com.terracode.blueharvest.utils.PreferenceManager
+import kotlinx.coroutines.selects.select
 
 
 class serviceBLE() : Service() {
@@ -102,7 +103,10 @@ class serviceBLE() : Service() {
                 }
         }))
     }
-@SuppressLint("MissingPermission")
+fun setSelectedDevice(device: BluetoothDevice){
+    selectedDevice = device
+    Log.d("BLEService","Set Device $device")
+}@SuppressLint("MissingPermission")
 fun connectToDevice(context: Context){
     gatt = selectedDevice!!.connectGatt(context, false, callback)
 }
@@ -122,6 +126,7 @@ fun connectToDevice(context: Context){
 
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
+                Log.d("BLEService","Successful BLE Connection")
             }
         }
     }
