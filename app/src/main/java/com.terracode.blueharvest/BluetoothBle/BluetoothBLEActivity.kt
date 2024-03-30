@@ -1,5 +1,6 @@
 package com.terracode.blueharvest.BluetoothBle
 
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.ComponentName
 import android.content.Context
@@ -25,7 +26,7 @@ class BluetoothBLEActivity : ComponentActivity() {
     //private var serviceBLEBound = false
 
     private lateinit var btManager: BluetoothManager
-    private lateinit var foundDevices: MutableList<BleDevice>
+    private lateinit var foundDevices: MutableList<BluetoothDevice>
     private lateinit var adapter: BleDeviceAdapter
     private lateinit var myBLEService: serviceBLE
     private var myBLEBound: Boolean = false
@@ -54,7 +55,7 @@ class BluetoothBLEActivity : ComponentActivity() {
 
         // Initialize RecyclerView and adapter
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
-        foundDevices = BleDevice.createBleDevicesList()
+        foundDevices = mutableListOf()
         adapter = BleDeviceAdapter(foundDevices)
 
         rvFoundDevices.adapter = adapter

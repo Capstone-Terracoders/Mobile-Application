@@ -5,20 +5,22 @@ package com.terracode.blueharvest.BluetoothBle
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Service
+import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
+import android.bluetooth.BluetoothGatt
+import android.bluetooth.BluetoothGattCallback
 import com.terracode.blueharvest.utils.PreferenceManager
 
 
 class serviceBLE() : Service() {
-
-
     private val binder = LocalBinder()
     private lateinit var bleScanManager: BleScanManager
-    private lateinit var foundDevices: MutableList<BleDevice>
+    private lateinit var foundDevices: MutableList<BluetoothDevice>
+    private var selectedDevice: BluetoothDevice? = null
 
     // var adapter = BleDeviceAdapter(foundDevices) this should be in activity??
     private lateinit var btManager: BluetoothManager
@@ -27,7 +29,7 @@ class serviceBLE() : Service() {
         super.onCreate()
         Log.d("serviBLE", "onCreate LOG!")
 
-        foundDevices = BleDevice.createBleDevicesList()
+        foundDevices = mutableListOf()
         // adapter = BleDeviceAdapter(foundDevices) this should be in activity??
         btManager = getSystemService(BluetoothManager::class.java)
 
@@ -78,7 +80,7 @@ class serviceBLE() : Service() {
         return btManager
     }
 
-    fun getFoundDevices(): MutableList<BleDevice> {
+    fun getFoundDevices(): MutableList<BluetoothDevice> {
         return foundDevices
     }
     fun initBleScanManager() {
@@ -86,12 +88,16 @@ class serviceBLE() : Service() {
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
                 val name = it?.device?.address
-                if (name.isNullOrBlank()) return@BleScanCallback
-                val device = BleDevice(name)//todo this is where I think I can get a whole device, not just name
-                if (!foundDevices.contains(device)) {
-                    foundDevices.add(device)
-                    Log.d("ServieBLE_device", getFoundDevices().toString())
+                if (it != null) {
+                    selectedDevice = it.device
+                    if (name.isNullOrBlank()) return@BleScanCallback
+//                val device = BluetoothDevice //todo this is where I think I can get a whole device, not just name
+                    if (!foundDevices.contains(selectedDevice)) {
+                        foundDevices.add(it.device)
+                        Log.d("ServieBLE_device", getFoundDevices().toString())
+                    }
                 }
         }))
     }
+
 }
