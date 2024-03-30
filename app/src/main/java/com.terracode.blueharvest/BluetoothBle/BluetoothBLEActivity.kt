@@ -69,6 +69,23 @@ class BluetoothBLEActivity : ComponentActivity() {
         btnStartScan.setOnClickListener {
                 handleStartScanButtonClick(rvFoundDevices)
         }
+//        adapter.setOnClickListener(object : BleDeviceAdapter.OnClickListener{
+//                override fun onClick(position: Int, device: BluetoothDevice) {
+//    //                val intent = Intent(this@MainActivity, EmployeeDetails::class.java)
+//                    Log.d("BLEActivity", "CLicked device")
+//                    // Passing the data to the
+//                    // EmployeeDetails Activity
+//    //                intent.putExtra(NEXT_SCREEN, model)
+////                    startActivity(intent)
+//                }
+//            }
+//        )
+        adapter.setOnClickListener(object :
+            BleDeviceAdapter.OnClickListener {
+            override fun onClick(position: Int, device: BluetoothDevice) {
+                Log.d("BLEActivity", "CLicked device")
+            }
+        })
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
