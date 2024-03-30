@@ -78,6 +78,9 @@ class serviceBLE() : Service() {
         return btManager
     }
 
+    fun getFoundDevices(): MutableList<BleDevice> {
+        return foundDevices
+    }
     fun initBleScanManager() {
         Log.d("serviceBLE", "innit Blescanman!")
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
