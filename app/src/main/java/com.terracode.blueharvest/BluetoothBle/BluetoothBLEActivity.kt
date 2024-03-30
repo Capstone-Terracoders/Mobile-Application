@@ -8,10 +8,10 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +41,8 @@ class BluetoothBLEActivity : ComponentActivity() {
         Log.d("BluetoothBLEActivity", "oncreate LOG!");
 
         setContentView(R.layout.activity_bluetooth_ble)
+
+        PreferenceManager.init(this)
 
 
         startService(Intent(this@BluetoothBLEActivity, serviceBLE::class.java))
@@ -99,7 +101,6 @@ class BluetoothBLEActivity : ComponentActivity() {
 
                 this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
             )
-
         }
 
 

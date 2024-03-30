@@ -3,6 +3,9 @@ package com.terracode.blueharvest.utils
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.preference.PreferenceManager
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import com.terracode.blueharvest.BluetoothBle.BleDevice
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -11,6 +14,7 @@ object PreferenceManager {
 
     // SharedPreferences instance to manage preferences
     private lateinit var sharedPreferences: SharedPreferences
+    private val gson = Gson()
 
     /**
      * Initializes the PreferenceManager with the application context.
@@ -22,6 +26,11 @@ object PreferenceManager {
     }
 
     // Getters ----------------------------------------------------------
+
+    fun getFoundDevices(): MutableList<BleDevice>? {
+        val json = sharedPreferences.getString(PreferenceKeys.FOUND_DEVICES.toString(), null)
+        return gson.fromJson(json, object : TypeToken<MutableList<BleDevice>>() {}.type)
+    }
 
     /**
      * Retrieves the selected color position from SharedPreferences.
@@ -79,6 +88,10 @@ object PreferenceManager {
     }
 
     // Setters ----------------------------------------------------------
+    fun setFoundDevices(devices: MutableList<BleDevice>?) {
+        val json = gson.toJson(devices)
+        sharedPreferences.edit().putString(PreferenceKeys.FOUND_DEVICES.toString(), json).apply()
+    }
 
     /**
      * Sets the selected color position in SharedPreferences.
