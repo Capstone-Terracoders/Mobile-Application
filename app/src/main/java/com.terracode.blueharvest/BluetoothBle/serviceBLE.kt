@@ -74,9 +74,9 @@ class serviceBLE() : Service() {
         Log.d("serviBLE", "onDestroy LOG!")
     }
 
-    fun requestBleScan(adapter: BleDeviceAdapter) {
+    fun requestBleScan() {
         Log.d("serviceBle", "Called requestBleScan LOG!")
-        initBleScanManager(adapter)
+        initBleScanManager()
 
         bleScanManager.scanBleDevices()
         // Initialize and start scan here
@@ -93,18 +93,17 @@ class serviceBLE() : Service() {
         return btManager
     }
 
-    fun initBleScanManager(adapter: BleDeviceAdapter) {
+    fun initBleScanManager() {
         Log.d("serviceBLE", "innit Blescanman!")
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
                 val name = it?.device?.address
-                    if (name.isNullOrBlank()) return@BleScanCallback
-                    //val adapter = BleDeviceAdapter(foundDevices)
+                if (name.isNullOrBlank()) return@BleScanCallback
                 val device = BleDevice(name)//todo this is where I think I can get a whole device, not just name
-                    if (!foundDevices.contains(device)) {
-                        foundDevices.add(device)
-                        adapter.notifyItemInserted(foundDevices.size - 1)
-            }
+                if (!foundDevices.contains(device)) {
+                    foundDevices.add(device)
+                    Log.d("ServieBLE_device", getFoundDevices().toString())
+                }
         }))
     }
 }

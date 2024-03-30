@@ -59,17 +59,23 @@ class BluetoothBLEActivity : ComponentActivity() {
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
 
-
-
-
         //initialize bt manager
         btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         // Initialize the start scan button
         btnStartScan = findViewById(R.id.btn_start_scan)
         btnStartScan.setOnClickListener {
             handleStartScanButtonClick()
+            adapter = BleDeviceAdapter(foundDevices)
+            adapter.notifyItemInserted(foundDevices.count()-1)
+            Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
+            rvFoundDevices.adapter = adapter
+            rvFoundDevices.layoutManager = LinearLayoutManager(this)
         }
 
+//        this.foundDevices = BleDevice.createBleDevicesList()
+//        this.adapter = BleDeviceAdapter(foundDevices)
+
+//        Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
 
 
     }
@@ -83,7 +89,9 @@ class BluetoothBLEActivity : ComponentActivity() {
             true -> {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
-                    myBLEService.requestBleScan(adapter)
+                    myBLEService.requestBleScan()
+                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
+                    Log.d("BluetoothBLEActivity_Devices", foundDevices.toString())
                 }
             }
 
@@ -107,8 +115,8 @@ class BluetoothBLEActivity : ComponentActivity() {
             myBLEBound = true
             Log.d("BluetoothBLEActivity", "connection ");
 
-            val foundDevices = myBLEService.getFoundDevices()
-            val adapter = BleDeviceAdapter(foundDevices)
+            foundDevices = myBLEService.getFoundDevices()
+            adapter = BleDeviceAdapter(foundDevices)
 
         }
 
@@ -133,7 +141,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         dispatchOnRequestPermissionsResult(
             requestCode,
             grantResults,
-            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan(adapter) }),
+            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan() }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
                 "Some permissions were not granted, please grant them and try again",
                 Toast.LENGTH_LONG).show() })
