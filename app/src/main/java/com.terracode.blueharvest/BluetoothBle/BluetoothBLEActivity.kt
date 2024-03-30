@@ -22,7 +22,7 @@ import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 
 
-class BluetoothBLEActivity : ComponentActivity() {
+class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickListener {
     //private var serviceBLEBound = false
 
     private lateinit var btManager: BluetoothManager
@@ -56,7 +56,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         // Initialize RecyclerView and adapter
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
         foundDevices = mutableListOf()
-        adapter = BleDeviceAdapter(foundDevices)
+        adapter = BleDeviceAdapter(foundDevices, this)
 
         rvFoundDevices.adapter = adapter
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
@@ -80,12 +80,7 @@ class BluetoothBLEActivity : ComponentActivity() {
 //                }
 //            }
 //        )
-        adapter.setOnClickListener(object :
-            BleDeviceAdapter.OnClickListener {
-            override fun onClick(position: Int, device: BluetoothDevice) {
-                Log.d("BLEActivity", "CLicked device")
-            }
-        })
+
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -139,7 +134,7 @@ class BluetoothBLEActivity : ComponentActivity() {
                     }
                 }
 
-                adapter = BleDeviceAdapter(foundDevices)
+                adapter = BleDeviceAdapter(foundDevices, this)
                 adapter.notifyItemInserted(foundDevices.count()-1) // Notify adapter of data changes
 
                 Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
@@ -160,7 +155,7 @@ class BluetoothBLEActivity : ComponentActivity() {
             Log.d("BluetoothBLEActivity", "connection ");
 
             foundDevices = myBLEService.getFoundDevices()
-            adapter = BleDeviceAdapter(foundDevices)
+//            adapter = BleDeviceAdapter(foundDevices, this)
 
         }
 
@@ -194,5 +189,9 @@ class BluetoothBLEActivity : ComponentActivity() {
 
     companion object {
         private const val BLE_PERMISSION_REQUEST_CODE = 1
+    }
+
+    override fun onItemClick(position: Int, device: BluetoothDevice) {
+        Log.d("BLEActivity", "Clicked Item "+device.address)
     }
 }
