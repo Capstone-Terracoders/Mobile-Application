@@ -37,5 +37,6 @@ enum class PreferenceKeys {
     SELECTED_TEXT_SIZE,
     SELECTED_UNIT,
     SELECTED_START_SCAN,
+    FOUND_DEVICES
 
 }

@@ -1,26 +1,15 @@
 
 package com.terracode.blueharvest.BluetoothBle
 
+//import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.onRequestPermissionsResult
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.Service
 import android.bluetooth.BluetoothManager
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import android.util.Log
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.terracode.blueharvest.AccessibilitySettingsActivity
-import com.terracode.blueharvest.BluetoothBle.BleDevice
-import com.terracode.blueharvest.BluetoothBle.BleDeviceAdapter
-import com.terracode.blueharvest.BluetoothBle.BleScanCallback
-import com.terracode.blueharvest.BluetoothBle.BleScanManager
-import com.terracode.blueharvest.BluetoothBle.BleScanRequiredPermissions
-import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
-import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities
-import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.checkPermissionsGranted
-import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
-//import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.onRequestPermissionsResult
-import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 
 
@@ -74,10 +63,10 @@ class serviceBLE() : Service() {
         Log.d("serviBLE", "onDestroy LOG!")
     }
 
-    fun requestBleScan(adapter: BleDeviceAdapter) {
+    fun requestBleScan(adapter: BleDeviceAdapter, activity: Activity) {
         Log.d("serviceBle", "Called requestBleScan LOG!")
+        initBleScanManager(adapter, activity)
 
-        initBleScanManager(adapter)
         bleScanManager.scanBleDevices()
         // Initialize and start scan here
 
@@ -85,32 +74,31 @@ class serviceBLE() : Service() {
 
     }
 
-    fun getFoundDevices(): MutableList<BleDevice> {
-        return foundDevices
-    }
-
     fun getBtManager(): BluetoothManager {
         return btManager
     }
 
+    fun getFoundDevices(): MutableList<BleDevice> {
+        Log.d("FoundDevices RETURNED", foundDevices.toString())
+        return foundDevices
+    }
 
-
-    fun initBleScanManager(adapter: BleDeviceAdapter) {
-        Log.d("serviceBLE", "innit Blescanman!")
+    @SuppressLint("SuspiciousIndentation")
+    fun initBleScanManager(adapter: BleDeviceAdapter, activity: Activity) {
+        PreferenceManager.init(activity)
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
                 val name = it?.device?.address
-                if (name.isNullOrBlank()) return@BleScanCallback
+                    if (name.isNullOrBlank()) return@BleScanCallback
                     //val adapter = BleDeviceAdapter(foundDevices)
                 val device = BleDevice(name)//todo this is where I think I can get a whole device, not just name
-
-                if (!foundDevices.contains(device)) {
-                    foundDevices.add(device)
-                    adapter.notifyItemInserted(foundDevices.size - 1)
-                    Log.d("serviceBLE", foundDevices.toString())
-                    val num = adapter.itemCount
-                    Log.d("serviceBLE", num.toString())
+                    if (!foundDevices.contains(device)) {
+                        foundDevices.add(device)
+                        Log.d("FoundDevices-01", foundDevices.toString())
+                        adapter.notifyItemInserted(foundDevices.size - 1)
             }
-        }))
+            }))
+        Log.d("FoundDevices-02", foundDevices.toString())
+        PreferenceManager.setFoundDevices(foundDevices)
     }
 }

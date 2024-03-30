@@ -8,10 +8,10 @@ import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -42,6 +42,8 @@ class BluetoothBLEActivity : ComponentActivity() {
 
         setContentView(R.layout.activity_bluetooth_ble)
 
+        PreferenceManager.init(this)
+
 
         startService(Intent(this@BluetoothBLEActivity, serviceBLE::class.java))
 
@@ -59,9 +61,6 @@ class BluetoothBLEActivity : ComponentActivity() {
         rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
 
-
-
-
         //initialize bt manager
         btManager = getSystemService(Context.BLUETOOTH_SERVICE) as BluetoothManager
         // Initialize the start scan button
@@ -70,7 +69,14 @@ class BluetoothBLEActivity : ComponentActivity() {
             handleStartScanButtonClick()
         }
 
+        foundDevices = PreferenceManager.getFoundDevices() ?: mutableListOf()
+        Log.d("BluetoothBLEActivity - Line 75", "HERE: foundDevices: $foundDevices")
+        adapter = BleDeviceAdapter(foundDevices)
 
+        Log.d("BluetoothBLEActivity - line 78", "adapter - BLE Activity: $adapter")
+
+        rvFoundDevices.adapter = adapter
+        rvFoundDevices.layoutManager = LinearLayoutManager(this)
 
     }
 
@@ -83,7 +89,7 @@ class BluetoothBLEActivity : ComponentActivity() {
             true -> {
                 Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
-                    myBLEService.requestBleScan(adapter)
+                    myBLEService.requestBleScan(adapter, this)
                 }
             }
 
@@ -91,7 +97,6 @@ class BluetoothBLEActivity : ComponentActivity() {
 
                 this, BleScanRequiredPermissions.permissions, BLE_PERMISSION_REQUEST_CODE
             )
-
         }
 
 
@@ -107,8 +112,9 @@ class BluetoothBLEActivity : ComponentActivity() {
             myBLEBound = true
             Log.d("BluetoothBLEActivity", "connection ");
 
-            val foundDevices = myBLEService.getFoundDevices()
-            val adapter = BleDeviceAdapter(foundDevices)
+            foundDevices.clear() // Clear the existing list
+            foundDevices = PreferenceManager.getFoundDevices() ?: mutableListOf()
+            Log.d("BluetoothBLEActivity", "foundDevices: $foundDevices")
 
         }
 
@@ -133,7 +139,7 @@ class BluetoothBLEActivity : ComponentActivity() {
         dispatchOnRequestPermissionsResult(
             requestCode,
             grantResults,
-            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan(adapter) }),
+            onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan(adapter, this) }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
                 "Some permissions were not granted, please grant them and try again",
                 Toast.LENGTH_LONG).show() })
