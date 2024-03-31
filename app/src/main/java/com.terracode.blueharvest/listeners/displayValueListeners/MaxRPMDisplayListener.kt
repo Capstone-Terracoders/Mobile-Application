@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -24,7 +24,7 @@ class MaxRPMDisplayListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxRPMDisplayedTitle)
-    private val maxUserInput = MaxUserInput.MAX_RPM_INPUT.value
+    private val maxUserInput = MaxUserInputInt.MAX_DEFAULT_INPUT.value
 
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -49,12 +49,12 @@ class MaxRPMDisplayListener(
                         //Create warning toast
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputRpmNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputDefaultNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else if value is not divisible by 5
                     } else if (it % 5 != 0){
-                        val notDivisibleByFiveNotification = Notifications.notDivisibleByFiveNotification(configName, it)
+                        val notDivisibleByFiveNotification = Notifications.notDivisibleByFiveNotification(activity, configName, it)
                         PreferenceManager.setNotification(notDivisibleByFiveNotification)
                         //Make border and text color orange
                         maxRPMDisplayedInput.setTextColor(orangeColor)

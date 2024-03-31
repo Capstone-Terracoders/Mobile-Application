@@ -8,7 +8,7 @@ import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.UnitConverter
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -24,7 +24,7 @@ class MinRakeHeightListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.minRakeHeightTitle)
-    private var maxUserInput = MaxUserInput.MAX_HEIGHT_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
     private val maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
@@ -56,13 +56,13 @@ class MinRakeHeightListener(
                         //Create warning toast
                         CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputHeightNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputHeightNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If user input > max rpm displayed
                     } else if (it > maxHeightDisplayed) {
                         //Create the notification for safety value > displayed value
-                        val safetyValueGreaterThanDisplayValueNotification = Notifications.safetyValueGreaterThanDisplayValueNotification(configName, it)
+                        val safetyValueGreaterThanDisplayValueNotification = Notifications.safetyValueGreaterThanDisplayValueNotification(activity, configName, it)
                         PreferenceManager.setNotification(safetyValueGreaterThanDisplayValueNotification)
                         //Make border and text color orange
                         minRakeHeightInput.setTextColor(orangeColor)

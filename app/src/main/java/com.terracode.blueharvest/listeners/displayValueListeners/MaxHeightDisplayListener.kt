@@ -8,7 +8,7 @@ import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.UnitConverter
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -24,7 +24,7 @@ class MaxHeightDisplayListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxHeightDisplayedTitle)
-    private var maxUserInput = MaxUserInput.MAX_HEIGHT_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
     private val unitToggle = PreferenceManager.getSelectedUnit()
@@ -54,7 +54,7 @@ class MaxHeightDisplayListener(
                         //Create warning toast
                         CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputHeightNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputHeightNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else, save value

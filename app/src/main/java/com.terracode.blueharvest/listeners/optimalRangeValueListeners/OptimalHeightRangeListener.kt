@@ -8,7 +8,7 @@ import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.UnitConverter
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -24,7 +24,7 @@ class OptimalHeightRangeListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.optimalHeightRangeTitle)
-    private var maxUserInput = MaxUserInput.MAX_HEIGHT_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
     private val maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
@@ -59,19 +59,19 @@ class OptimalHeightRangeListener(
                         //Create warning toast
                         CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputOptimalHeightRangeNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputHeightNotificationFloat(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If ranges out of viewing range send notification
                     } else if (upperRange!! > maxHeightDisplayed || lowerRange!! < 0) {
                         //Create the notification for safety value > displayed value
-                        val rangeOutOfBoundsNotification = Notifications.rangeOutOfBoundsNotification(configName, it)
+                        val rangeOutOfBoundsNotification = Notifications.rangeOutOfBoundsNotification(activity, configName, it)
                         PreferenceManager.setNotification(rangeOutOfBoundsNotification)
                         //Make border and text color orange
                         optimalHeightRangeInput.setTextColor(orangeColor)
                         optimalHeightRangeInput.setBackgroundResource(R.drawable.edit_text_orange_border)
                         //Create warning toast
-                        CustomToasts.safetyValueGreaterThanDisplayedValueToast(activity)
+                        CustomToasts.rangeOutOfBoundsToast(activity)
                         //Still save the value
                         PreferenceManager.setOptimalHeightRangeInput(it)
 

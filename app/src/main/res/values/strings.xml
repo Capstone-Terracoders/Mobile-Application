@@ -97,11 +97,17 @@
     <string name="heightBelowZeroNotification">"ERROR: Current rake height is below zero, please refer to user manual!"</string>
     <string name="startedRecordingNotification">Started Recording Data.</string>
     <string name="stoppedRecordingNotification">Stopped Recording Data.</string>
+    <string name="maxInputNotification">WARNING: Input: %1$d for %2$s not saved. Please enter a number smaller than %3$s</string>
+    <string name="maxInputFloatNotification">WARNING: Input: %1$.2f for %2$s not saved. Please enter a number smaller than %3$s</string>
+    <string name="safetyValueGreaterThanDisplayValueNotification">"WARNING: Input: %1$d for %2$s is greater than Display Value."</string>
+    <string name="rangeOutOfBoundsNotification">"WARNING: Input: %1$.2f for %2$s makes optimal values out of bounds of viewing area."</string>
+    <string name="notDivisibleByFiveNotification">"WARNING: Input: %1$d for %2$s is not divisible by 5. Please enter a number divisible by 5 for easy viewing."</string>
+
 
 
     <!-- Strings for Toasts-->
-    <string name="maximumValueRpmAndCoefficientToast">Rake RPM should not exceed 100,000.</string>
-    <string name="maximumValueHeightToast">Rake Height should not exceed 300.</string>
+    <string name="maximumValueToast">Input should not exceed %1$s.</string>
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Safety Value Greater Than Maximum Displayed Value.</string>
     <string name="notDivisibleByFiveToast">Please enter a number divisible by 5.</string>
+    <string name="rangeOutOfBoundsToast">Optimal range input makes optimal values out of bounds of viewing area.</string>
 </resources>

@@ -5,9 +5,14 @@ import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.constants.NotificationTypes
 import java.time.Instant
 import java.time.format.DateTimeFormatter
+import com.terracode.blueharvest.utils.constants.MaxUserInputString
+
 
 object Notifications {
+    private val defaultMaxInput = MaxUserInputString.MAX_DEFAULT_INPUT.value
+    private val heightMaxInput = MaxUserInputString.MAX_HEIGHT_INPUT.value
 
+    //Current value notifications
     fun getMaxRPMDisplayedReachedNotification(context: Context): Notification {
         val notificationMessage = R.string.maxRPMDisplayedReachedNotification
         return Notification(
@@ -62,6 +67,8 @@ object Notifications {
         )
     }
 
+    //Recording notifications
+
     fun getStartRecordingNotification(context: Context): Notification {
         val notificationMessage = R.string.startedRecordingNotification
         return Notification(
@@ -80,8 +87,16 @@ object Notifications {
         )
     }
 
-    fun getMaxInputRpmNotification(inputName: String, value: Int): Notification {
-        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+    //Configuration Settings Notifications
+
+    fun getMaxInputDefaultNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.maxInputNotification,
+            value,
+            inputName,
+            defaultMaxInput
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -89,8 +104,14 @@ object Notifications {
         )
     }
 
-    fun getMaxInputHeightNotification(inputName: String, value: Int): Notification {
-        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 300."
+    fun getMaxInputDefaultNotificationFloat(context: Context, inputName: String, value: Float): Notification {
+        val notificationMessage = context.getString(
+            R.string.maxInputFloatNotification,
+            value,
+            inputName,
+            defaultMaxInput
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -98,8 +119,14 @@ object Notifications {
         )
     }
 
-    fun getMaxInputCoefficientNotification(inputName: String, value: Int): Notification {
-        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 100,000."
+    fun getMaxInputHeightNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.maxInputNotification,
+            value,
+            inputName,
+            heightMaxInput
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -107,8 +134,14 @@ object Notifications {
         )
     }
 
-    fun getMaxInputOptimalHeightRangeNotification(inputName: String, value: Float): Notification {
-        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+    fun getMaxInputHeightNotificationFloat(context: Context, inputName: String, value: Float): Notification {
+        val notificationMessage = context.getString(
+            R.string.maxInputFloatNotification,
+            value,
+            inputName,
+            heightMaxInput
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -116,8 +149,13 @@ object Notifications {
         )
     }
 
-    fun getMaxInputOptimalRpmRangeNotification(inputName: String, value: Float): Notification {
-        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+    fun safetyValueGreaterThanDisplayValueNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.safetyValueGreaterThanDisplayValueNotification,
+            value,
+            inputName
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -125,8 +163,13 @@ object Notifications {
         )
     }
 
-    fun safetyValueGreaterThanDisplayValueNotification(inputName: String, value: Int): Notification {
-        val notificationMessage = "WARNING: Input: $value for $inputName is greater than Display Value."
+    fun rangeOutOfBoundsNotification(context: Context, inputName: String, value: Float): Notification {
+        val notificationMessage = context.getString(
+            R.string.rangeOutOfBoundsNotification,
+            value,
+            inputName
+        )
+
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,
@@ -134,17 +177,13 @@ object Notifications {
         )
     }
 
-    fun rangeOutOfBoundsNotification(inputName: String, value: Float): Notification {
-        val notificationMessage = "WARNING: Input: $value for $inputName makes optimal values out of bounds of viewing area."
-        return Notification(
-            NotificationTypes.WARNING,
-            notificationMessage,
-            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+    fun notDivisibleByFiveNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.notDivisibleByFiveNotification,
+            value,
+            inputName
         )
-    }
 
-    fun notDivisibleByFiveNotification(inputName: String, value: Int): Notification {
-        val notificationMessage = "WARNING: Input: $value for $inputName is not divisible by 5. \n Please enter a number divisible by 5 for easy viewing."
         return Notification(
             NotificationTypes.WARNING,
             notificationMessage,

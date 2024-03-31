@@ -8,7 +8,7 @@ import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.UnitConverter
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -23,7 +23,7 @@ class HeightCoefficientListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.coefficientHeightTitle)
-    private var maxUserInput = MaxUserInput.MAX_RPM_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
     private val unitToggle = PreferenceManager.getSelectedUnit()
@@ -52,7 +52,7 @@ class HeightCoefficientListener(
                         //Create warning toast
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputCoefficientNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputHeightNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else, save value

@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -23,7 +23,7 @@ class MaxRakeRPMListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxRakeRPMTitle)
-    private val maxUserInput = MaxUserInput.MAX_RPM_INPUT.value
+    private val maxUserInput = MaxUserInputInt.MAX_DEFAULT_INPUT.value
 
     //Current Value
     private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
@@ -50,13 +50,13 @@ class MaxRakeRPMListener(
                         //Create warning toast
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputRpmNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputDefaultNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If user input > max rpm displayed
                     } else if (it > maxRpmDisplayed) {
                         //Create the notification for safety value > displayed value
-                        val safetyValueGreaterThanDisplayValueNotification = Notifications.safetyValueGreaterThanDisplayValueNotification(configName, it)
+                        val safetyValueGreaterThanDisplayValueNotification = Notifications.safetyValueGreaterThanDisplayValueNotification(activity, configName, it)
                         PreferenceManager.setNotification(safetyValueGreaterThanDisplayValueNotification)
                         //Make border and text color orange
                         maxRakeRPMInput.setTextColor(orangeColor)

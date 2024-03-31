@@ -7,7 +7,7 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.constants.MaxUserInput
+import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
 
@@ -23,7 +23,7 @@ class OptimalRPMRangeListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.optimalRPMRangeTitle)
-    private val maxUserInput = MaxUserInput.MAX_RPM_INPUT.value
+    private val maxUserInput = MaxUserInputInt.MAX_DEFAULT_INPUT.value
 
     //Current Value
     private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
@@ -53,19 +53,19 @@ class OptimalRPMRangeListener(
                         //Create warning toast
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputOptimalRpmRangeNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputDefaultNotificationFloat(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If ranges out of viewing range send notification
                     } else if (upperRange!! > maxRpmDisplayed || lowerRange!! < 0) {
                         //Create the notification for safety value > displayed value
-                        val rangeOutOfBoundsNotification = Notifications.rangeOutOfBoundsNotification(configName, it)
+                        val rangeOutOfBoundsNotification = Notifications.rangeOutOfBoundsNotification(activity, configName, it)
                         PreferenceManager.setNotification(rangeOutOfBoundsNotification)
                         //Make border and text color orange
                         optimalRPMRangeInput.setTextColor(orangeColor)
                         optimalRPMRangeInput.setBackgroundResource(R.drawable.edit_text_orange_border)
                         //Create warning toast
-                        CustomToasts.safetyValueGreaterThanDisplayedValueToast(activity)
+                        CustomToasts.rangeOutOfBoundsToast(activity)
                         //Still save the value
                         PreferenceManager.setOptimalRPMRangeInput(it)
 
