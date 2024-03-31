@@ -64,9 +64,14 @@ object NotificationManager {
                 // Set the drawable icon to the left of the text
                 icon?.let {
                     textView.setCompoundDrawablesWithIntrinsicBounds(it, null, null, null)
-                    val padding = activity.resources.getDimensionPixelSize(R.dimen.icon_padding)
-                    textView.compoundDrawablePadding = padding
+                    val paddingBetweenIconAndText = activity.resources.getDimensionPixelSize(R.dimen.icon_padding)
+                    // Adjust padding to add space between the icon and the text
+                    textView.setPadding(paddingBetweenIconAndText, 0, 0, 0)
+                    textView.compoundDrawablePadding = paddingBetweenIconAndText
                 }
+
+                // Apply stroke border around the text view
+                textView.setBackgroundResource(R.drawable.notification_item_background)
 
                 containerLayout.addView(textView)
             }
