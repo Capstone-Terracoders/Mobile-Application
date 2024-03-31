@@ -10,7 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.services.homeServices.RecordButtonService
+import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
@@ -62,7 +62,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.homeToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Set the text size
@@ -170,7 +170,7 @@ class HomeActivity : AppCompatActivity() {
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.home_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 

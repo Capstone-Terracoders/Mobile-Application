@@ -52,4 +52,5 @@
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Valor de seguridad mayor que el valor máximo mostrado.</string>
     <string name="notDivisibleByFiveToast">"Por favor ingresa un número divisible por 5. "</string>
     <string name="maximumValueHeightToast">"La altura del rastrillo no debe exceder los 300. "</string>
+    <string name="homeButtonText">Hogar</string>
 </resources>

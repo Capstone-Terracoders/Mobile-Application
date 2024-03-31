@@ -52,4 +52,5 @@
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Valeur de sécurité supérieure à la valeur maximale affichée.</string>
     <string name="notDivisibleByFiveToast">"Veuillez saisir un nombre divisible par 5. "</string>
     <string name="maximumValueHeightToast">"La hauteur du râteau ne doit pas dépasser 300. "</string>
+    <string name="homeButtonText">Maison</string>
 </resources>

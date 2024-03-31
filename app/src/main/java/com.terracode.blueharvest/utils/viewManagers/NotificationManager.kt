@@ -9,15 +9,15 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.objects.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
+import com.terracode.blueharvest.utils.objects.Notification
+import android.app.Activity
 
 object NotificationManager {
     @SuppressLint("InflateParams", "SetTextI18n")
-    fun showNotificationList(activity: HomeActivity, anchorView: View, notifications: List<Notification>) {
+    fun showNotificationList(activity: Activity, anchorView: View, notifications: List<Notification>) {
         val popupView = activity.layoutInflater.inflate(R.layout.notification_layout, null)
         val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
 
@@ -72,7 +72,7 @@ object NotificationManager {
             }
         }
 
-        // Set up Listener for Clearing com.terracode.blueharvest.utils.objects.Notifications
+        // Set up Listener for Clearing Notifications
         clearNotificationButton.setOnClickListener {
             // Call the method to clear notifications
             PreferenceManager.clearNotifications()
