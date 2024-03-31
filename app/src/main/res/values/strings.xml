@@ -70,6 +70,7 @@
     <string name="backButtonTitle">Back Button</string>
     <string name="settingsTitle">Settings</string>
     <string name="notificationTitle">Notifications</string>
+    <string name="homeButtonText">Home</string>
 
 
     <!-- Extra Strings -->

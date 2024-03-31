@@ -1,6 +1,7 @@
 package com.terracode.blueharvest.utils.viewManagers
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.graphics.Color
 import android.view.View
 import android.view.WindowManager
@@ -9,15 +10,14 @@ import android.widget.LinearLayout
 import android.widget.PopupWindow
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.R
+import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
-import com.terracode.blueharvest.utils.PreferenceManager
 
 object NotificationManager {
     @SuppressLint("InflateParams", "SetTextI18n")
-    fun showNotificationList(activity: HomeActivity, anchorView: View, notifications: List<Notification>) {
+    fun showNotificationList(activity: Activity, anchorView: View, notifications: List<Notification>) {
         val popupView = activity.layoutInflater.inflate(R.layout.notification_layout, null)
         val popupWindow = PopupWindow(popupView, WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT)
 

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
@@ -14,8 +15,10 @@ import com.terracode.blueharvest.services.accessibilityValueServices.ColorScheme
 import com.terracode.blueharvest.services.accessibilityValueServices.LanguageService
 import com.terracode.blueharvest.services.accessibilityValueServices.TextSizeService
 import com.terracode.blueharvest.services.accessibilityValueServices.UnitService
+import com.terracode.blueharvest.services.toolbarServices.BackButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -32,6 +35,10 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
     private lateinit var languageSpinner: Spinner
     private lateinit var textSizeSeekBar: SeekBar
     private lateinit var unitSwitch: SwitchCompat
+
+    private lateinit var notificationBellIcon: View
+    private lateinit var backButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,7 +62,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         TextSizeManager.setTextSizeView(this, rootView)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Initialized variables:
@@ -63,28 +70,27 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         languageSpinner = findViewById(R.id.languageSpinner)
         textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
         unitSwitch = findViewById(R.id.unitSwitch)
+        backButton = findViewById(R.id.backButton)
+        notificationBellIcon = findViewById(R.id.notifications)
+
 
         //Initialize Services
         ColorSchemeService.setup(colorSpinner, this)
         LanguageService.setup(languageSpinner, this)
         TextSizeService.setup(textSizeSeekBar, this)
         UnitService.setup(unitSwitch, this)
+        BackButtonService.setup(backButton, this)
     }
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 
     //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.backButton -> {
-                val home = Intent(this, HomeActivity::class.java)
-                startActivity(home)
-                true
-            }
 
             R.id.configurationSettings -> {
                 val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
@@ -94,6 +100,13 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
             R.id.accessibilitySettings -> {
                 true // Do nothing, already in accessibility settings
+            }
+
+            R.id.notifications -> {
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
             }
 
             else -> super.onOptionsItemSelected(item)
