@@ -13,9 +13,11 @@ import android.os.IBinder
 import android.util.Log
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
+import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
 import com.terracode.blueharvest.utils.PreferenceManager
 import kotlinx.coroutines.selects.select
+import java.util.UUID
 
 
 class serviceBLE() : Service() {
@@ -23,6 +25,7 @@ class serviceBLE() : Service() {
     private lateinit var bleScanManager: BleScanManager
     private lateinit var foundDevices: MutableList<BluetoothDevice>
     private var selectedDevice: BluetoothDevice? = null
+    private var selectedCharacteristic: BluetoothGattCharacteristic? = null
     //Our connection to the selected device
     private var gatt: BluetoothGatt? = null
 
@@ -103,18 +106,25 @@ class serviceBLE() : Service() {
                 }
         }))
     }
+
+fun getSelectedCharacteristic() : BluetoothGattCharacteristic? {
+    return selectedCharacteristic
+}
+fun getSelectedDevice() : BluetoothDevice? {
+    return selectedDevice
+}
 fun setSelectedDevice(device: BluetoothDevice){
     selectedDevice = device
     Log.d("BLEService","Set Device $device")
-}@SuppressLint("MissingPermission")
+}
+    @SuppressLint("MissingPermission")
 fun connectToDevice(context: Context){
     gatt = selectedDevice!!.connectGatt(context, false, callback)
 }
     //Whatever we do with our Bluetooth device connection, whether now or later, we will get the
-//results in this callback object, which can become massive.
+    //results in this callback object, which can become massive.
     private val callback = object: BluetoothGattCallback() {
         //We will override more methods here as we add functionality.
-
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             //This tells us when we're connected or disconnected from the peripheral.
@@ -129,6 +139,29 @@ fun connectToDevice(context: Context){
                 Log.d("BLEService","Successful BLE Connection")
             }
         }
-    }
 
+        @Deprecated("Deprecated in Java")
+        override fun onCharacteristicRead(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            status: Int
+        ) {
+            super.onCharacteristicRead(gatt, characteristic, status)
+//            if (characteristic.uuid == myCharacteristicUUID) {
+            Log.v("bluetooth", characteristic.uuid.toString())
+            selectedCharacteristic = characteristic
+//            }
+        }
+    }
+//    @RequiresPermission(PERMISSION_BLUETOOTH_CONNECT)
+@SuppressLint("MissingPermission")
+fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
+        val service = gatt?.getService(serviceUUID)
+        val characteristic = service?.getCharacteristic(characteristicUUID)
+
+        if (characteristic != null) {
+            val success = gatt?.readCharacteristic(characteristic)
+            Log.v("bluetooth", "Read status: $success")
+        }
+    }
 }
