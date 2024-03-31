@@ -51,9 +51,9 @@ class OptimalRPMRangeListener(
                         optimalRPMRangeInput.setTextColor(redColor)
                         optimalRPMRangeInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
-                        CustomToasts.maximumValueToast(activity)
+                        CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputFloatNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputOptimalRpmRangeNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If ranges out of viewing range send notification

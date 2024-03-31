@@ -80,7 +80,7 @@ object Notifications {
         )
     }
 
-    fun getMaxInputNotification(inputName: String, value: Int): Notification {
+    fun getMaxInputRpmNotification(inputName: String, value: Int): Notification {
         val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
         return Notification(
             NotificationTypes.WARNING,
@@ -89,7 +89,34 @@ object Notifications {
         )
     }
 
-    fun getMaxInputFloatNotification(inputName: String, value: Float): Notification {
+    fun getMaxInputHeightNotification(inputName: String, value: Int): Notification {
+        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 300."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getMaxInputCoefficientNotification(inputName: String, value: Int): Notification {
+        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 100,000."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getMaxInputOptimalHeightRangeNotification(inputName: String, value: Float): Notification {
+        val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getMaxInputOptimalRpmRangeNotification(inputName: String, value: Float): Notification {
         val notificationMessage = "Input: $value for $inputName not saved. \nPlease enter a number smaller than 10,000."
         return Notification(
             NotificationTypes.WARNING,

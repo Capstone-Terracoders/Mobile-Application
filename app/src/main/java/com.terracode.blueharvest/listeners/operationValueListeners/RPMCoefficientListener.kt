@@ -44,9 +44,9 @@ class RPMCoefficientListener(
                         rpmCoefficientInput.setTextColor(redColor)
                         rpmCoefficientInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
-                        CustomToasts.maximumValueToast(activity)
+                        CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputCoefficientNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else, save value

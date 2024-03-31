@@ -47,9 +47,9 @@ class MaxRPMDisplayListener(
                         maxRPMDisplayedInput.setTextColor(redColor)
                         maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
-                        CustomToasts.maximumValueToast(activity)
+                        CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputRpmNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else if value is not divisible by 5

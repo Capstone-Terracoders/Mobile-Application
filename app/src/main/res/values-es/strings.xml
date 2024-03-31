@@ -48,7 +48,8 @@
     <string name="stoppedRecordingNotification">"Dejó de grabar datos. "</string>
     <string name="minHeightReachedNotification">"\"ADVERTENCIA: ¡La altura actual del rastrillo es inferior o igual a la altura mínima!\" "</string>
     <string name="heightBelowZeroNotification">"ERROR: La altura actual del rastrillo es inferior a cero; consulte el manual del usuario. "</string>
-    <string name="maximumValueToast">"Las RPM del rastrillo no deben exceder las 100,000. "</string>
+    <string name="maximumValueRpmAndCoefficientToast">"Las RPM del rastrillo no deben exceder las 100,000. "</string>
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Valor de seguridad mayor que el valor máximo mostrado.</string>
     <string name="notDivisibleByFiveToast">"Por favor ingresa un número divisible por 5. "</string>
+    <string name="maximumValueHeightToast">"La altura del rastrillo no debe exceder los 300. "</string>
 </resources>

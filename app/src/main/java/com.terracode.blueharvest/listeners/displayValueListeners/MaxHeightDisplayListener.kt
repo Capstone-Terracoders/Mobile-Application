@@ -52,9 +52,9 @@ class MaxHeightDisplayListener(
                         maxHeightDisplayedInput.setTextColor(redColor)
                         maxHeightDisplayedInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
-                        CustomToasts.maximumValueToast(activity)
+                        CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputHeightNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else, save value

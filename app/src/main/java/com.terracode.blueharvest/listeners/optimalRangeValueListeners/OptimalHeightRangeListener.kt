@@ -57,9 +57,9 @@ class OptimalHeightRangeListener(
                         optimalHeightRangeInput.setTextColor(redColor)
                         optimalHeightRangeInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
-                        CustomToasts.maximumValueToast(activity)
+                        CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputFloatNotification(configName, it)
+                        val maxValueNotification = Notifications.getMaxInputOptimalHeightRangeNotification(configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
                         //If ranges out of viewing range send notification

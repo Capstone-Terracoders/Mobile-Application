@@ -99,7 +99,8 @@
 
 
     <!-- Strings for Toasts-->
-    <string name="maximumValueToast">Rake RPM should not exceed 100,000.</string>
+    <string name="maximumValueRpmAndCoefficientToast">Rake RPM should not exceed 100,000.</string>
+    <string name="maximumValueHeightToast">Rake Height should not exceed 300.</string>
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Safety Value Greater Than Maximum Displayed Value.</string>
     <string name="notDivisibleByFiveToast">Please enter a number divisible by 5.</string>
 </resources>
