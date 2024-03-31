@@ -1,20 +1,27 @@
 <!-- notification_popup_layout.xml -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/notificationContainer"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp"
-    android:background="@color/white">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/clearNotificationsButton"
+    <LinearLayout
+        android:id="@+id/notificationContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/clearNotificationsButton"
-        android:textColor="@color/black"
-        android:textColorLink="#000000" />
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
 
-    <!-- com.terracode.blueharvest.utils.objects.Notifications will be added dynamically here -->
+        <Button
+            android:id="@+id/clearNotificationsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clearNotificationsButton"
+            android:textColor="@android:color/black"
+            android:textColorLink="#000000" />
 
-</LinearLayout>
+        <!-- Dynamic notifications will be added here -->
+
+    </LinearLayout>
+
+</ScrollView>
