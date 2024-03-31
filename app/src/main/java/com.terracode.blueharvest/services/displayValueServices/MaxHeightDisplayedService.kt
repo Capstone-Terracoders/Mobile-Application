@@ -9,7 +9,7 @@ object MaxHeightDisplayedService {
     fun setup(maxHeightDisplayedInput: EditText, activity: ConfigurationSettingsActivity) {
         PreferenceManager.init(activity)
 
-        val maxHeightDisplayedListener = MaxHeightDisplayListener(activity)
+        val maxHeightDisplayedListener = MaxHeightDisplayListener(activity, maxHeightDisplayedInput)
         val maxHeightDisplayed: Int = PreferenceManager.getMaxHeightDisplayedInput()
 
         maxHeightDisplayed.let {

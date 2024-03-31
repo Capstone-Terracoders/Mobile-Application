@@ -1,6 +1,6 @@
 package com.terracode.blueharvest
 
-import Notifications
+import com.terracode.blueharvest.utils.objects.Notifications
 import android.animation.ObjectAnimator
 import android.content.Context
 import android.graphics.Canvas
@@ -69,7 +69,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     //Labels
     private val normalTextSize = PreferenceManager.getSelectedTextSize()
 
-    //Notifications
+    //com.terracode.blueharvest.utils.objects.Notifications
     private val maxRPMDisplayedReachedNotification = Notifications.getMaxRPMDisplayedReachedNotification(context)
     private val maxRPMReachedNotification = Notifications.getMaxRPMReachedNotification(context)
     private val rpmBelowZeroNotification = Notifications.getRpmBelowZeroNotification(context)

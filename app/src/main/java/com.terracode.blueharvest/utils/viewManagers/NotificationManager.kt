@@ -1,7 +1,6 @@
 package com.terracode.blueharvest.utils.viewManagers
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.graphics.Color
 import android.view.View
 import android.view.WindowManager
@@ -12,8 +11,9 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.constants.Notification
 import com.terracode.blueharvest.utils.constants.NotificationTypes
+import com.terracode.blueharvest.utils.objects.Notification
+import android.app.Activity
 
 object NotificationManager {
     @SuppressLint("InflateParams", "SetTextI18n")
@@ -30,7 +30,7 @@ object NotificationManager {
         // Add notifications dynamically to the container layout
         if (notifications.isEmpty()){
             val textView = TextView(activity)
-            textView.text = activity.getString(R.string.maxHeightReachedNotification)
+            textView.text = activity.getString(R.string.noNotificationText)
             containerLayout.addView(textView)
         } else {
             notifications.forEach { notification ->

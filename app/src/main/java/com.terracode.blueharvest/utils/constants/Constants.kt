@@ -64,7 +64,12 @@ enum class NotificationTypes {
     ERROR
 }
 
-enum class currentValueState {
-    RPM,
-    HEIGHT
+enum class MaxUserInputInt(val value: Int) {
+    MAX_DEFAULT_INPUT(100000),
+    MAX_HEIGHT_INPUT(300)
+}
+
+enum class MaxUserInputString(val value: String) {
+    MAX_DEFAULT_INPUT("100,000"),
+    MAX_HEIGHT_INPUT("300")
 }

@@ -2,10 +2,10 @@ package com.terracode.blueharvest.utils.viewManagers
 
 import android.app.Activity
 import android.content.Context
-import com.terracode.blueharvest.utils.PreferenceManager
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.color.DynamicColorsOptions
 import com.terracode.blueharvest.R
+import com.terracode.blueharvest.utils.PreferenceManager
 
 /**
  * Utility object for managing themes in the application.

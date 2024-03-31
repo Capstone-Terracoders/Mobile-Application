@@ -4,6 +4,7 @@ import android.view.View
 import android.view.View.OnClickListener
 import com.terracode.blueharvest.HomeActivity
 import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.objects.Notifications
 
 class RecordButtonListener(private val activity: HomeActivity) : OnClickListener {
 
