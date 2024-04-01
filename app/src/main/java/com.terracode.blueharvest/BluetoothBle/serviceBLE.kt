@@ -29,7 +29,6 @@ class serviceBLE() : Service() {
     //Our connection to the selected device
     private var gatt: BluetoothGatt? = null
 
-    // var adapter = BleDeviceAdapter(foundDevices) this should be in activity??
     private lateinit var btManager: BluetoothManager
 
     override fun onCreate() {
@@ -37,7 +36,7 @@ class serviceBLE() : Service() {
         Log.d("serviBLE", "onCreate LOG!")
 
         foundDevices = mutableListOf()
-        // adapter = BleDeviceAdapter(foundDevices) this should be in activity??
+
         btManager = getSystemService(BluetoothManager::class.java)
 
 
@@ -60,12 +59,6 @@ class serviceBLE() : Service() {
        return binder
     }
 
-    /*
-    private fun performLongTask() {
-        // Imagine doing something that takes a long time here
-        Log.d("serviBLE", "preformLongTask LOG!")
-        Thread.sleep(5000)
-    }*/
 
     override fun onDestroy() {
         super.onDestroy()//make sure to unbind from activity
@@ -78,9 +71,6 @@ class serviceBLE() : Service() {
 
         bleScanManager.scanBleDevices()
         // Initialize and start scan here
-
-        // You can inform the activity or show an error message here.
-
     }
 
     fun getBtManager(): BluetoothManager {
