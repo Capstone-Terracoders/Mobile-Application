@@ -2,10 +2,13 @@ package com.terracode.blueharvest.utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import androidx.preference.PreferenceManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import com.terracode.blueharvest.BluetoothBle.BleDevice
+import com.terracode.blueharvest.utils.constants.HomeKeys
+import com.terracode.blueharvest.utils.objects.Notification
+import com.terracode.blueharvest.utils.constants.NotificationTypes
+import com.terracode.blueharvest.utils.constants.PreferenceKeys
+import com.terracode.blueharvest.utils.constants.TextConstants
 
 /**
  * Singleton object for managing SharedPreferences in the application.
@@ -14,7 +17,7 @@ object PreferenceManager {
 
     // SharedPreferences instance to manage preferences
     private lateinit var sharedPreferences: SharedPreferences
-    private val gson = Gson()
+    private lateinit var sensorData: ReadJSONObject
 
     /**
      * Initializes the PreferenceManager with the application context.
@@ -23,13 +26,69 @@ object PreferenceManager {
      */
     fun init(context: Context) {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
+        sensorData = ReadJSONObject.fromAsset(context, "SensorDataExample.json")!!
     }
 
     // Getters ----------------------------------------------------------
 
-    fun getFoundDevices(): MutableList<BleDevice>? {
-        val json = sharedPreferences.getString(PreferenceKeys.FOUND_DEVICES.toString(), null)
-        return gson.fromJson(json, object : TypeToken<MutableList<BleDevice>>() {}.type)
+    fun getOptimalRakeHeight(): Double?{
+        var optimalRakeHeight: Double?
+        sensorData.apply {
+            optimalRakeHeight = getOptimalRakeHeight()
+        }
+        if (!getSelectedUnit()){
+            optimalRakeHeight = UnitConverter.convertHeightToImperial(optimalRakeHeight)
+        }
+        return optimalRakeHeight
+    }
+
+    fun getOptimalRakeRpm(): Double?{
+        var optimalRakeRpm: Double?
+        sensorData.apply {
+            optimalRakeRpm = getOptimalRakeRPM()
+        }
+        return optimalRakeRpm
+    }
+
+    fun getBushHeight(): Double?{
+        var bushHeightData: Double?
+        sensorData.apply {
+            bushHeightData = getBushHeight()
+        }
+        if (!getSelectedUnit()){
+            bushHeightData = UnitConverter.convertHeightToImperial(bushHeightData)
+        }
+        return bushHeightData
+    }
+
+    fun getSpeed(): Double?{
+        var speedData: Double?
+        sensorData.apply {
+            speedData = getSpeed()
+        }
+        if (!getSelectedUnit()){
+            speedData = UnitConverter.convertSpeedToImperial(speedData)
+        }
+        return speedData
+    }
+
+    fun getRpm(): Double?{
+        var rpmData: Double?
+        sensorData.apply {
+            rpmData = getRPM()
+        }
+        return rpmData
+    }
+
+    fun getRakeHeight(): Double?{
+        var rakeHeightData: Double?
+        sensorData.apply {
+            rakeHeightData = getRakeHeight()
+        }
+        if (!getSelectedUnit()){
+            rakeHeightData = UnitConverter.convertHeightToImperial(rakeHeightData)
+        }
+        return rakeHeightData
     }
 
     /**
@@ -75,23 +134,78 @@ object PreferenceManager {
             PreferenceKeys.SELECTED_UNIT.toString(),
             true)
     }
-    /**
-     * Retrieves if scan button is pressed from SharedPreferences.
-     *
-     * @return The selected unit.
-     */
-    fun getScanIsPressed() : Boolean{
-        return sharedPreferences.getBoolean(
-            PreferenceKeys.SELECTED_START_SCAN.toString(),
-            false)
 
+    fun getMaxRPMDisplayedInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            100)
+    }
+
+    fun getMaxHeightDisplayedInput(): Int {
+        var maxHeight = sharedPreferences.getInt(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            50)
+        if (!getSelectedUnit()){
+            maxHeight = UnitConverter.convertHeightToImperial(maxHeight.toDouble())!!.toInt()
+        }
+        return maxHeight
+    }
+
+    fun getOptimalRPMRangeInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            0f)
+    }
+
+    fun getOptimalHeightRangeInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            0f)
+    }
+
+    fun getMaxRakeRPMInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            40)
+    }
+
+    fun getMinRakeHeightInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            0)
+    }
+
+    fun getRPMCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            0)
+    }
+
+    fun getHeightCoefficientInput(): Int {
+        return sharedPreferences.getInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            0)
+    }
+
+    fun getRecordButtonStatus(): Boolean {
+        return sharedPreferences.getBoolean(
+            HomeKeys.RECORD_BUTTON.toString(),
+            false)
+    }
+
+    fun getNotifications(): List<Notification> {
+        val notificationsSet = sharedPreferences.getStringSet(HomeKeys.NOTIFICATION.toString(), null)
+        return notificationsSet?.mapNotNull { notificationString ->
+            val parts = notificationString.split("|")
+            if (parts.size == 3) {
+                Notification(toNotification(parts[0]), parts[1], parts[2])
+            } else {
+                null
+            }
+        } ?: emptyList()
     }
 
     // Setters ----------------------------------------------------------
-    fun setFoundDevices(devices: MutableList<BleDevice>?) {
-        val json = gson.toJson(devices)
-        sharedPreferences.edit().putString(PreferenceKeys.FOUND_DEVICES.toString(), json).apply()
-    }
 
     /**
      * Sets the selected color position in SharedPreferences.
@@ -136,19 +250,100 @@ object PreferenceManager {
             PreferenceKeys.SELECTED_UNIT.toString(),
             isChecked).apply()
     }
-    /**
-     * Sets the selected unit in SharedPreferences.
-     *
-     * @param isPressed The state of the scanbutton.
-     */
-    fun setScanIsPressed(isPressed: Boolean){
+
+    fun setMaxRPMDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_RPM_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxHeightDisplayedInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalRPMRangeInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.OPTIMAL_RPM_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setOptimalHeightRangeInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.OPTIMAL_HEIGHT_RANGE_INPUT.toString(),
+            input).apply()
+    }
+
+    fun setMaxRakeRPMInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MAX_RAKE_RPM.toString(),
+            input).apply()
+    }
+
+    fun setMinRakeHeightInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
+            input).apply()
+    }
+
+    fun setRPMCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.RPM_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setHeightCoefficientInput(input: Int) {
+        sharedPreferences.edit().putInt(
+            PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setRecordButtonStatus(input: Boolean) {
         sharedPreferences.edit().putBoolean(
-            PreferenceKeys.SELECTED_UNIT.toString(),
-            isPressed).apply()
+            HomeKeys.RECORD_BUTTON.toString(),
+            input).apply()
+    }
+
+    fun setNotification(notification: Notification) {
+        val notifications = getNotifications().toMutableList()
+        notifications.add(notification)
+        val notificationsSet =
+            notifications.map { "${it.type}|${it.message}|${it.timestamp}" }.toSet()
+        sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet)
+            .apply()
+    }
+
+    /**
+     * Clears all notifications from SharedPreferences.
+     */
+    fun clearNotifications() {
+        sharedPreferences.edit().remove(HomeKeys.NOTIFICATION.toString()).apply()
     }
 
     //Enum to Int
     private inline fun <reified T : Enum<T>> T.toFloat(): Float {
         return this.ordinal.toFloat()
+    }
+
+    private fun toNotification(type: String): NotificationTypes {
+        return when (type) {
+            "NOTIFICATION" -> {
+                NotificationTypes.NOTIFICATION
+            }
+
+            "WARNING" -> {
+                NotificationTypes.WARNING
+            }
+
+            "ERROR" -> {
+                NotificationTypes.ERROR
+            }
+
+            else -> {
+                Log.d("PreferenceManager", "String type does not match type: NotificationType")
+                throw IllegalArgumentException("Invalid type: $type")
+            }
+        }
     }
 }

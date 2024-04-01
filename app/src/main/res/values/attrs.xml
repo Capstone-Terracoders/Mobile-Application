@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RpmSpeedometerActivity">
+        <attr name="dialColor" format="color"/>
+        <attr name="needleColor" format="color"/>
+        <attr name="dialWidth" format="dimension"/>
+        <attr name="needleWidth" format="dimension"/>
+    </declare-styleable>
+</resources>

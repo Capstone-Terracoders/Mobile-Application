@@ -10,7 +10,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#DADBDC"
+        android:background="@color/lightGrey"
         android:orientation="vertical">
 
         <TextView
@@ -48,7 +48,7 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
-            android:background="@color/white"
+            android:background="@drawable/edit_text_normal"
             android:entries="@array/languageArray"
             android:textSize="18sp" />
 
@@ -115,7 +115,7 @@
             android:layout_marginTop="30dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="50dp"
-            android:background="@color/white"
+            android:background="@drawable/edit_text_normal"
             android:entries="@array/colorSchemeArray"
             android:textSize="18sp" />
 

@@ -13,6 +13,7 @@
     <!-- Strings used for Home Page -->
 
     <string name="recordTitle">Record</string>
+    <string name="clearNotificationsButton">Clear Notifications</string>
 
 
     <!-- Strings used for Accessibility Settings Card-->
@@ -39,35 +40,31 @@
 
     <!-- Strings used for Displayed Values Settings Card-->
 
-    <string name="maxRPMDisplayedTitle">Maximum RPM Displayed</string>
-    <string name="maxHeightDisplayedTitle">Maximum Height Displayed</string>
+    <string name="maxRPMDisplayedTitle">Max RPM Displayed</string>
+    <string name="maxHeightDisplayedTitle">Max Height Displayed</string>
     <string name="optimalRPMRangeTitle">Optimal RPM Range</string>
     <string name="optimalHeightRangeTitle">Optimal Height Range</string>
     <string name="connectedSensorTitle">Connected Sensors</string>
+    <string name="maxDisplayValuesTitle">Max Display Values</string>
+    <string name="optimalRangeValuesTitle">Optimal Range Values</string>
     <string name="plusMinusSign" translatable="false">+/-</string>
-
-    <string-array name="connectedSensors">
-        <item>Sensor 1</item>
-        <item>Sensor 2</item>
-        <item>Sensor 3</item>
-    </string-array>
 
 
     <!-- Strings used for Operation Parameters Settings Card-->
 
-    <string name="minRakeRPMTitle">Minimum Rake RPM</string>
+    <string name="maxRakeRPMTitle">Maximum Rake RPM</string>
     <string name="minRakeHeightTitle">Minimum Rake Height</string>
     <string name="coefficientRPMTitle">RPM Coefficient</string>
     <string name="coefficientHeightTitle">Height Coefficient</string>
-    <string name="safetyParametersTitle">Safety Parameters</string>
-    <string name="optimizationParametersTitle">Operation Parameters</string>
-
+    <string name="safetyValueTitle"> Safety Values</string>
+    <string name="optimizationValueTitle"> Optimization Values</string>
 
     <!-- Strings used for Menus -->
 
     <string name="backButtonTitle">Back Button</string>
     <string name="settingsTitle">Settings</string>
     <string name="notificationTitle">Notifications</string>
+    <string name="homeButtonText">Home</string>
 
 
     <!-- Extra Strings -->
@@ -90,4 +87,36 @@
     <string name="currentSpeed">Speed</string>
     <string name="currentBushHeight">Bush Height</string>
 
+
+    <!-- Strings used for Speedometer-->
+    <string name="currentRPMTitle">Current RPM</string>
+    <string name="speedometerTitle">Speedometer</string>
+
+    <!-- Strings used for Height Gauge-->
+    <string name="currentHeightTitle">Rake Height</string>
+    <string name="heightBarTitle">Rake Height Gauge Bar</string>
+
+    <!-- Strings for Notifications-->
+    <string name="noNotificationText">No notifications yet :(</string>
+    <string name="maxRPMReachedNotification">WARNING: Current RPM is greater than maximum RPM!</string>
+    <string name="maxRPMDisplayedReachedNotification">WARNING: Current RPM is greater than maximum RPM Displayed!</string>
+    <string name="rpmBelowZeroNotification">ERROR: Current RPM is below zero, please refer to user manual!</string>
+    <string name="maxHeightReachedNotification">WARNING: Current rake height is greater than maximum height!</string>
+    <string name="minHeightReachedNotification">"WARNING: Current rake height is under/or equal to minimum height!"</string>
+    <string name="heightBelowZeroNotification">"ERROR: Current rake height is below zero, please refer to user manual!"</string>
+    <string name="startedRecordingNotification">Started Recording Data.</string>
+    <string name="stoppedRecordingNotification">Stopped Recording Data.</string>
+    <string name="maxInputNotification">WARNING: Input: %1$d for %2$s not saved. Please enter a number smaller than %3$s</string>
+    <string name="maxInputFloatNotification">WARNING: Input: %1$.2f for %2$s not saved. Please enter a number smaller than %3$s</string>
+    <string name="safetyValueGreaterThanDisplayValueNotification">"WARNING: Input: %1$d for %2$s is greater than Display Value."</string>
+    <string name="rangeOutOfBoundsNotification">"WARNING: Input: %1$.2f for %2$s makes optimal values out of bounds of viewing area."</string>
+    <string name="notDivisibleByFiveNotification">"WARNING: Input: %1$d for %2$s is not divisible by 5. Please enter a number divisible by 5 for easy viewing."</string>
+
+
+
+    <!-- Strings for Toasts-->
+    <string name="maximumValueToast">Input should not exceed %1$s.</string>
+    <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Safety Value Greater Than Maximum Displayed Value.</string>
+    <string name="notDivisibleByFiveToast">Please enter a number divisible by 5.</string>
+    <string name="rangeOutOfBoundsToast">Optimal range input makes optimal values out of bounds of viewing area.</string>
 </resources>

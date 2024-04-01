@@ -1,0 +1,27 @@
+<!-- notification_popup_layout.xml -->
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/notificationContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@android:color/white">
+
+        <Button
+            android:id="@+id/clearNotificationsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/clearNotificationsButton"
+            android:textColor="@android:color/black"
+            android:textColorLink="#000000" />
+
+        <!-- Dynamic notifications will be added here -->
+
+    </LinearLayout>
+
+</ScrollView>

@@ -5,14 +5,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
+import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.ReadJSONObject
-import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -30,12 +32,17 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
+    private lateinit var currentRPMTextView: TextView
+    private lateinit var currentHeightTextView: TextView
+    private lateinit var recordButton: Button
+    private lateinit var notificationBellIcon: View
 
-    //Declaring the data values
-    private var bushHeightData: Double? = null
-    private var rakeHeightData: Double? = null
-    private var rpmData: Double? = null
-    private var speedData: Double? = null
+    //Declare value types
+    private var cm = "cm"
+    private var inch = "in"
+    private var kmph = "km/h"
+    private var mph = "mph"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,6 +54,7 @@ class HomeActivity : AppCompatActivity() {
         val currentTheme = ThemeManager.getCurrentTheme(this)
         ThemeManager.setColorOverlayTheme(this, currentTheme)
 
+        //Set language
         val currentLanguagePosition = PreferenceManager.getSelectedLanguagePosition()
         val languagePosition = LocaleManager.getLanguageCode(currentLanguagePosition)
         LocaleManager.setLocale(this, languagePosition)
@@ -55,7 +63,7 @@ class HomeActivity : AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.homeToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Set the text size
@@ -67,45 +75,103 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
+        currentRPMTextView = findViewById(R.id.currentRpmValue)
+        currentHeightTextView = findViewById(R.id.currentHeightValue)
+        recordButton = findViewById(R.id.recordButton)
+        notificationBellIcon = findViewById(R.id.notifications)
+
+        // Calls Record Data Service
+        RecordButtonService.setup(recordButton, this)
 
         //Get the value of the toggle from AccessibilitySettings XML file.
         val toggleValue = PreferenceManager.getSelectedUnit()
 
-        //Read data from mock values/bluetooth, and set the data values equal to the declared variables from above.
-        val sensorData = ReadJSONObject.fromAsset(this, "SensorDataExample.json")
-        sensorData?.apply {
-            rpmData = getRPM()
-            rakeHeightData = getRakeHeight()
-            bushHeightData = getBushHeight()
-            speedData = getSpeed()
+        //Read data from mock values/bluetooth, which we locate in the preference manager
+        val rpmData = PreferenceManager.getRpm()
+        val rakeHeightData = PreferenceManager.getRakeHeight()
+        val bushHeightData = PreferenceManager.getBushHeight()
+        val speedData = PreferenceManager.getSpeed()
+        val optimalRakeHeight = PreferenceManager.getOptimalRakeHeight()
+        val optimalRakeRpm = PreferenceManager.getOptimalRakeRpm()
+
+
+        //CurrentValueTitles
+        val maxHeightValue = PreferenceManager.getMaxHeightDisplayedInput()
+        val minHeightSafetyValue = PreferenceManager.getMinRakeHeightInput()
+        val maxRpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
+        val optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
+        val optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
+
+        //Configure lower and upper ranges for optimal height and rpm
+        val rpmUpperRange = optimalRakeRpm?.plus(optimalRpmRange)
+        val rpmLowerRange = optimalRakeRpm?.minus(optimalRpmRange)
+
+        val heightUpperRange = optimalRakeHeight?.plus(optimalHeightRange)
+        val heightLowerRange = optimalRakeHeight?.minus(optimalHeightRange)
+
+        //Setting Titles
+        val currentHeightTitle = getString(R.string.currentHeightTitle)
+        val currentRpmTitle = getString(R.string.currentRPMTitle)
+        val currentRpmText = "$currentRpmTitle $rpmData"
+        currentRPMTextView.text = currentRpmText
+
+        //Settings colors
+        val redColor = ContextCompat.getColor(this, R.color.red)
+        val blackColor = ContextCompat.getColor(this, R.color.black)
+        val darkGreenColor = ContextCompat.getColor(this, R.color.dark_green)
+
+        //Current value text color logic - Height
+        if (rakeHeightData != null) {
+            if (rakeHeightData > maxHeightValue || rakeHeightData < minHeightSafetyValue) {
+                currentHeightTextView.setTextColor(redColor)
+            } else if (rakeHeightData > heightLowerRange!! && rakeHeightData < heightUpperRange!!) {
+                currentHeightTextView.setTextColor(darkGreenColor)
+            } else {
+                currentHeightTextView.setTextColor(blackColor)
+            }
         }
+
+        //Current value text color logic - RPM
+        if (rpmData!! > maxRpmSafetyValue || rpmData < 0) {
+            currentRPMTextView.setTextColor(redColor)
+        } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
+            currentRPMTextView.setTextColor(darkGreenColor)
+        } else {
+            currentRPMTextView.setTextColor(blackColor)
+        }
+
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
-        optimalRakeHeightTextView.text = if (toggleValue) {
-            "$rakeHeightData cm"
-        } else {
-            "${UnitConverter.convertHeightToImperial(rakeHeightData)} in"
-        }
+        if (toggleValue) {
+            val optimalRakeHeightText = "$optimalRakeHeight $cm"
+            optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "$optimalRakeRpm $cm"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
+            val currentBushHeightText = "$bushHeightData $cm"
+            currentBushHeightTextView.text = currentBushHeightText
+            val currentSpeedText = "$speedData $kmph"
+            currentSpeedTextView.text = currentSpeedText
+            val currentHeightText = "$currentHeightTitle $rakeHeightData $cm"
+            currentHeightTextView.text = currentHeightText
 
-        optimalRakeRPMValueTextView.text = "$rpmData"
-
-        currentBushHeightTextView.text = if (toggleValue) {
-            "$bushHeightData cm"
         } else {
-            "${UnitConverter.convertHeightToImperial(bushHeightData)} in"
-        }
+            val optimalRakeHeightText = "$optimalRakeHeight $inch"
+            optimalRakeHeightTextView.text = optimalRakeHeightText
+            val optimalRakeRpmText = "$optimalRakeRpm $inch"
+            optimalRakeRPMValueTextView.text = optimalRakeRpmText
+            val currentBushHeightText = "$bushHeightData $inch"
+            currentBushHeightTextView.text = currentBushHeightText
+            val currentSpeedText = "$speedData $mph"
+            currentSpeedTextView.text = currentSpeedText
+            val currentHeightText = "$currentHeightTitle $rakeHeightData $inch"
+            currentHeightTextView.text = currentHeightText
 
-        currentSpeedTextView.text = if (toggleValue) {
-            "$speedData km/h"
-        } else {
-            //Needs function
-            "${UnitConverter.convertSpeedToImperial(speedData)} mph"
         }
     }
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.home_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 
@@ -114,8 +180,9 @@ class HomeActivity : AppCompatActivity() {
         return when (item.itemId) {
             //This needs to be changed to include a card for notifications
             R.id.notifications -> {
-                val home = Intent(this, HomeActivity::class.java)
-                startActivity(home)
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
                 true
             }
             R.id.configurationSettings -> {

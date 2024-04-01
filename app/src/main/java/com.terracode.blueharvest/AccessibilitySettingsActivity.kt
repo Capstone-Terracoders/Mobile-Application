@@ -5,19 +5,20 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ArrayAdapter
+import android.widget.Button
 import android.widget.SeekBar
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
-import com.terracode.blueharvest.listeners.ColorSchemeListener
-import com.terracode.blueharvest.listeners.LanguageSelectionListener
-import com.terracode.blueharvest.listeners.TextSizeChangeListener
-import com.terracode.blueharvest.listeners.UnitToggleListener
+import com.terracode.blueharvest.services.accessibilityValueServices.ColorSchemeService
+import com.terracode.blueharvest.services.accessibilityValueServices.LanguageService
+import com.terracode.blueharvest.services.accessibilityValueServices.TextSizeService
+import com.terracode.blueharvest.services.accessibilityValueServices.UnitService
+import com.terracode.blueharvest.services.toolbarServices.BackButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.TextConstants
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 
@@ -30,10 +31,14 @@ import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 class AccessibilitySettingsActivity : AppCompatActivity() {
 
     // Declare variables as var to allow reassignment
-    private lateinit var unitSwitch: SwitchCompat
-    private lateinit var languageSpinner: Spinner
     private lateinit var colorSpinner: Spinner
+    private lateinit var languageSpinner: Spinner
     private lateinit var textSizeSeekBar: SeekBar
+    private lateinit var unitSwitch: SwitchCompat
+
+    private lateinit var notificationBellIcon: View
+    private lateinit var backButton: Button
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,7 +62,7 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         TextSizeManager.setTextSizeView(this, rootView)
 
         //Set the toolbar
-        val toolbar: Toolbar = findViewById(R.id.settingsToolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
         //Initialized variables:
@@ -65,77 +70,27 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
         languageSpinner = findViewById(R.id.languageSpinner)
         textSizeSeekBar = findViewById(R.id.textSizeSeekBar)
         unitSwitch = findViewById(R.id.unitSwitch)
-
-        //Initialize Listeners
-        val colorSchemeListener = ColorSchemeListener(this)
-        val languageListener = LanguageSelectionListener(this)
-        val textSizeChangeListener = TextSizeChangeListener(this)
-        val unitToggleListener = UnitToggleListener(this)
+        backButton = findViewById(R.id.backButton)
+        notificationBellIcon = findViewById(R.id.notifications)
 
 
-        //-----Logic for Color Scheme-----//
-        val currentColorPosition = PreferenceManager.getSelectedColorPosition()
-
-        val colors = resources.getStringArray(R.array.colorSchemeArray)
-        val colorAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, colors
-        )
-        colorSpinner.adapter = colorAdapter
-
-        colorSpinner.setSelection(currentColorPosition)
-
-        colorSpinner.onItemSelectedListener = colorSchemeListener
-
-
-        //-----Logic for Language Spinner in Activity-----//
-        LocaleManager.setLocale(this, languagePosition)
-
-        val languages = resources.getStringArray(R.array.languageArray)
-        val languageAdapter = ArrayAdapter(
-            this,
-            android.R.layout.simple_spinner_item, languages
-        )
-        languageSpinner.adapter = languageAdapter
-
-        languageSpinner.setSelection(currentLanguagePosition)
-
-        languageSpinner.onItemSelectedListener = languageListener
-
-
-        //-----Logic for Text Size Seek Bar-----//
-        // Initialize SeekBar properties
-        val initialTextSize = PreferenceManager.getSelectedTextSize()
-        val maxTextSize = TextConstants.MAX_TEXT_SIZE.value.toInt()
-        val minTextSize = TextConstants.MIN_TEXT_SIZE.value.toInt()
-        textSizeSeekBar.min = (minTextSize)
-        textSizeSeekBar.max = (maxTextSize)
-        textSizeSeekBar.progress = initialTextSize.toInt()
-        textSizeSeekBar.setOnSeekBarChangeListener(textSizeChangeListener)
-
-
-        //-----Logic for Unit Switch-----//
-        val toggleValue = PreferenceManager.getSelectedUnit()
-        unitSwitch.isChecked = toggleValue
-
-        //Logic to change value of the unitToggleValue in the shared preferences when the unit toggle is switched.
-        unitSwitch.setOnCheckedChangeListener(unitToggleListener)
+        //Initialize Services
+        ColorSchemeService.setup(colorSpinner, this)
+        LanguageService.setup(languageSpinner, this)
+        TextSizeService.setup(textSizeSeekBar, this)
+        UnitService.setup(unitSwitch, this)
+        BackButtonService.setup(backButton, this)
     }
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.settings_menu, menu)
+        menuInflater.inflate(R.menu.toolbar, menu)
         return true
     }
 
     //Logic for the different menu options (what activity to inflate).
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.backButton -> {
-                val home = Intent(this, HomeActivity::class.java)
-                startActivity(home)
-                true
-            }
 
             R.id.configurationSettings -> {
                 val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
@@ -145,6 +100,13 @@ class AccessibilitySettingsActivity : AppCompatActivity() {
 
             R.id.accessibilitySettings -> {
                 true // Do nothing, already in accessibility settings
+            }
+
+            R.id.notifications -> {
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
             }
 
             else -> super.onOptionsItemSelected(item)

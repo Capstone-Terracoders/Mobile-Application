@@ -1,22 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/verticalConfigurationContainer"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/homeContainer"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/settingsToolbar"
+        <!-- Dummy anchor view for notification popup -->
+        <View
+            android:id="@+id/notificationAnchorView"
+            android:layout_width="73dp"
+            android:layout_height="121dp"
+            android:layout_gravity="start"
+            android:visibility="gone" />
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/green"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:menu="@menu/settings_menu"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            android:orientation="horizontal"
+            android:background="@color/green">
+
+            <Button
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:background="@android:color/transparent"
+                android:textColor="@color/black"
+                app:icon="@drawable/back_arrow_fill"
+                app:iconGravity="start"
+                app:iconTint="@color/black"
+                android:text="@string/homeButtonText"
+                />
+
+            <!-- Toolbar -->
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/green"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:menu="@menu/toolbar"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+                app:title=" "
+                app:titleMarginStart="30dp" />
+        </LinearLayout>
+
 
         <TextView
             android:id="@+id/configurationPageTitle"
@@ -31,36 +66,76 @@
         <HorizontalScrollView
             android:id="@+id/horizontalConfigurationContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:orientation="horizontal">
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:background="@android:color/transparent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@android:color/transparent">
+
+                <TextView
+                    android:id="@+id/displayedValuesCardTitle"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/displayedValuesCardTitle"
+                    android:textColor="@color/black" />
 
                 <!-- Displayed Values Card -->
                 <include
                     android:id="@+id/displayValuesCard"
                     layout="@layout/displayed_value_settings_card"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="25dp"
                     android:layout_marginEnd="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginBottom="20dp" />
+
+                </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@android:color/transparent">
+
+                <TextView
+                    android:id="@+id/configurationCardTitle"
+                    style="@style/TextAppearance.MaterialComponents.Headline5"
+                    android:layout_width="400dp"                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:gravity="center"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/safetyOperationalSettingsCardTitle"
+                    android:textColor="@color/black" />
 
                 <!-- Operation Parameter Card -->
                 <include
                     android:id="@+id/operationParameterCard"
                     layout="@layout/safety_operational_settings_card"
                     android:layout_width="300dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="50dp"
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="25dp"
                     android:layout_marginBottom="20dp" />
 
+            </LinearLayout>
             </LinearLayout>
         </HorizontalScrollView>
     </LinearLayout>

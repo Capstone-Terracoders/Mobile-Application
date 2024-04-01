@@ -53,6 +53,16 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
         return convertNumericValue(speedString) // Convert string to Double
     }
 
+    fun getOptimalRakeHeight(): Double? {
+        val optimalRakeHeightString = jsonObject.optString("optimalRakeHeight", "") // Retrieve optimal rake height as a string
+        return convertNumericValue(optimalRakeHeightString) // Convert string to Double
+    }
+
+    fun getOptimalRakeRPM(): Double? {
+        val optimalRakeRpmString = jsonObject.optString("optimalRakeRPM", "") // Retrieve optimal rake height as a string
+        return convertNumericValue(optimalRakeRpmString) // Convert string to Double
+    }
+
     companion object {
         /**
          * Reads a file from the assets folder, opens the file, and reads the JSON object.
