@@ -13,16 +13,24 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import androidx.activity.ComponentActivity
+import android.view.Menu
+import android.view.MenuItem
 import androidx.annotation.RequiresApi
+import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.terracode.blueharvest.AccessibilitySettingsActivity
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
+import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
+import com.terracode.blueharvest.services.toolbarServices.BackButtonService
+import androidx.appcompat.app.AppCompatActivity
 
-class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickListener {
+
+class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivity() {
     //private var serviceBLEBound = false
 
     private lateinit var btManager: BluetoothManager
@@ -32,18 +40,29 @@ class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickList
     private var myBLEBound: Boolean = false
 
 
-
+    private lateinit var notificationBellIcon: View
+    private lateinit var backButton: Button
     private lateinit var btnStartScan: Button
-    private lateinit var btnConnectDevice: Button
+
 
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("BluetoothBLEActivity", "oncreate LOG!");
 
+
         setContentView(R.layout.activity_bluetooth_ble)
 
         PreferenceManager.init(this)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
+
+        setSupportActionBar(toolbar)
+        backButton = findViewById(R.id.backButton)
+        notificationBellIcon = findViewById(R.id.notifications)
+
+
+
+
 
 
         startService(Intent(this@BluetoothBLEActivity, serviceBLE::class.java))
@@ -80,7 +99,7 @@ class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickList
 //                }
 //            }
 //        )
-
+        BackButtonService.setup(backButton, this)
     }
 
     @RequiresApi(Build.VERSION_CODES.S)
@@ -198,6 +217,43 @@ class BluetoothBLEActivity : ComponentActivity(), BleDeviceAdapter.ItemClickList
         var myDevice = myBLEService.getSelectedCharacteristic()
         if (myDevice != null) {
             Log.d("BLEActivity", "Clicked Item "+myDevice.uuid.toString())
+        }
+    }
+
+    //infalte the menues in the tool bar
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar, menu)
+        return true
+    }
+
+    //Logic for the different menu options (what activity to inflate).
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            //This needs to be changed to include a card for notifications
+            R.id.notifications -> {
+                // Sample notifications (replace with your actual notifications)
+                val notifications = PreferenceManager.getNotifications()
+                NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
+            }
+            R.id.configurationSettings -> {
+                val operationSettings = Intent(this, ConfigurationSettingsActivity::class.java)
+                startActivity(operationSettings)
+                true
+            }
+            R.id.accessibilitySettings -> {
+                val accessibilitySettings = Intent(this, AccessibilitySettingsActivity::class.java)
+                startActivity(accessibilitySettings)
+                true
+            }
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
+                true
+            }
+
+
+            else -> false
         }
     }
 }
