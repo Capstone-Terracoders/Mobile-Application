@@ -1,5 +1,6 @@
 package com.terracode.blueharvest.BluetoothBle
 
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
 import android.content.ComponentName
@@ -10,12 +11,13 @@ import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.Toast
-import android.view.Menu
-import android.view.MenuItem
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -23,15 +25,13 @@ import com.terracode.blueharvest.AccessibilitySettingsActivity
 import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.dispatchOnRequestPermissionsResult
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
-import com.terracode.blueharvest.utils.PreferenceManager
-
-import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.services.toolbarServices.BackButtonService
-import androidx.appcompat.app.AppCompatActivity
+import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 
 
 class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivity() {
-    //private var serviceBLEBound = false
+
 
     private lateinit var btManager: BluetoothManager
     private lateinit var foundDevices: MutableList<BluetoothDevice>
@@ -45,6 +45,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
     private lateinit var btnStartScan: Button
 
 
+    @SuppressLint("MissingInflatedId")
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +59,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
 
         setSupportActionBar(toolbar)
         backButton = findViewById(R.id.backButton)
-        notificationBellIcon = findViewById(R.id.notifications)
+        notificationBellIcon = findViewById(R.id.notifications)//todo figure out error and remove inflate suppression
 
 
 
@@ -88,17 +89,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
         btnStartScan.setOnClickListener {
                 handleStartScanButtonClick(rvFoundDevices)
         }
-//        adapter.setOnClickListener(object : BleDeviceAdapter.OnClickListener{
-//                override fun onClick(position: Int, device: BluetoothDevice) {
-//    //                val intent = Intent(this@MainActivity, EmployeeDetails::class.java)
-//                    Log.d("BLEActivity", "CLicked device")
-//                    // Passing the data to the
-//                    // EmployeeDetails Activity
-//    //                intent.putExtra(NEXT_SCREEN, model)
-////                    startActivity(intent)
-//                }
-//            }
-//        )
+//
         BackButtonService.setup(backButton, this)
     }
 
@@ -179,15 +170,19 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
-
             myBLEBound = false
         }
+
     }
 
+
     override fun onStop() {
+        unbindService(connection)
+        Log.d("BluetoothBLEActivity", "unBind LOG!");
         super.onStop()
         //I dont think I want to unbind the service here,
     }
+
 
     @Deprecated("Deprecated in Java")
     @RequiresApi(Build.VERSION_CODES.S)
@@ -201,7 +196,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
             grantResults,
             onGrantedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { myBLEService.requestBleScan() }),
             onDeniedMap = mapOf(BLE_PERMISSION_REQUEST_CODE to { Toast.makeText(this,
-                "Some permissions were not granted, please grant them and try again",
+                "Some permissions were not granted, please grant in system settings, and try again",
                 Toast.LENGTH_LONG).show() })
         )
     }
