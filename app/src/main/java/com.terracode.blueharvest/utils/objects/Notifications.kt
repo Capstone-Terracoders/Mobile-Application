@@ -190,4 +190,18 @@ object Notifications {
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
+
+    fun inputBelowFiveNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.inputBelowFiveNotification,
+            value,
+            inputName
+        )
+
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
 }
