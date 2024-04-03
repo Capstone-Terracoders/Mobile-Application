@@ -38,6 +38,7 @@ class HomeActivity : AppCompatActivity() {
     //Declaring service to start
     private lateinit var myBLEService: serviceBLE
     private var myBLEBound: Boolean = false
+    private var myBLEStarted: Boolean = false
 
     //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
@@ -48,6 +49,7 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var currentHeightTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
+    private lateinit var serviceIntent: Intent
 
     //Declare value types
     private var cm = "cm"
@@ -62,6 +64,16 @@ class HomeActivity : AppCompatActivity() {
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
 
+        //start the activity
+        serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
+        //initialize and bind to service
+        Log.d("alex log", myBLEStarted.toString())
+        if(!myBLEStarted) {// this is weird but seems to work
+            startService(Intent(this@HomeActivity, serviceBLE::class.java))
+            myBLEStarted = true
+            Log.d("alex log", myBLEStarted.toString())
+
+        }
 
         //Set setting values before setting the content view
         val currentTheme = ThemeManager.getCurrentTheme(this)
@@ -184,11 +196,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        //initialize and bind to service
 
-        startService(Intent(this@HomeActivity, serviceBLE::class.java))
 
-        val serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
         Log.d("alex log", " Home Activity Attempting to bind to serviceBLE")
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
     }
@@ -198,6 +207,10 @@ class HomeActivity : AppCompatActivity() {
         super.onStop()
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        //todo stop the service
+    }
     //connection object for bluetooth service
     private val connection = object : ServiceConnection {
         //is called on service bind, idk how android magic I think

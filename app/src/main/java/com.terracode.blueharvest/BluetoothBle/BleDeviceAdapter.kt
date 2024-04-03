@@ -93,7 +93,7 @@ class BleDeviceAdapter(private val devices: List<BluetoothDevice>, private val i
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val device = devices[position]
         val textView = holder.textView
-        textView.text = device.address
+        textView.text = device.name
         Log.d("BLeDeviceAddapter", "Device"+textView.text)
 //        holder.textView.setOnClickListener{
 //            Log.d("BLeDeviceAddapter", "Connecting to device...." + textView.text)

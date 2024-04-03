@@ -82,7 +82,7 @@ class serviceBLE() : Service() {
         Log.d("alex log", " serviceBLE innit Blescanman!")
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
-                val name = it?.device?.name
+                val name = it?.device?.address
                 if (it != null) {
                     selectedDevice = it.device
                     if (name.isNullOrBlank()) return@BleScanCallback
