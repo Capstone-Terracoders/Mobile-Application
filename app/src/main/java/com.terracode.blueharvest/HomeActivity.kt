@@ -62,16 +62,17 @@ class HomeActivity : AppCompatActivity() {
 
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
-        val myBLEStarted = PreferenceManager.getMyBleStarted()
+
      //   PreferenceManager.setMyBleService(false)
 
         //start the activity
         serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
         //initialize and bind to service
-        Log.d("alex log", PreferenceManager.getMyBleStarted().toString())
-        if(!myBLEStarted) {// this is weird but seems to work
+
+        if(!PreferenceManager.getMyBleStarted()) {
             startService(Intent(this@HomeActivity, serviceBLE::class.java))
-            Log.d("alex log", PreferenceManager.getMyBleStarted().toString())
+            Log.d("alex log", "start service call from home Activity")
+            PreferenceManager.setMyBleStarted(true)
 
         }
 
@@ -196,8 +197,6 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-
-
         Log.d("alex log", " Home Activity Attempting to bind to serviceBLE")
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
     }
@@ -209,6 +208,8 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        myBLEService.stopService(serviceIntent)
+
         //todo stop the service
     }
     //connection object for bluetooth service

@@ -9,6 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import com.terracode.blueharvest.services.displayValueServices.MaxHeightDisplayedService
 import com.terracode.blueharvest.services.displayValueServices.MaxRPMDisplayedService
 import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalHeightRangeService
@@ -135,6 +136,12 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
                 NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
+            }
+
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
                 true
             }
 

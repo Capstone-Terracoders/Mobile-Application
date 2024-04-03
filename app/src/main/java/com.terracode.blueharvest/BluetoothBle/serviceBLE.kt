@@ -42,7 +42,7 @@ class serviceBLE() : Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
 
         Log.d("alex log", " serviceBLE onStartCommand!")
-        PreferenceManager.setMyBleService(true)
+        PreferenceManager.setMyBleStarted(true)
         return START_STICKY // If the service is killed, it will be automatically restarted
     }
 
@@ -60,7 +60,7 @@ class serviceBLE() : Service() {
 
     override fun onDestroy() {
         Log.d("alex log", " serviceBLE onDestroy LOG!")
-        PreferenceManager.setMyBleService(false)
+        PreferenceManager.setMyBleStarted(false)
         super.onDestroy()//make sure to unbind from activity
 
 
@@ -111,26 +111,65 @@ fun setSelectedDevice(device: BluetoothDevice){
 }
     @SuppressLint("MissingPermission")
 fun connectToDevice(context: Context){
-    gatt = selectedDevice!!.connectGatt(context, false, callback)
+    gatt = selectedDevice!!.connectGatt(context, false, gattCallback)
 }
     //Whatever we do with our Bluetooth device connection, whether now or later, we will get the
     //results in this callback object, which can become massive.
-    private val callback = object: BluetoothGattCallback() {
+    private val gattCallback = object: BluetoothGattCallback() {
         //We will override more methods here as we add functionality.
+        val deviceAddress = gatt?.device?.address
+
+
+        @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
             //This tells us when we're connected or disconnected from the peripheral.
 
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 //TODO: handle error
+
                 return
             }
 
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
                 Log.d("alex log", " serviceBLE successful BLE Connection")
+                gatt.discoverServices()
+
+
+            }
+           if(newState == BluetoothGatt.STATE_DISCONNECTED) {
+                // Handle disconnected state
+                Log.d("ServiceBLE", "Disconnected from ${selectedDevice?.address}")
+                // Attempt to reconnect or take other actions
+               //fatal disconnect screen
             }
         }
+
+        override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
+            super.onServicesDiscovered(gatt, status)
+            if (status == BluetoothGatt.GATT_SUCCESS) {                                 //See if the service discovery was successful
+                Log.d("alex log", "start gat service discovery **$status")
+
+            } else {                                                                      //Service discovery failed so log a warning
+                Log.d("alex log", "onServicesDiscovered received: $status")
+            }
+          //  printGattTable()
+        }
+//        private fun printGattTable() {
+//            if (services.isEmpty()) {
+//                Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
+//                return
+//            }
+//            services.forEach { service ->
+//                val characteristicsTable = service.characteristics.joinToString(
+//                    separator = "\n|--",
+//                    prefix = "|--"
+//                ) { it.uuid.toString() }
+//                Log.i("printGattTable", "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
+//                )
+//            }
+//        }
 
         @Deprecated("Deprecated in Java")
         override fun onCharacteristicRead(
@@ -145,7 +184,7 @@ fun connectToDevice(context: Context){
 //            }
         }
     }
-//    @RequiresPermission(PERMISSION_BLUETOOTH_CONNECT)
+
 @SuppressLint("MissingPermission")
 fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
         val service = gatt?.getService(serviceUUID)
@@ -156,4 +195,18 @@ fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
             Log.d("alex log", " serviceBLE Read status: $success")
         }
     }
+     private fun BluetoothGatt.printGattTable() {
+        if (services.isEmpty()) {
+            Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
+            return
+        }
+        services.forEach { service ->
+            val characteristicsTable = service.characteristics.joinToString(
+                separator = "\n|--",
+                prefix = "|--"
+            ) { it.uuid.toString() }
+            Log.i("printGattTable", "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
+            )
+        }}
+
 }

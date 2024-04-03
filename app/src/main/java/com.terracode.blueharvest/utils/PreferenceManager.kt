@@ -321,7 +321,7 @@ object PreferenceManager {
     }
 
 
-    fun setMyBleService(isChecked: Boolean) {
+    fun setMyBleStarted(isChecked: Boolean) {
         sharedPreferences.edit().putBoolean(
             PreferenceKeys.MY_BLE_STARTED.toString(),
             isChecked).apply()
