@@ -60,5 +60,7 @@
     <string name="rangeOutOfBoundsNotification">"AVERTISSEMENT : Entrée : %1$.2f pour %2$s crée des valeurs optimales en dehors des limites de la zone de visualisation."</string>
     <string name="notDivisibleByFiveNotification">"AVERTISSEMENT : Saisie : %1$d pour %2$s n'est pas divisible par 5. Veuillez saisir un nombre divisible par 5 pour une visualisation facile. "</string>
     <string name="inputBelowFiveNotification">"AVERTISSEMENT : Entrée : %1$d pour %2$s est supérieur à 5. Veuillez saisir un nombre inférieur à 5."</string>
+    <string name="bluetoothDeviceConnectedNotificationToast">"Périphérique Bluetooth : %1$s connecté. "</string>
+    <string name="bluetoothDeviceDisconnectedNotificationToast">"Périphérique Bluetooth : %1$s déconnecté. "</string>
 
 </resources>
