@@ -50,7 +50,10 @@ enum class PreferenceKeys {
 
     //---Operation Parameters---//
     RPM_COEFFICIENT,
-    HEIGHT_COEFFICIENT
+    HEIGHT_COEFFICIENT,
+
+    //---Bluetooth---//
+    MY_BLE_STARTED
 }
 
 enum class HomeKeys {

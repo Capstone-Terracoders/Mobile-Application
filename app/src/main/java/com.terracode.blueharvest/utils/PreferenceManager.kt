@@ -205,6 +205,12 @@ object PreferenceManager {
         } ?: emptyList()
     }
 
+    fun getMyBleStarted(): Boolean {
+        return sharedPreferences.getBoolean(
+            PreferenceKeys.MY_BLE_STARTED.toString(),
+            true)
+    }
+
     // Setters ----------------------------------------------------------
 
     /**
@@ -313,6 +319,16 @@ object PreferenceManager {
         sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet)
             .apply()
     }
+
+
+    fun setMyBleService(isChecked: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            PreferenceKeys.MY_BLE_STARTED.toString(),
+            isChecked).apply()
+    }
+
+
+
 
     /**
      * Clears all notifications from SharedPreferences.

@@ -38,7 +38,6 @@ class HomeActivity : AppCompatActivity() {
     //Declaring service to start
     private lateinit var myBLEService: serviceBLE
     private var myBLEBound: Boolean = false
-    private var myBLEStarted: Boolean = false
 
     //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
@@ -63,6 +62,7 @@ class HomeActivity : AppCompatActivity() {
 
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
+        val myBLEStarted = PreferenceManager.getMyBleStarted()
 
         //start the activity
         serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity() {
         Log.d("alex log", myBLEStarted.toString())
         if(!myBLEStarted) {// this is weird but seems to work
             startService(Intent(this@HomeActivity, serviceBLE::class.java))
-            myBLEStarted = true
+            PreferenceManager.setMyBleService(true)
             Log.d("alex log", myBLEStarted.toString())
 
         }
@@ -203,7 +203,7 @@ class HomeActivity : AppCompatActivity() {
     }
     override fun onStop() {
         unbindService(connection)
-        Log.d("alex log", " Home Activity unBind LOG!");
+        Log.d("alex log", " Home Activity unBind LOG!")
         super.onStop()
     }
 
@@ -215,7 +215,7 @@ class HomeActivity : AppCompatActivity() {
     private val connection = object : ServiceConnection {
         //is called on service bind, idk how android magic I think
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Log.d("alex log", " Home Activity connection object called ");
+            Log.d("alex log", " Home Activity connection object called ")
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
