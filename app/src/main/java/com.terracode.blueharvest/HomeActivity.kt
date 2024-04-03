@@ -1,7 +1,13 @@
 package com.terracode.blueharvest
 
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.content.ServiceConnection
+import android.os.IBinder
+import android.util.Log
+
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -11,12 +17,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
+
 
 /**
  * Activity class for the Accessibility Settings Page
@@ -26,6 +34,10 @@ import com.terracode.blueharvest.utils.viewManagers.ThemeManager
  *
  */
 class HomeActivity : AppCompatActivity() {
+
+    //Declaring service to start
+    private lateinit var myBLEService: serviceBLE
+    private var myBLEBound: Boolean = false
 
     //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
@@ -49,6 +61,7 @@ class HomeActivity : AppCompatActivity() {
 
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
+
 
         //Set setting values before setting the content view
         val currentTheme = ThemeManager.getCurrentTheme(this)
@@ -169,6 +182,40 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
+    override fun onStart() {
+        super.onStart()
+        //initialize and bind to service
+
+        startService(Intent(this@HomeActivity, serviceBLE::class.java))
+
+        val serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
+        Log.d("alex log", " Home Activity Attempting to bind to serviceBLE")
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
+    }
+    override fun onStop() {
+        unbindService(connection)
+        Log.d("alex log", " Home Activity unBind LOG!");
+        super.onStop()
+    }
+
+    //connection object for bluetooth service
+    private val connection = object : ServiceConnection {
+        //is called on service bind, idk how android magic I think
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            Log.d("alex log", " Home Activity connection object called ");
+            // We've bound to LocalService, cast the IBinder and get LocalService instance.
+            val binder = service as serviceBLE.LocalBinder
+            myBLEService = binder.getService()
+            myBLEBound = true
+
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            myBLEBound = false
+        }
+
+    }
+
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar, menu)
@@ -200,8 +247,6 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(bluetoothBLEActivity)
                 true
             }
-
-
             else -> false
         }
     }

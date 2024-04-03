@@ -33,17 +33,14 @@ class serviceBLE() : Service() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("serviBLE", "onCreate LOG!")
-
+        Log.d("alex log", " serviceBLE onCreate LOG!")
         foundDevices = mutableListOf()
-
         btManager = getSystemService(BluetoothManager::class.java)
-
 
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("serviBLE", "onStartCommand!")
+        Log.d("alex log", " serviceBLE onStartCommand!")
 
         return START_STICKY // If the service is killed, it will be automatically restarted
     }
@@ -55,18 +52,18 @@ class serviceBLE() : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
-        Log.d("serviBLE", "onBind LOG!")
+        Log.d("alex log", " serviceBLE onBind LOG!")
        return binder
     }
 
 
     override fun onDestroy() {
         super.onDestroy()//make sure to unbind from activity
-        Log.d("serviBLE", "onDestroy LOG!")
+        Log.d("alex log", " serviceBLE onDestroy LOG!")
     }
 
     fun requestBleScan() {
-        Log.d("serviceBle", "Called requestBleScan LOG!")
+        Log.d("alex log", " serviceBLE Called requestBleScan LOG!")
         initBleScanManager()
 
         bleScanManager.scanBleDevices()
@@ -80,18 +77,19 @@ class serviceBLE() : Service() {
     fun getFoundDevices(): MutableList<BluetoothDevice> {
         return foundDevices
     }
+    @SuppressLint("MissingPermission")
     fun initBleScanManager() {
-        Log.d("serviceBLE", "innit Blescanman!")
+        Log.d("alex log", " serviceBLE innit Blescanman!")
         bleScanManager = BleScanManager(btManager, 5000, scanCallback = BleScanCallback(
             {
-                val name = it?.device?.address
+                val name = it?.device?.name
                 if (it != null) {
                     selectedDevice = it.device
                     if (name.isNullOrBlank()) return@BleScanCallback
 //                val device = BluetoothDevice //todo this is where I think I can get a whole device, not just name
                     if (!foundDevices.contains(selectedDevice)) {
                         foundDevices.add(it.device)
-                        Log.d("ServieBLE_device", getFoundDevices().toString())
+                        Log.d("alex log", getFoundDevices().toString())
                     }
                 }
         }))
@@ -105,7 +103,7 @@ fun getSelectedDevice() : BluetoothDevice? {
 }
 fun setSelectedDevice(device: BluetoothDevice){
     selectedDevice = device
-    Log.d("BLEService","Set Device $device")
+    Log.d("alex log", " serviceBLE Set Device $device")
 }
     @SuppressLint("MissingPermission")
 fun connectToDevice(context: Context){
@@ -126,7 +124,7 @@ fun connectToDevice(context: Context){
 
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
-                Log.d("BLEService","Successful BLE Connection")
+                Log.d("alex log", " serviceBLE successful BLE Connection")
             }
         }
 
@@ -151,7 +149,7 @@ fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
 
         if (characteristic != null) {
             val success = gatt?.readCharacteristic(characteristic)
-            Log.v("bluetooth", "Read status: $success")
+            Log.d("alex log", " serviceBLE Read status: $success")
         }
     }
 }

@@ -49,9 +49,6 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
     @RequiresApi(Build.VERSION_CODES.S)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("BluetoothBLEActivity", "oncreate LOG!");
-
-
         setContentView(R.layout.activity_bluetooth_ble)
 
         PreferenceManager.init(this)
@@ -60,18 +57,6 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
         setSupportActionBar(toolbar)
         backButton = findViewById(R.id.backButton)
         notificationBellIcon = findViewById(R.id.notifications)//todo figure out error and remove inflate suppression
-
-
-
-
-
-
-        startService(Intent(this@BluetoothBLEActivity, serviceBLE::class.java))
-
-        val serviceIntent = Intent(this@BluetoothBLEActivity, serviceBLE::class.java)
-        Log.d("BluetoothBLEActivity", "Attempting to bind to serviceBLE")
-        //bind the service
-        val bluetoothService = bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
 
         // Initialize RecyclerView and adapter
         val rvFoundDevices = findViewById<View>(R.id.rv_found_devices) as RecyclerView
@@ -100,16 +85,15 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
             BleScanRequiredPermissions.permissions
         )) {
             true -> {
-                Log.d("BluetoothBLEActivity", "handle start scan button true LOG!");
                 if (myBLEBound) {
                     myBLEService.requestBleScan()
-                    Log.d("BluetoothBLEActivity", "BLE scan requested")
+                    Log.d("alex log", " bluetoothBLEActivity BLE scan requested")
 
                     // Wait for the scan to complete before updating UI
                     waitForScanToComplete(rvFoundDevices)
 
 //                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
-                    Log.d("BluetoothBLEActivity_Devices", foundDevices.count().toString()+" "+foundDevices.toString())
+                    Log.d("alex log", foundDevices.count().toString()+" "+foundDevices.toString())
                 }
             }
 
@@ -120,6 +104,12 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
         }
 
 
+    }
+    override fun onStart() {
+        super.onStart()
+        val serviceIntent = Intent(this@BluetoothBLEActivity, serviceBLE::class.java)
+        Log.d("alex log", " bluetoothBLEActivity Attempting to bind to serviceBLE")
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
     }
     private fun waitForScanToComplete(rvFoundDevices: RecyclerView) {
         Thread {
@@ -134,7 +124,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
 
             // Update the UI with the scanned devices on the main thread
             runOnUiThread {
-                Log.d("BluetoothBLEActivity", "Updating UI with scanned devices: $scannedDevices")
+                Log.d("alex log", " bluetoothBLEActivity Updating UI with scanned devices: $scannedDevices")
 
                 // Update foundDevices and notify adapter
                 for(device in foundDevices){
@@ -147,7 +137,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
                 adapter = BleDeviceAdapter(foundDevices, this)
                 adapter.notifyItemInserted(foundDevices.count()-1) // Notify adapter of data changes
 
-                Log.d("BluetoothBLEActivity_FoundDevices", foundDevices.toString())
+                Log.d("alex log", foundDevices.toString())
                 rvFoundDevices.adapter = adapter
                 rvFoundDevices.layoutManager = LinearLayoutManager(this)
             }
@@ -162,7 +152,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
             myBLEBound = true
-            Log.d("BluetoothBLEActivity", "connection ");
+            Log.d("alex log", " bluetoothBLEActivity connection ");
 
             foundDevices = myBLEService.getFoundDevices()
 //            adapter = BleDeviceAdapter(foundDevices, this)
@@ -178,7 +168,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
 
     override fun onStop() {
         unbindService(connection)
-        Log.d("BluetoothBLEActivity", "unBind LOG!");
+        Log.d("alex log", " bluetoothBLEActivity unBind LOG!");
         super.onStop()
         //I dont think I want to unbind the service here,
     }
