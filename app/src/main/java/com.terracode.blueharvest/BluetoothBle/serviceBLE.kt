@@ -40,8 +40,9 @@ class serviceBLE() : Service() {
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("alex log", " serviceBLE onStartCommand!")
 
+        Log.d("alex log", " serviceBLE onStartCommand!")
+        PreferenceManager.setMyBleService(true)
         return START_STICKY // If the service is killed, it will be automatically restarted
     }
 
@@ -58,8 +59,11 @@ class serviceBLE() : Service() {
 
 
     override fun onDestroy() {
-        super.onDestroy()//make sure to unbind from activity
         Log.d("alex log", " serviceBLE onDestroy LOG!")
+        PreferenceManager.setMyBleService(false)
+        super.onDestroy()//make sure to unbind from activity
+
+
     }
 
     fun requestBleScan() {

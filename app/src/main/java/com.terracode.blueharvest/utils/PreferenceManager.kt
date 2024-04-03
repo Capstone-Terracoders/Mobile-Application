@@ -208,7 +208,7 @@ object PreferenceManager {
     fun getMyBleStarted(): Boolean {
         return sharedPreferences.getBoolean(
             PreferenceKeys.MY_BLE_STARTED.toString(),
-            true)
+            false)
     }
 
     // Setters ----------------------------------------------------------

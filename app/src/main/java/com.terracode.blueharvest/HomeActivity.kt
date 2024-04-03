@@ -63,15 +63,15 @@ class HomeActivity : AppCompatActivity() {
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
         val myBLEStarted = PreferenceManager.getMyBleStarted()
+     //   PreferenceManager.setMyBleService(false)
 
         //start the activity
         serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
         //initialize and bind to service
-        Log.d("alex log", myBLEStarted.toString())
+        Log.d("alex log", PreferenceManager.getMyBleStarted().toString())
         if(!myBLEStarted) {// this is weird but seems to work
             startService(Intent(this@HomeActivity, serviceBLE::class.java))
-            PreferenceManager.setMyBleService(true)
-            Log.d("alex log", myBLEStarted.toString())
+            Log.d("alex log", PreferenceManager.getMyBleStarted().toString())
 
         }
 
