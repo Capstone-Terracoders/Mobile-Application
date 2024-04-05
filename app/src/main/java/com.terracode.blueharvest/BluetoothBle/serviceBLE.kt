@@ -3,7 +3,6 @@ package com.terracode.blueharvest.BluetoothBle
 
 //import com.terracode.blueharvest.BluetoothBle.PermissionsUtilities.onRequestPermissionsResult
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.Service
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothManager
@@ -15,8 +14,6 @@ import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
 import android.content.Context
-import com.terracode.blueharvest.utils.PreferenceManager
-import kotlinx.coroutines.selects.select
 import java.util.UUID
 
 
@@ -142,14 +139,13 @@ fun connectToDevice(context: Context){
         }
     }
 //    @RequiresPermission(PERMISSION_BLUETOOTH_CONNECT)
-@SuppressLint("MissingPermission")
-fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
-        val service = gatt?.getService(serviceUUID)
-        val characteristic = service?.getCharacteristic(characteristicUUID)
-
-        if (characteristic != null) {
-            val success = gatt?.readCharacteristic(characteristic)
-            Log.d("alex log", " serviceBLE Read status: $success")
+    @SuppressLint("MissingPermission")
+    fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
+        if (selectedDevice == null || gatt == null) {                      //Check that we have access to a Bluetooth radio
+            return
         }
+        val status =
+            gatt!!.readCharacteristic(characteristic)                              //Request the BluetoothGatt to Read the characteristic
+        Log.i("Alex log", "READ STATUS $status")
     }
 }

@@ -219,6 +219,10 @@ class HomeActivity : AppCompatActivity() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
+            val characteristic = myBLEService.getSelectedCharacteristic()
+            if (characteristic != null){
+                myBLEService.readCharacteristic(characteristic)
+            }
             myBLEBound = true
 
         }
