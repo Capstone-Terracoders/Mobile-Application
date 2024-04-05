@@ -187,15 +187,14 @@ fun connectToDevice(context: Context){
     }
 
 @SuppressLint("MissingPermission")
-fun readCharacteristic(serviceUUID: UUID, characteristicUUID: UUID) {
-        val service = gatt?.getService(serviceUUID)
-        val characteristic = service?.getCharacteristic(characteristicUUID)
-
-        if (characteristic != null) {
-            val success = gatt?.readCharacteristic(characteristic)
-            Log.d("alex log", " serviceBLE Read status: $success")
-        }
+fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
+       if (selectedCharacteristic == null || gatt == null){
+           return
+       }
+    val status = gatt!!.readCharacteristic(characteristic)
+    Log.d( "alex Log", " Read Status $status")
     }
+
      private fun BluetoothGatt.printGattTable() {
         if (services.isEmpty()) {
             Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
