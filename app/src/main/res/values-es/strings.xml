@@ -37,7 +37,7 @@
     <string name="optimizationValueTitle">"Valores de optimización "</string>
     <string name="currentRPMTitle">RPM del rastrillo</string>
     <string name="speedometerTitle">"Velocímetro "</string>
-    <string name="currentHeightTitle">"Altura del rastrillo "</string>
+    <string name="currentHeightTitle">"Altura actual del rastrillo"</string>
     <string name="heightBarTitle">"Barra medidora de altura del rastrillo "</string>
     <string name="noNotificationText">" Aún no hay notificaciones :("</string>
     <string name="maxRPMReachedNotification">" ADVERTENCIA: ¡Las RPM actuales son mayores que las RPM máximas!"</string>
@@ -75,5 +75,7 @@
         <item>Oscuro</item>
         <item>Daltónico</item>
     </string-array>
+    <string name="displayedValueLessThanSafetyValueNotification">"ADVERTENCIA: Entrada: %1$d para %2$s es menor que el valor de seguridad guardado. Esto puede provocar un comportamiento no deseado con las animaciones del valor actual en la pantalla de inicio. "</string>
+    <string name="displayedValueLessThanSafetyValueToast">"El valor de visualización ingresado es menor que el valor de seguridad guardado. "</string>
 
 </resources>

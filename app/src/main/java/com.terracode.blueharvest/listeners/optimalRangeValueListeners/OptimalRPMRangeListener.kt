@@ -26,7 +26,6 @@ class OptimalRPMRangeListener(
     private val maxUserInput = MaxUserInputInt.MAX_DEFAULT_INPUT.value
 
     //Current Value
-    private val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
     private val currentValue = PreferenceManager.getOptimalRakeRpm()
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -38,6 +37,7 @@ class OptimalRPMRangeListener(
     }
 
     override fun afterTextChanged(editable: Editable?) {
+        val maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {

@@ -86,7 +86,7 @@ object CustomToasts {
         }
     }
 
-    fun notDivisibleByFiveNotification(context: Context) {
+    fun notDivisibleByFiveToast(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.warning_toast, null)
 
@@ -102,13 +102,29 @@ object CustomToasts {
         }
     }
 
-    fun inputBelowFiveNotification(context: Context) {
+    fun inputBelowFiveToast(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.warning_toast, null)
 
         // Find the TextView in the inflated layout
         val textView = layout.findViewById<TextView>(R.id.toastText)
         textView.text = ContextCompat.getString(context, R.string.inputBelowFiveToast)
+
+        with(Toast(context)) {
+            // Set custom layout to the Toast's view
+            view = layout
+            duration = Toast.LENGTH_LONG
+            show()
+        }
+    }
+
+    fun displayedValueLessThanSafetyValueToast(context: Context) {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.warning_toast, null)
+
+        // Find the TextView in the inflated layout
+        val textView = layout.findViewById<TextView>(R.id.toastText)
+        textView.text = ContextCompat.getString(context, R.string.displayedValueLessThanSafetyValueToast)
 
         with(Toast(context)) {
             // Set custom layout to the Toast's view
