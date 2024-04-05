@@ -12,62 +12,64 @@ class FDSActivity : AppCompatActivity() {
     private lateinit var firstCardView: CardView
     private lateinit var secondCardView: CardView
     private lateinit var thirdCardView: CardView
-    private lateinit var cardContainer: LinearLayout
-    private var isExpandedFirstCard = false
-    private var isExpandedSecondCard = false
-    private var isExpandedThirdCard = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_fds)
 
+        // Initialize your views
         firstCardView = findViewById(R.id.fdsFirstCard)
         secondCardView = findViewById(R.id.fdsSecondCard)
         thirdCardView = findViewById(R.id.fdsThirdCard)
 
+        // Set click listeners for each card
         firstCardView.setOnClickListener {
-            toggleCardExpansion(it, isExpandedFirstCard)
-            isExpandedFirstCard = !isExpandedFirstCard
+            toggleCardExpansion(firstCardView)
         }
 
         secondCardView.setOnClickListener {
-            toggleCardExpansion(it, isExpandedSecondCard)
-            isExpandedSecondCard = !isExpandedSecondCard
+            toggleCardExpansion(secondCardView)
         }
 
         thirdCardView.setOnClickListener {
-            toggleCardExpansion(it, isExpandedThirdCard)
-            isExpandedThirdCard = !isExpandedThirdCard
+            toggleCardExpansion(thirdCardView)
         }
     }
 
-    private fun toggleCardExpansion(view: View, isExpanded: Boolean) {
+
+    private fun toggleCardExpansion(view: View) {
+        val isExpanded = view.tag as? Boolean ?: false
+
         if (!isExpanded) {
-            // Add expanded view
-            val expandedView = layoutInflater.inflate(getExpandedLayoutId(view.id), null)
-            val params = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-
-            )
-            params.topMargin = resources.getDimensionPixelSize(R.dimen.expanded_card_margin_top)
-            expandedView.layoutParams = params
-            (view as ViewGroup).addView(expandedView)
+            // If the card is not expanded, add the expanded view
+            when (view.id) {
+                R.id.fdsFirstCard -> {
+                    val expandedView = layoutInflater.inflate(R.layout.fds_first_card_expanded, null)
+                    (view as ViewGroup).addView(expandedView)
+                }
+                R.id.fdsSecondCard -> {
+                    val expandedView = layoutInflater.inflate(R.layout.fds_second_card_expanded, null)
+                    (view as ViewGroup).addView(expandedView)
+                }
+                R.id.fdsThirdCard -> {
+                    val expandedView = layoutInflater.inflate(R.layout.fds_third_card_expanded, null)
+                    (view as ViewGroup).addView(expandedView)
+                }
+            }
         } else {
-            // Remove expanded view
-            (view as ViewGroup).removeAllViews()
+            // If the card is already expanded, remove the last added view
+            val expandedViewIndex = (view as ViewGroup).childCount - 1
+            if (expandedViewIndex >= 0) {
+                view.removeViewAt(expandedViewIndex)
+            }
         }
+
+        // Toggle the tag to indicate the new state
+        view.tag = !isExpanded
     }
 
 
-    private fun getExpandedLayoutId(viewId: Int): Int {
-        return when (viewId) {
-            R.id.fdsFirstCard -> R.layout.fds_first_card_expanded
-            R.id.fdsSecondCard -> R.layout.fds_second_card_expanded
-            R.id.fdsThirdCard -> R.layout.fds_third_card_expanded
-            else -> throw IllegalArgumentException("Invalid view ID")
-        }
-    }
+
 
 
 
