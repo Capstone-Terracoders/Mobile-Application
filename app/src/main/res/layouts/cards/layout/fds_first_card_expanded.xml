@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- fds_first_card_expanded.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Additional or expanded views for the first card -->
+    <TextView
+        android:id="@+id/expandedTextView1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1a. Open the Bluetooth settings on your Android device.\n\n1b. Turn on Bluetooth.\n\n1c. Ensure that the Sensor System is powered on and discoverable.\n\n1d. In the Bluetooth settings, find and select the Sensor System from the list of available devices.\n\n1e. Pair and connect your Android device to the Sensor System."
+        android:textSize="18sp"
+        android:lineSpacingExtra="10dp"
+        android:textColor="@color/black" />
+
+    <!-- Add more views as needed -->
+
+</LinearLayout>
