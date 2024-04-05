@@ -47,7 +47,8 @@ class FDSActivity : AppCompatActivity() {
             val expandedView = layoutInflater.inflate(getExpandedLayoutId(view.id), null)
             val params = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.WRAP_CONTENT
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+
             )
             params.topMargin = resources.getDimensionPixelSize(R.dimen.expanded_card_margin_top)
             expandedView.layoutParams = params

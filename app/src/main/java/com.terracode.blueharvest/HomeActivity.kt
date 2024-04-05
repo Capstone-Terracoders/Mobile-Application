@@ -194,6 +194,11 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(accessibilitySettings)
                 true
             }
+            R.id.FDSscreen -> {
+                val fdsscreen = Intent(this, FDSActivity::class.java)
+                startActivity(fdsscreen)
+                true
+            }
             else -> false
         }
     }

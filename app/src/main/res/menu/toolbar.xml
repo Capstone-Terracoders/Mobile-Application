@@ -24,6 +24,12 @@
                 android:id="@+id/accessibilitySettings"
                 android:title="@string/accessibilityPageTitle"
                 android:orderInCategory="2"/>
+            <item
+                android:id="@+id/FDSscreen"
+                android:title="FDS screen"
+                android:orderInCategory="3"/>
+
+
         </menu>
 
     </item>
