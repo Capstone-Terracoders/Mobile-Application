@@ -134,6 +134,7 @@ fun connectToDevice(context: Context){
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
                 Log.d("alex log", " serviceBLE successful BLE Connection")
+
                 gatt.discoverServices()
 
 

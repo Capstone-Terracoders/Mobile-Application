@@ -29,7 +29,7 @@ import com.terracode.blueharvest.utils.viewManagers.ThemeManager
 /**
  * Activity class for the Accessibility Settings Page
  *
- * @authors MacKenzie Young
+ * @authors MacKenzie Young, Alexandra Gale, Dharani Singaram, Anthony Caccese
  * Last Updated: 3/2/2024
  *
  */
