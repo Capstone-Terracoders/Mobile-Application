@@ -75,5 +75,7 @@
         <item>Sombre</item>
         <item>Daltonien</item>
     </string-array>
+    <string name="displayedValueLessThanSafetyValueNotification">"AVERTISSEMENT : Entrée : %1$d pour %2$s est inférieur à la valeur de sécurité enregistrée. Cela peut provoquer un comportement indésirable avec les animations de valeur actuelle sur l'écran d'accueil. "</string>
+    <string name="displayedValueLessThanSafetyValueToast">"La valeur affichée saisie est inférieure à la valeur de sécurité enregistrée. "</string>
 
 </resources>

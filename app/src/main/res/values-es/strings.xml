@@ -75,5 +75,7 @@
         <item>Oscuro</item>
         <item>Daltónico</item>
     </string-array>
+    <string name="displayedValueLessThanSafetyValueNotification">"ADVERTENCIA: Entrada: %1$d para %2$s es menor que el valor de seguridad guardado. Esto puede provocar un comportamiento no deseado con las animaciones del valor actual en la pantalla de inicio. "</string>
+    <string name="displayedValueLessThanSafetyValueToast">"El valor de visualización ingresado es menor que el valor de seguridad guardado. "</string>
 
 </resources>
