@@ -27,7 +27,6 @@ class OptimalHeightRangeListener(
     private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
 
     //Current Value
-    private val maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
     private val unitToggle = PreferenceManager.getSelectedUnit()
     private val currentValue = PreferenceManager.getOptimalRakeRpm()
 
@@ -44,6 +43,7 @@ class OptimalHeightRangeListener(
     }
 
     override fun afterTextChanged(editable: Editable?) {
+        val maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {

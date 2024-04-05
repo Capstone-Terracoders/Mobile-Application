@@ -86,7 +86,7 @@ object CustomToasts {
         }
     }
 
-    fun notDivisibleByFiveNotification(context: Context) {
+    fun notDivisibleByFiveToast(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.warning_toast, null)
 
@@ -102,7 +102,7 @@ object CustomToasts {
         }
     }
 
-    fun inputBelowFiveNotification(context: Context) {
+    fun inputBelowFiveToast(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.warning_toast, null)
 
