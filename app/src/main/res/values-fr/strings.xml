@@ -63,4 +63,17 @@
     <string name="bluetoothDeviceConnectedNotificationToast">"Périphérique Bluetooth : %1$s connecté. "</string>
     <string name="bluetoothDeviceDisconnectedNotificationToast">"Périphérique Bluetooth : %1$s déconnecté. "</string>
 
+    //Translations for arrays
+    <string-array name="languageArray">
+        <item>Anglaise</item>
+        <item>Française</item>
+        <item>Espagnole</item>
+    </string-array>
+
+    <string-array name="colorSchemeArray">
+        <item>Lumière</item>
+        <item>Sombre</item>
+        <item>Daltonien</item>
+    </string-array>
+
 </resources>
