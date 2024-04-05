@@ -1,4 +1,5 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="icon_padding">16dp</dimen>
+    <dimen name="expanded_card_margin_top">16dp</dimen> // prevent overlap of expanded card in FDSActivity.kt
 </resources>

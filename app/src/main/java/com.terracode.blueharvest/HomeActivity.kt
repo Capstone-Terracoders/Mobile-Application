@@ -138,6 +138,11 @@ class HomeActivity : AppCompatActivity() {
                 startActivity(accessibilitySettings)
                 true
             }
+            R.id.fdsActivity -> {
+                val fatalDisconnectScreen = Intent(this, FDSActivity::class.java)
+                startActivity(fatalDisconnectScreen)
+                true
+            }
             else -> false
         }
     }
