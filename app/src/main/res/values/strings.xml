@@ -84,7 +84,7 @@
     <string name="speedometerTitle">Speedometer</string>
 
     <!-- Strings used for Height Gauge-->
-    <string name="currentHeightTitle">Rake Height</string>
+    <string name="currentHeightTitle">Current Rake Height</string>
     <string name="heightBarTitle">Rake Height Gauge Bar</string>
 
     <!-- Strings for Notifications-->

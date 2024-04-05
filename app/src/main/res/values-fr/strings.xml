@@ -37,7 +37,7 @@
     <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
     <string name="currentRPMTitle">Râteau/tr/min</string>
     <string name="speedometerTitle">"Compteur de vitesse "</string>
-    <string name="currentHeightTitle">"Barre de jauge de hauteur de râteau "</string>
+    <string name="currentHeightTitle">"Hauteur actuelle du râteau"</string>
     <string name="heightBarTitle">"Barre de jauge de hauteur de râteau "</string>
     <string name="noNotificationText">" Aucune notification pour l'instant :("</string>
     <string name="maxRPMReachedNotification">AVERTISSEMENT : le régime actuel est supérieur au régime maximum!</string>
