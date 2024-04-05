@@ -63,4 +63,17 @@
     <string name="bluetoothDeviceConnectedNotificationToast">"Dispositivo Bluetooth: %1$s conectados. "</string>
     <string name="bluetoothDeviceDisconnectedNotificationToast">"Dispositivo Bluetooth: %1$s desconectado. "</string>
 
+    //Translations for arrays
+    <string-array name="languageArray">
+        <item>Inglés</item>
+        <item>Francés</item>
+        <item>Español</item>
+    </string-array>
+
+    <string-array name="colorSchemeArray">
+        <item>Ligero</item>
+        <item>Oscuro</item>
+        <item>Daltónico</item>
+    </string-array>
+
 </resources>
