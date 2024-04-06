@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.BluetoothBle.Sensor1uuid
 import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
@@ -24,6 +25,7 @@ import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
+import java.util.UUID
 
 
 /**
@@ -33,6 +35,8 @@ import com.terracode.blueharvest.utils.viewManagers.ThemeManager
  * Last Updated: 3/2/2024
  *
  */
+val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
+val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
 class HomeActivity : AppCompatActivity() {
 
     //Declaring service to start
@@ -220,16 +224,31 @@ class HomeActivity : AppCompatActivity() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
-            val characteristic = myBLEService.getSelectedCharacteristic()
 
-            if (characteristic != null) {
-                Log.d("alex Log", "kslejghfosiehgno")
-                myBLEService.readCharacteristic(characteristic)
+            var myGatt = myBLEService.getGatt()
+            val services = myGatt?.services                          //See if the service discovery was successful
+            Log.d("alex log ", "servicessssssss: $services")
+            // val services = gatt?.services
+            if (services == null) { Log.d("alex log", "services null onServiceConnected") }
+            if (services != null) {
+                for (service in services) {
+                    val characteristics = service.characteristics
+                    for (characteristic in characteristics) {
+                        if (characteristic.uuid == Sensor1uuid) {
+                            Log.d("alex log", " characteristic match onServiceConnected")
+                            myBLEService.readCharacteristic(characteristic)
+
+                        }
+                    }
+                }
             }
-            myBLEBound = true
-
         }
-
+//            val characteristic = myBLEService.getSelectedCharacteristic()
+//            if (characteristic != null) {
+//                Log.d("alex Log", "kslejghfosiehgno")
+//                myBLEService.readCharacteristic(characteristic)
+//            }
+//            myBLEBound = true
         override fun onServiceDisconnected(className: ComponentName) {
             myBLEBound = false
         }

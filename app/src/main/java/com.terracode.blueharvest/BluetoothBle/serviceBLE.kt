@@ -158,15 +158,15 @@ fun connectToDevice(context: Context){
             super.onServicesDiscovered(gatt, status)
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val services = gatt?.services                          //See if the service discovery was successful
-                Log.d("alex log ", "servicessssssss: $services")
+             //   Log.d("alex log ", "servicessssssss: $services")
               // val services = gatt?.services
-                if (services != null) { Log.d("alex log", "services null onservicediscovered") }
+              //  if (services != null) { Log.d("alex log", "services null onservicediscovered") }
                 if (services != null) {
                     for (service in services) {
                         val characteristics = service.characteristics
                         for (characteristic in characteristics) {
                             if (characteristic.uuid == Sensor1uuid) {
-                                Log.d("alex log", " characteristic match in connected state")
+                              //  Log.d("alex log", " characteristic match in connected state")
                                 readCharacteristic(characteristic)
                                 return // Exit after finding the target characteristic
                             }
