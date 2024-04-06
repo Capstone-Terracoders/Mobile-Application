@@ -14,11 +14,15 @@ import android.util.Log
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattService
 import android.content.Context
+import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import kotlinx.coroutines.selects.select
 import java.util.UUID
 
+val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
+val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
 
 class serviceBLE() : Service() {
     private val binder = LocalBinder()
@@ -28,8 +32,10 @@ class serviceBLE() : Service() {
     private var selectedCharacteristic: BluetoothGattCharacteristic? = null
     //Our connection to the selected device
     private var gatt: BluetoothGatt? = null
-
+    private lateinit var characteristics: MutableList<BluetoothGattCharacteristic>
     private lateinit var btManager: BluetoothManager
+
+
 
     override fun onCreate() {
         super.onCreate()
@@ -134,14 +140,15 @@ fun connectToDevice(context: Context){
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
                 Log.d("alex log", " serviceBLE successful BLE Connection")
-
                 gatt.discoverServices()
+
+
 
 
             }
            if(newState == BluetoothGatt.STATE_DISCONNECTED) {
                 // Handle disconnected state
-                Log.d("ServiceBLE", "Disconnected from ${selectedDevice?.address}")
+                Log.d("alex log", "Disconnected from ${selectedDevice?.address}")
                 // Attempt to reconnect or take other actions
                //fatal disconnect screen
             }
@@ -149,28 +156,28 @@ fun connectToDevice(context: Context){
 
         override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
             super.onServicesDiscovered(gatt, status)
+            val services = gatt?.services
             if (status == BluetoothGatt.GATT_SUCCESS) {                                 //See if the service discovery was successful
-                Log.d("alex log", "start gat service discovery **$status")
-
-            } else {                                                                      //Service discovery failed so log a warning
-                Log.d("alex log", "onServicesDiscovered received: $status")
+                Log.d("alex log ", "servicessssssss: $services")
+               // if (services != null) {Log.d("alex log", "services null onservicediscovered")}
+                if (services != null) {
+                    for (service in services) {
+                        val characteristics = service.characteristics
+                        for (characteristic in characteristics) {
+                            if (characteristic.uuid == Sensor1uuid) {
+                                selectedCharacteristic = characteristic
+                                Log.d("alex log", " characteristic match in connected state")
+                                readCharacteristic(characteristic)
+                                return // Exit after finding the target characteristic
+                            }
+                        }
+                    }
+                }
             }
-          //  printGattTable()
+
+
         }
-//        private fun printGattTable() {
-//            if (services.isEmpty()) {
-//                Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
-//                return
-//            }
-//            services.forEach { service ->
-//                val characteristicsTable = service.characteristics.joinToString(
-//                    separator = "\n|--",
-//                    prefix = "|--"
-//                ) { it.uuid.toString() }
-//                Log.i("printGattTable", "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
-//                )
-//            }
-//        }
+
 
         @Deprecated("Deprecated in Java")
         override fun onCharacteristicRead(
@@ -180,33 +187,20 @@ fun connectToDevice(context: Context){
         ) {
             super.onCharacteristicRead(gatt, characteristic, status)
 //            if (characteristic.uuid == myCharacteristicUUID) {
-            Log.v("bluetooth", characteristic.uuid.toString())
+            Log.v("alex log", characteristic.uuid.toString()+" from onCharacteristic Read")
             selectedCharacteristic = characteristic
-//            }
         }
     }
 
 @SuppressLint("MissingPermission")
-fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
-       if (selectedCharacteristic == null || gatt == null){
-           return
-       }
-    val status = gatt!!.readCharacteristic(characteristic)
-    Log.d( "alex Log", " Read Status $status")
+    fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
+        gatt?.readCharacteristic(characteristic) ?: run {
+            Log.w("alex log", "BluetoothGatt not initialized")
+
+        }
     }
 
-     private fun BluetoothGatt.printGattTable() {
-        if (services.isEmpty()) {
-            Log.i("printGattTable", "No service and characteristic available, call discoverServices() first?")
-            return
-        }
-        services.forEach { service ->
-            val characteristicsTable = service.characteristics.joinToString(
-                separator = "\n|--",
-                prefix = "|--"
-            ) { it.uuid.toString() }
-            Log.i("printGattTable", "\nService ${service.uuid}\nCharacteristics:\n$characteristicsTable"
-            )
-        }}
+
+
 
 }

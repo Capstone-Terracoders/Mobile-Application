@@ -221,7 +221,9 @@ class HomeActivity : AppCompatActivity() {
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
             val characteristic = myBLEService.getSelectedCharacteristic()
+
             if (characteristic != null){
+                Log.d("alex Log", "kslejghfosiehgno" )
                 myBLEService.readCharacteristic(characteristic)
             }
             myBLEBound = true
