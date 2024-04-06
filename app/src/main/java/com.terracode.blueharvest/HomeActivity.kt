@@ -35,8 +35,14 @@ import java.util.UUID
  * Last Updated: 3/2/2024
  *
  */
-val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
-val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
+//post processing current height
+val sensorDataCharacteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
+//pre prosessing
+val sensorRawDataCharacteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-R104768A1214")
+//config is what we are sending back
+val configurationCharacteristicUUID = UUID.fromString("19B10001-c45f-478d-bf47-257959fedb0a")
+//height and rpm
+val optimalOperationCharacteristicUUID = UUID.fromString("19B10001-O45f-478d-bf47-O104768A1214")
 class HomeActivity : AppCompatActivity() {
 
     //Declaring service to start
@@ -211,8 +217,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
+        unbindService(connection)
         myBLEService.stopService(serviceIntent)
+        super.onDestroy()
+        Log.d("alex log", " Home Activity unBind LOG!")
+
 
         //todo stop the service
     }
@@ -229,13 +238,13 @@ class HomeActivity : AppCompatActivity() {
             val services = myGatt?.services                          //See if the service discovery was successful
             Log.d("alex log ", "servicessssssss: $services")
             // val services = gatt?.services
-            if (services == null) { Log.d("alex log", "services null onServiceConnected") }
+            if (services == null) { Log.d("alex log", "services null onServiceConnected home act") }
             if (services != null) {
                 for (service in services) {
                     val characteristics = service.characteristics
                     for (characteristic in characteristics) {
                         if (characteristic.uuid == Sensor1uuid) {
-                            Log.d("alex log", " characteristic match onServiceConnected")
+                            Log.d("alex log", " characteristic match onServiceConnected home act")
                             myBLEService.readCharacteristic(characteristic)
 
                         }
