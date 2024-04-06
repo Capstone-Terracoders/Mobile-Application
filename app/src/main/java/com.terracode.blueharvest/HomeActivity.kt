@@ -222,8 +222,8 @@ class HomeActivity : AppCompatActivity() {
             myBLEService = binder.getService()
             val characteristic = myBLEService.getSelectedCharacteristic()
 
-            if (characteristic != null){
-                Log.d("alex Log", "kslejghfosiehgno" )
+            if (characteristic != null) {
+                Log.d("alex Log", "kslejghfosiehgno")
                 myBLEService.readCharacteristic(characteristic)
             }
             myBLEBound = true
@@ -233,8 +233,8 @@ class HomeActivity : AppCompatActivity() {
         override fun onServiceDisconnected(className: ComponentName) {
             myBLEBound = false
         }
+        }
 
-    }
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

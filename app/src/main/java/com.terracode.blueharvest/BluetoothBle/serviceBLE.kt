@@ -80,13 +80,7 @@ class serviceBLE() : Service() {
         // Initialize and start scan here
     }
 
-    fun getBtManager(): BluetoothManager {
-        return btManager
-    }
 
-    fun getFoundDevices(): MutableList<BluetoothDevice> {
-        return foundDevices
-    }
     @SuppressLint("MissingPermission")
     fun initBleScanManager() {
         Log.d("alex log", " serviceBLE innit Blescanman!")
@@ -104,7 +98,13 @@ class serviceBLE() : Service() {
                 }
         }))
     }
+    fun getFoundDevices(): MutableList<BluetoothDevice> {
+        return foundDevices
+    }
 
+    fun getGatt(): BluetoothGatt? {
+        return gatt
+    }
 fun getSelectedCharacteristic() : BluetoothGattCharacteristic? {
     return selectedCharacteristic
 }
@@ -156,16 +156,16 @@ fun connectToDevice(context: Context){
 
         override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
             super.onServicesDiscovered(gatt, status)
-            val services = gatt?.services
-            if (status == BluetoothGatt.GATT_SUCCESS) {                                 //See if the service discovery was successful
+            if (status == BluetoothGatt.GATT_SUCCESS) {
+                val services = gatt?.services                          //See if the service discovery was successful
                 Log.d("alex log ", "servicessssssss: $services")
-               // if (services != null) {Log.d("alex log", "services null onservicediscovered")}
+              // val services = gatt?.services
+                if (services != null) { Log.d("alex log", "services null onservicediscovered") }
                 if (services != null) {
                     for (service in services) {
                         val characteristics = service.characteristics
                         for (characteristic in characteristics) {
                             if (characteristic.uuid == Sensor1uuid) {
-                                selectedCharacteristic = characteristic
                                 Log.d("alex log", " characteristic match in connected state")
                                 readCharacteristic(characteristic)
                                 return // Exit after finding the target characteristic
@@ -174,8 +174,6 @@ fun connectToDevice(context: Context){
                     }
                 }
             }
-
-
         }
 
 
@@ -199,8 +197,6 @@ fun connectToDevice(context: Context){
 
         }
     }
-
-
 
 
 }
