@@ -233,7 +233,6 @@ class HomeActivity : AppCompatActivity() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
-
             var myGatt = myBLEService.getGatt()
             val services = myGatt?.services                          //See if the service discovery was successful
             Log.d("alex log ", "servicessssssss: $services")
