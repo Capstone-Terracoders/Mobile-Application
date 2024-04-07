@@ -93,7 +93,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
                     waitForScanToComplete(rvFoundDevices)
 
 //                    foundDevices.addAll(myBLEService.getFoundDevices()) // Update with new devices
-                    Log.d("alex log", foundDevices.count().toString()+" "+foundDevices.toString())
+                  //  Log.d("alex log", foundDevices.count().toString()+" "+foundDevices.toString())
                 }
             }
 
@@ -124,7 +124,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
 
             // Update the UI with the scanned devices on the main thread
             runOnUiThread {
-                Log.d("alex log", " bluetoothBLEActivity Updating UI with scanned devices: $scannedDevices")
+               // Log.d("alex log", " bluetoothBLEActivity Updating UI with scanned devices: $scannedDevices")
 
                 // Update foundDevices and notify adapter
                 for(device in foundDevices){
@@ -137,7 +137,7 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
                 adapter = BleDeviceAdapter(foundDevices, this)
                 adapter.notifyItemInserted(foundDevices.count()-1) // Notify adapter of data changes
 
-                Log.d("alex log", foundDevices.toString())
+             //   Log.d("alex log", foundDevices.toString())
                 rvFoundDevices.adapter = adapter
                 rvFoundDevices.layoutManager = LinearLayoutManager(this)
             }
@@ -196,12 +196,12 @@ class BluetoothBLEActivity : BleDeviceAdapter.ItemClickListener, AppCompatActivi
     }
 
     override fun onItemClick(position: Int, device: BluetoothDevice) {
-        Log.d("BLEActivity", "Clicked Item "+device.address)
+     //   Log.d("BLEActivity", "Clicked Item "+device.address)
         myBLEService.setSelectedDevice(device)
         myBLEService.connectToDevice(this)
         var myDevice = myBLEService.getSelectedCharacteristic()
         if (myDevice != null) {
-            Log.d("BLEActivity", "Clicked Item "+myDevice.uuid.toString())
+            Log.d("alex Log", "Clicked Item "+myDevice.uuid.toString())
         }
     }
 

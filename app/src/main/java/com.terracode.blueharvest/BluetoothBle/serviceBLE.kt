@@ -16,13 +16,26 @@ import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
 import android.bluetooth.BluetoothGattService
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
 import kotlinx.coroutines.selects.select
+import org.json.JSONObject
+import java.nio.ByteBuffer
 import java.util.UUID
 
-val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
-val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
+//{"OptRakeHeight": #,"OptRakeRPM": #}
+//{"RPM": , "Rake Height": , "Bush Height": , "Speed": }
+//{"Raw RPM": , "Raw Rake Height": , "Raw Bush Height": , "Raw Speed": }
+//post processing current height
+val sensorDataCharacteristicUUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb")
+//pre prosessing
+val sensorRawDataCharacteristicUUID = UUID.fromString("0000c0de-0000-1000-8000-00805f9b34fb")
+//config is what we are sending back
+val configurationCharacteristicUUID = UUID.fromString("0000beef-0000-1000-8000-00805f9b34fb")
+//height and rpm
+val optimalOperationCharacteristicUUID = UUID.fromString("0000fade-0000-1000-8000-00805f9b34fb")
 
 class serviceBLE() : Service() {
     private val binder = LocalBinder()
@@ -34,8 +47,12 @@ class serviceBLE() : Service() {
     private var gatt: BluetoothGatt? = null
     private lateinit var characteristics: MutableList<BluetoothGattCharacteristic>
     private lateinit var btManager: BluetoothManager
+    private val GATT_MAX_MTU_SIZE = 517
 
-
+    private var readListener: ReadListener? = null
+    interface ReadListener {
+        fun onValueObtained(characteristic: BluetoothGattCharacteristic, value: ByteArray)
+    }
 
     override fun onCreate() {
         super.onCreate()
@@ -102,9 +119,12 @@ class serviceBLE() : Service() {
         return foundDevices
     }
 
+
     fun getGatt(): BluetoothGatt? {
         return gatt
     }
+
+
 fun getSelectedCharacteristic() : BluetoothGattCharacteristic? {
     return selectedCharacteristic
 }
@@ -126,6 +146,10 @@ fun connectToDevice(context: Context){
         val deviceAddress = gatt?.device?.address
 
 
+        override fun onMtuChanged(gatt: BluetoothGatt, mtu: Int, status: Int) {
+            Log.d("alex log", "\"ATT MTU changed to $mtu, success: ${status == BluetoothGatt.GATT_SUCCESS}")
+        }
+
         @SuppressLint("MissingPermission")
         override fun onConnectionStateChange(gatt: BluetoothGatt, status: Int, newState: Int) {
             super.onConnectionStateChange(gatt, status, newState)
@@ -134,69 +158,113 @@ fun connectToDevice(context: Context){
             if (status != BluetoothGatt.GATT_SUCCESS) {
                 //TODO: handle error
 
-                return
             }
-
+            if (newState == BluetoothGatt.STATE_DISCONNECTED) {
+                // Handle disconnected state
+                Log.d("alex log", "Disconnected from ${selectedDevice?.address}")
+                // Attempt to reconnect or take other actions
+                //fatal disconnect screen
+            }
             if (newState == BluetoothGatt.STATE_CONNECTED) {
                 //TODO: handle the fact that we've just connected
                 Log.d("alex log", " serviceBLE successful BLE Connection")
                 gatt.discoverServices()
 
-
+                gatt.requestMtu(GATT_MAX_MTU_SIZE)
+                Log.d("alex log", " serviceBLE discover, request MTU")
 
 
             }
-           if(newState == BluetoothGatt.STATE_DISCONNECTED) {
-                // Handle disconnected state
-                Log.d("alex log", "Disconnected from ${selectedDevice?.address}")
-                // Attempt to reconnect or take other actions
-               //fatal disconnect screen
-            }
+            return
         }
 
         override fun onServicesDiscovered(gatt: BluetoothGatt?, status: Int) {
             super.onServicesDiscovered(gatt, status)
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val services = gatt?.services                          //See if the service discovery was successful
-             //   Log.d("alex log ", "servicessssssss: $services")
-              // val services = gatt?.services
-              //  if (services != null) { Log.d("alex log", "services null onservicediscovered") }
-//                if (services != null) {
-//                    for (service in services) {
-//                        val characteristics = service.characteristics
-//                        for (characteristic in characteristics) {
-//                            if (characteristic.uuid == Sensor1uuid) {
-//                              //  Log.d("alex log", " characteristic match in connected state")
-//                                readCharacteristic(characteristic)
-                                return // Exit after finding the target characteristic
-//                            }
-//                        }
-//                    }
-//                }
+                Log.d("alex log ", "service BLE OSD servicessssssss: $services")
+           //     readCharacteristic(characteristi)
             }
         }
 
+        fun extractFloatsFromCommaSeparatedString(data: ByteArray): List<Float> {
+            val decodedString = String(data, Charsets.UTF_8) // Decode bytes to string
+            val values = decodedString.trim { it <= ' ' }.split(",") // Split by comma, trim whitespaces
+
+            val floatList = mutableListOf<Float>()
+            for (value in values) {
+                try {
+                    floatList.add(value.toFloat()) // Convert each value to float
+                } catch (e: NumberFormatException) {
+                    Log.w("FloatExtraction", "Error converting value '$value' to float", e)
+                }
+            }
+            return floatList
+        }
+
+        fun parseByteArray(data: ByteArray): List<Float> {
+            val decodedString = String(data, Charsets.UTF_8) // Decode bytes to string
+            val values = decodedString.trim { it <= ' ' }.split(",") // Split by comma, trim whitespaces
+
+            val floatList = mutableListOf<Float>()
+            for (value in values) {
+                try {
+                    floatList.add(value.toFloat()) // Convert each value to float
+                } catch (e: NumberFormatException) {
+                    Log.w("FloatExtraction", "Error converting value '$value' to float", e)
+                }
+            }
+            return floatList
+        }
+
+        override fun onCharacteristicChanged(
+            gatt: BluetoothGatt,
+            characteristic: BluetoothGattCharacteristic,
+            value: ByteArray
+        ) {
+            super.onCharacteristicChanged(gatt, characteristic, value)
+        }
 
         @Deprecated("Deprecated in Java")
         override fun onCharacteristicRead(
             gatt: BluetoothGatt,
             characteristic: BluetoothGattCharacteristic,
+            value: ByteArray,
             status: Int
         ) {
-            super.onCharacteristicRead(gatt, characteristic, status)
+            super.onCharacteristicRead(gatt, characteristic, value, status)
 //            if (characteristic.uuid == myCharacteristicUUID) {
             Log.v("alex log", characteristic.uuid.toString()+" from onCharacteristic Read")
+            val data = characteristic.value
+            val parsedValue = data[0].toInt()
+           // val parsedValue = parseByteArray( data )
+            Log.d("alex log", " from onCharread iny  $parsedValue")
+
+//            val jsonString = String(data, Charsets.UTF_8)
+//            val jsonObject = JSONObject(jsonString)
+//
+//            val value0: Float = jsonObject.getDouble("0").toFloat()
+//            val value1: Float = jsonObject.getDouble("1").toFloat()
+//            val value2: Float = jsonObject.getDouble("2").toFloat()
+//            val value3: Float = jsonObject.getDouble("3").toFloat()
+//            Log.d("alex log", " from onCharread $characteristic parsed val: **$value0***$value1***$value2***$value3")
             selectedCharacteristic = characteristic
+            readListener?.onValueObtained(characteristic, value)
         }
     }
-
 @SuppressLint("MissingPermission")
-    fun readCharacteristic(characteristic: BluetoothGattCharacteristic) {
-        gatt?.readCharacteristic(characteristic) ?: run {
-            Log.w("alex log", "BluetoothGatt not initialized")
+fun readCharacteristic(
+    characteristic: BluetoothGattCharacteristic?,
+    readListener: ReadListener
+): Boolean {
+    if (gatt == null || characteristic == null) return false
 
-        }
-    }
+    // Register the listener
+    this.readListener = readListener
+
+    // Trigger the read operation
+    return gatt?.readCharacteristic(characteristic) ?: false
+}
 
 
 }

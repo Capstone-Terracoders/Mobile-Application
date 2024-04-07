@@ -1,5 +1,6 @@
 package com.terracode.blueharvest
 
+import android.bluetooth.BluetoothGattCharacteristic
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
@@ -17,7 +18,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import androidx.core.content.ContextCompat
-import com.terracode.blueharvest.BluetoothBle.Sensor1uuid
 import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
@@ -35,14 +35,21 @@ import java.util.UUID
  * Last Updated: 3/2/2024
  *
  */
+//{"OptRakeHeight": #,"OptRakeRPM": #}
+//{"RPM": , "Rake Height": , "Bush Height": , "Speed": }
+//{"Raw RPM": , "Raw Rake Height": , "Raw Bush Height": , "Raw Speed": }
 //post processing current height
-val sensorDataCharacteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-D104768A1214")
+val sensorDataCharacteristicUUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb")
 //pre prosessing
-val sensorRawDataCharacteristicUUID = UUID.fromString("19B10001-E8F2-537E-4F6C-R104768A1214")
+val sensorRawDataCharacteristicUUID = UUID.fromString("0000c0de-0000-1000-8000-00805f9b34fb")
 //config is what we are sending back
-val configurationCharacteristicUUID = UUID.fromString("19B10001-c45f-478d-bf47-257959fedb0a")
+val configurationCharacteristicUUID = UUID.fromString("0000beef-0000-1000-8000-00805f9b34fb")
 //height and rpm
-val optimalOperationCharacteristicUUID = UUID.fromString("19B10001-O45f-478d-bf47-O104768A1214")
+val optimalOperationCharacteristicUUID = UUID.fromString("0000fade-0000-1000-8000-00805f9b34fb")
+
+val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
+val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
+
 class HomeActivity : AppCompatActivity() {
 
     //Declaring service to start
@@ -65,6 +72,9 @@ class HomeActivity : AppCompatActivity() {
     private var inch = "in"
     private var kmph = "km/h"
     private var mph = "mph"
+
+    private lateinit var currentOperation: String
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -235,18 +245,32 @@ class HomeActivity : AppCompatActivity() {
             myBLEService = binder.getService()
             var myGatt = myBLEService.getGatt()
             val services = myGatt?.services                          //See if the service discovery was successful
-            Log.d("alex log ", "servicessssssss: $services")
+            Log.d("alex log ", "servicessssssss home activity: $services")
             // val services = gatt?.services
+
+
             if (services == null) { Log.d("alex log", "services null onServiceConnected home act") }
             if (services != null) {
                 for (service in services) {
                     val characteristics = service.characteristics
+
                     for (characteristic in characteristics) {
-                        if (characteristic.uuid == Sensor1uuid) {
+                        if (characteristic.uuid.equals(Sensor1uuid) ) {
                             Log.d("alex log", " characteristic match onServiceConnected home act")
-                            myBLEService.readCharacteristic(characteristic)
+
+
+                            val readListener = object : serviceBLE.ReadListener {
+                                override fun onValueObtained(characteristic: BluetoothGattCharacteristic, value: ByteArray) {
+                                    // Handle the read value
+                                    val stringValue = String(value, Charsets.UTF_8)
+                                    Log.d("alex log", " $characteristic val: ${value.size}")
+                                }
+                            }
+                            // Call readCharacteristic with the defined listener
+                            myBLEService.readCharacteristic(characteristic, readListener)
 
                         }
+                      //  Log.d("alex log", characteristic.uuid.toString()+ "    stuff ${service.uuid}"  )
                     }
                 }
             }
