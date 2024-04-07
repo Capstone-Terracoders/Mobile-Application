@@ -223,7 +223,7 @@ fun connectToDevice(context: Context){
             val data = characteristic.value
             val parsedValue = data[0].toInt()
            // val parsedValue = parseByteArray( data )
-            Log.d("alex log", " from onCharread iny  $parsedValue")
+            Log.d("alex log", " from onCharread int  $parsedValue")
 
 //            val jsonString = String(data, Charsets.UTF_8)
 //            val jsonObject = JSONObject(jsonString)
