@@ -187,21 +187,6 @@ fun connectToDevice(context: Context){
             }
         }
 
-        fun extractFloatsFromCommaSeparatedString(data: ByteArray): List<Float> {
-            val decodedString = String(data, Charsets.UTF_8) // Decode bytes to string
-            val values = decodedString.trim { it <= ' ' }.split(",") // Split by comma, trim whitespaces
-
-            val floatList = mutableListOf<Float>()
-            for (value in values) {
-                try {
-                    floatList.add(value.toFloat()) // Convert each value to float
-                } catch (e: NumberFormatException) {
-                    Log.w("FloatExtraction", "Error converting value '$value' to float", e)
-                }
-            }
-            return floatList
-        }
-
         fun parseByteArray(data: ByteArray): List<Float> {
             val decodedString = String(data, Charsets.UTF_8) // Decode bytes to string
             val values = decodedString.trim { it <= ' ' }.split(",") // Split by comma, trim whitespaces
