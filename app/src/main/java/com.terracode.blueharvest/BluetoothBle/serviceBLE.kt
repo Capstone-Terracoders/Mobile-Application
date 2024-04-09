@@ -170,7 +170,7 @@ fun connectToDevice(context: Context){
                 Log.d("alex log", " serviceBLE successful BLE Connection")
                 gatt.discoverServices()
 
-                gatt.requestMtu(GATT_MAX_MTU_SIZE)
+             //   gatt.requestMtu(GATT_MAX_MTU_SIZE)
                 Log.d("alex log", " serviceBLE discover, request MTU")
 
 
