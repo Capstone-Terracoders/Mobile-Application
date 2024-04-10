@@ -14,6 +14,7 @@ import android.util.Log
 import android.bluetooth.BluetoothGatt
 import android.bluetooth.BluetoothGattCallback
 import android.bluetooth.BluetoothGattCharacteristic
+import android.bluetooth.BluetoothGattDescriptor
 import android.bluetooth.BluetoothGattService
 import android.content.Context
 import android.os.Handler
@@ -23,12 +24,15 @@ import com.terracode.blueharvest.utils.PreferenceManager
 import kotlinx.coroutines.selects.select
 import org.json.JSONObject
 import java.nio.ByteBuffer
-import java.util.UUID
-
+import java.util.UUID//
+//formats for incoming characteristic values are as follows:
 //{"OptRakeHeight": #,"OptRakeRPM": #}
 //{"RPM": , "Rake Height": , "Bush Height": , "Speed": }
 //{"Raw RPM": , "Raw Rake Height": , "Raw Bush Height": , "Raw Speed": }
 //post processing current height
+
+
+
 val sensorDataCharacteristicUUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb")
 //pre prosessing
 val sensorRawDataCharacteristicUUID = UUID.fromString("0000c0de-0000-1000-8000-00805f9b34fb")
@@ -48,6 +52,7 @@ class serviceBLE() : Service() {
     private lateinit var characteristics: MutableList<BluetoothGattCharacteristic>
     private lateinit var btManager: BluetoothManager
     private val GATT_MAX_MTU_SIZE = 517
+
 
     private var readListener: ReadListener? = null
     interface ReadListener {
@@ -97,7 +102,6 @@ class serviceBLE() : Service() {
         // Initialize and start scan here
     }
 
-
     @SuppressLint("MissingPermission")
     fun initBleScanManager() {
         Log.d("alex log", " serviceBLE innit Blescanman!")
@@ -128,9 +132,7 @@ class serviceBLE() : Service() {
 fun getSelectedCharacteristic() : BluetoothGattCharacteristic? {
     return selectedCharacteristic
 }
-fun getSelectedDevice() : BluetoothDevice? {
-    return selectedDevice
-}
+
 fun setSelectedDevice(device: BluetoothDevice){
     selectedDevice = device
     Log.d("alex log", " serviceBLE Set Device $device")
@@ -170,6 +172,8 @@ fun connectToDevice(context: Context){
                 Log.d("alex log", " serviceBLE successful BLE Connection")
                 gatt.discoverServices()
 
+
+
              //   gatt.requestMtu(GATT_MAX_MTU_SIZE)
                 Log.d("alex log", " serviceBLE discover, request MTU")
 
@@ -183,7 +187,26 @@ fun connectToDevice(context: Context){
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 val services = gatt?.services                          //See if the service discovery was successful
                 Log.d("alex log ", "service BLE OSD servicessssssss: $services")
-           //     readCharacteristic(characteristi)
+              // val service =
+              //  for service in services
+                if (status == BluetoothGatt.GATT_SUCCESS) {
+                    val discoveredServices = gatt?.services  // Get all discovered services
+                    if (discoveredServices != null) {
+                        for (service in discoveredServices) {
+                            // Iterate through each service
+                            val characteristics = service.getCharacteristics()  // Get characteristics of current service
+
+                            if (characteristics != null) {
+                                for (characteristic in characteristics) {
+                                    // Iterate through each characteristic
+                                    enableNotifications(characteristic)// Enable notifications for this characteristic
+                                    Log.d("alex log ", "notifications enabled for  $characteristic")
+                                }
+                            }
+                        }
+                    }
+                }
+
             }
         }
 
@@ -204,10 +227,11 @@ fun connectToDevice(context: Context){
 
         override fun onCharacteristicChanged(
             gatt: BluetoothGatt,
-            characteristic: BluetoothGattCharacteristic,
-            value: ByteArray
+            characteristic: BluetoothGattCharacteristic
         ) {
-            super.onCharacteristicChanged(gatt, characteristic, value)
+            with(characteristic) {
+                Log.i("BluetoothGattCallback", "Characteristic $uuid changed | value: ${value}")
+            }
         }
 
         @Deprecated("Deprecated in Java")
@@ -225,18 +249,47 @@ fun connectToDevice(context: Context){
            // val parsedValue = parseByteArray( data )
             Log.d("alex log", " from onCharread int  $parsedValue")
 
-//            val jsonString = String(data, Charsets.UTF_8)
-//            val jsonObject = JSONObject(jsonString)
-//
-//            val value0: Float = jsonObject.getDouble("0").toFloat()
-//            val value1: Float = jsonObject.getDouble("1").toFloat()
-//            val value2: Float = jsonObject.getDouble("2").toFloat()
-//            val value3: Float = jsonObject.getDouble("3").toFloat()
-//            Log.d("alex log", " from onCharread $characteristic parsed val: **$value0***$value1***$value2***$value3")
             selectedCharacteristic = characteristic
             readListener?.onValueObtained(characteristic, value)
+
+        }
+        fun BluetoothGattCharacteristic.isIndicatable(): Boolean =
+            containsProperty(BluetoothGattCharacteristic.PROPERTY_INDICATE)
+
+        fun BluetoothGattCharacteristic.isNotifiable(): Boolean =
+            containsProperty(BluetoothGattCharacteristic.PROPERTY_NOTIFY)
+
+        fun BluetoothGattCharacteristic.containsProperty(property: Int): Boolean =
+            properties and property != 0
+
+        @SuppressLint("MissingPermission")
+        fun enableNotifications(characteristic: BluetoothGattCharacteristic) {
+            //val cccdUuid = UUID.fromString(CCC_DESCRIPTOR_UUID)
+            val payload = when {
+                characteristic.isIndicatable() -> BluetoothGattDescriptor.ENABLE_INDICATION_VALUE
+                characteristic.isNotifiable() -> BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE
+                else -> {
+                    Log.e("ConnectionManager", "${characteristic.uuid} doesn't support notifications/indications")
+                    return
+                }
+            }
+//            characteristic.getDescriptor(cccdUuid)?.let { cccDescriptor ->
+//                if (gatt?.setCharacteristicNotification(characteristic, true) == false) {
+//                    Log.e("ConnectionManager", "setCharacteristicNotification failed for ${characteristic.uuid}")
+//                    return
+//                }
+//                writeDescriptor(cccDescriptor, payload)
+//        } ?: Log.e("ConnectionManager", "${characteristic.uuid} doesn't contain the CCC descriptor!")
+        }
+        @SuppressLint("MissingPermission")
+        fun writeDescriptor(descriptor: BluetoothGattDescriptor, payload: ByteArray) {
+            gatt?.let { gatt ->
+                descriptor.value = payload
+                gatt.writeDescriptor(descriptor)
+            } ?: error("Not connected to a BLE device!")
         }
     }
+
 @SuppressLint("MissingPermission")
 fun readCharacteristic(
     characteristic: BluetoothGattCharacteristic?,
