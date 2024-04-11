@@ -199,6 +199,10 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             upperRange = maxRakeRpm.toFloat()
         }
 
+        if (lowerRange > maxRakeRpm){
+            lowerRange = maxRakeRpm.toFloat()
+        }
+
         val optimalRangeValueRatioStart = (lowerRange) / maxRpmDisplayed.toFloat()
         val optimalRangeValueRatioEnd = (upperRange) / maxRpmDisplayed.toFloat()
 

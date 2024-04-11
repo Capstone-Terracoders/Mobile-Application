@@ -119,9 +119,10 @@ object PreferenceManager {
      * @return The selected text size.
      */
     fun getSelectedTextSize(): Float {
+        val defaultTextSize = TextConstants.DEFAULT_TEXT_SIZE.value
         return sharedPreferences.getFloat(
             PreferenceKeys.SELECTED_TEXT_SIZE.toString(),
-            TextConstants.DEFAULT_TEXT_SIZE.toFloat())
+            defaultTextSize)
     }
 
     /**
@@ -337,10 +338,6 @@ object PreferenceManager {
         sharedPreferences.edit().remove(HomeKeys.NOTIFICATION.toString()).apply()
     }
 
-    //Enum to Int
-    private inline fun <reified T : Enum<T>> T.toFloat(): Float {
-        return this.ordinal.toFloat()
-    }
 
     private fun toNotification(type: String): NotificationTypes {
         return when (type) {

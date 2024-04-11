@@ -26,8 +26,8 @@ enum class UnitConstants(val value: Double) {
  * @value MAX_TEXT_SIZE Maximum text size constant.
  */
 enum class TextConstants(val value: Float) {
-    MIN_TEXT_SIZE(16f),
-    MAX_TEXT_SIZE(50f),
+    MIN_TEXT_SIZE(12f),
+    MAX_TEXT_SIZE(32f),
     DEFAULT_TEXT_SIZE(20f)
 }
 

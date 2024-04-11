@@ -21,6 +21,7 @@ class MaxHeightDisplayListener(
     //Colors
     private val redColor = ContextCompat.getColor(activity, R.color.red)
     private val blackColor = ContextCompat.getColor(activity, R.color.black)
+    private val orangeColor = ContextCompat.getColor(activity, R.color.orange)
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxHeightDisplayedTitle)
@@ -31,7 +32,7 @@ class MaxHeightDisplayListener(
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
-        if (!unitToggle){
+        if (!unitToggle) {
             maxUserInput = UnitConverter.convertHeightToImperial(maxUserInput)!!
         }
     }
@@ -41,23 +42,44 @@ class MaxHeightDisplayListener(
     }
 
     override fun afterTextChanged(editable: Editable?) {
+        //Current Height Safety Value
+        val minHeightSafetyValue = PreferenceManager.getMinRakeHeightInput()
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
                 val value = input.toIntOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
-                    if (it > maxUserInput){
+                    if (it > maxUserInput) {
                         //Make border and text color red
                         maxHeightDisplayedInput.setTextColor(redColor)
                         maxHeightDisplayedInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
                         CustomToasts.maximumValueHeightToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputHeightNotification(activity, configName, it)
+                        val maxValueNotification =
+                            Notifications.getMaxInputHeightNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
-                    //Else, save value
+                    } else if (it < minHeightSafetyValue) {
+                        val displayedValueLessThanSafetyValueNotification =
+                            Notifications.displayedValueLessThanSafetyValueNotification(
+                                activity,
+                                configName,
+                                it
+                            )
+                        PreferenceManager.setNotification(
+                            displayedValueLessThanSafetyValueNotification
+                        )
+
+                        //Make border and text color orange
+                        maxHeightDisplayedInput.setTextColor(orangeColor)
+                        maxHeightDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        //Create warning toast
+                        CustomToasts.displayedValueLessThanSafetyValueToast(activity)
+                        //Still save the value
+                        PreferenceManager.setMaxRPMDisplayedInput(it)
+                        //Else, save value
                     } else {
                         maxHeightDisplayedInput.setTextColor(blackColor)
                         maxHeightDisplayedInput.setBackgroundResource(R.drawable.edit_text_normal)

@@ -190,4 +190,59 @@ object Notifications {
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
     }
+
+    fun inputBelowFiveNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.inputBelowFiveNotification,
+            value,
+            inputName
+        )
+
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun displayedValueLessThanSafetyValueNotification(context: Context, inputName: String, value: Int): Notification {
+        val notificationMessage = context.getString(
+            R.string.displayedValueLessThanSafetyValueNotification,
+            value,
+            inputName
+        )
+
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    //Custom Toasts for bluetooth
+    fun bluetoothDeviceConnectedNotification(context: Context, bluetoothDevice: String): Notification {
+        val notificationMessage = context.getString(
+            R.string.bluetoothDeviceConnectedNotificationToast,
+            bluetoothDevice
+        )
+
+        return Notification(
+            NotificationTypes.NOTIFICATION,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun bluetoothDeviceDisconnectedNotification(context: Context, bluetoothDevice: String): Notification {
+        val notificationMessage = context.getString(
+            R.string.bluetoothDeviceDisconnectedNotificationToast,
+            bluetoothDevice
+        )
+
+        return Notification(
+            NotificationTypes.NOTIFICATION,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
 }

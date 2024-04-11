@@ -36,33 +36,62 @@ class MaxRPMDisplayListener(
     }
 
     override fun afterTextChanged(editable: Editable?) {
+        //Current RPM Safety Value
+        val rpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
                 val value = input.toIntOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
-                    if (it > maxUserInput){
+                    if (it > maxUserInput) {
                         //Make border and text color red
                         maxRPMDisplayedInput.setTextColor(redColor)
                         maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
-                        val maxValueNotification = Notifications.getMaxInputDefaultNotification(activity, configName, it)
+                        val maxValueNotification =
+                            Notifications.getMaxInputDefaultNotification(activity, configName, it)
                         PreferenceManager.setNotification(maxValueNotification)
 
+                    //Else if value is below 5
+                    } else if (it < 5){
+                        val inputBelowFiveNotification = Notifications.inputBelowFiveNotification(activity, configName, it)
+                        PreferenceManager.setNotification(inputBelowFiveNotification)
+                        //Make border and text color orange
+                        maxRPMDisplayedInput.setTextColor(orangeColor)
+                        maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        //Create warning toast
+                        CustomToasts.inputBelowFiveToast(activity)
+
                     //Else if value is not divisible by 5
-                    } else if (it % 5 != 0){
-                        val notDivisibleByFiveNotification = Notifications.notDivisibleByFiveNotification(activity, configName, it)
+                    } else if (it % 5 != 0) {
+                        val notDivisibleByFiveNotification =
+                            Notifications.notDivisibleByFiveNotification(activity, configName, it)
                         PreferenceManager.setNotification(notDivisibleByFiveNotification)
                         //Make border and text color orange
                         maxRPMDisplayedInput.setTextColor(orangeColor)
                         maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
                         //Create warning toast
-                        CustomToasts.notDivisibleByFiveNotification(activity)
+                        CustomToasts.notDivisibleByFiveToast(activity)
                         //Still save the value
                         PreferenceManager.setMaxRPMDisplayedInput(it)
+
+                    } else if (it < rpmSafetyValue){
+                        val displayedValueLessThanSafetyValueNotification =
+                            Notifications.displayedValueLessThanSafetyValueNotification(activity, configName, it)
+                        PreferenceManager.setNotification(displayedValueLessThanSafetyValueNotification)
+
+                        //Make border and text color orange
+                        maxRPMDisplayedInput.setTextColor(orangeColor)
+                        maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        //Create warning toast
+                        CustomToasts.displayedValueLessThanSafetyValueToast(activity)
+                        //Still save the value
+                        PreferenceManager.setMaxRPMDisplayedInput(it)
+
+                    //Else save value
                     } else {
                         maxRPMDisplayedInput.setTextColor(blackColor)
                         maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_normal)
