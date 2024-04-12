@@ -33,19 +33,23 @@ class UnitToggleListener(private val activity: AccessibilitySettingsActivity) :
         var rakeHeight = PreferenceManager.getRakeHeight()
         var maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
         var minRakeHeight = PreferenceManager.getMinRakeHeightInput()
+        var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
 
         if (isChecked){
             rakeHeight = UnitConverter.convertHeightToMetric(rakeHeight)!!
             maxHeightDisplayed = UnitConverter.convertHeightToMetric(maxHeightDisplayed)!!
             minRakeHeight = UnitConverter.convertHeightToMetric(minRakeHeight)!!
+            optimalHeightRange = UnitConverter.convertHeightToMetric(optimalHeightRange)!!
         } else {
             rakeHeight = UnitConverter.convertHeightToImperial(rakeHeight)!!
             maxHeightDisplayed = UnitConverter.convertHeightToImperial(maxHeightDisplayed)!!
             minRakeHeight = UnitConverter.convertHeightToImperial(minRakeHeight)!!
+            optimalHeightRange = UnitConverter.convertHeightToMetric(optimalHeightRange)!!
         }
 
         PreferenceManager.setCurrentHeight(rakeHeight)
         PreferenceManager.setMaxHeightDisplayedInput(maxHeightDisplayed)
         PreferenceManager.setMinRakeHeightInput(minRakeHeight)
+        PreferenceManager.setOptimalHeightRangeInput(optimalHeightRange)
     }
 }
