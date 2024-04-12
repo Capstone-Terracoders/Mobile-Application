@@ -11,9 +11,9 @@ package com.terracode.blueharvest.utils.constants
  * @value CM_TO_INCH Conversion factor from centimeters to inches.
  * @value MPH_TO_KMH Conversion factor from miles per hour to kilometers per hour.
  */
-enum class UnitConstants(val value: Double) {
-    CM_TO_INCH(0.3937),
-    MPH_TO_KMH(0.621371),
+enum class UnitConstants(val value: Float) {
+    CM_TO_INCH(0.3937F),
+    MPH_TO_KMH(0.621371F),
 }
 
 /**
@@ -53,7 +53,12 @@ enum class PreferenceKeys {
     HEIGHT_COEFFICIENT,
 
     //---Bluetooth---//
-    MY_BLE_STARTED
+    MY_BLE_STARTED,
+
+    //---Symposium Parameters---//
+    CURRENT_HEIGHT,
+    CURRENT_RPM
+
 }
 
 enum class HomeKeys {

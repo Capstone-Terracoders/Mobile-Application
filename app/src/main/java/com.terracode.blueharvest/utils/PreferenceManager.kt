@@ -31,8 +31,8 @@ object PreferenceManager {
 
     // Getters ----------------------------------------------------------
 
-    fun getOptimalRakeHeight(): Double?{
-        var optimalRakeHeight: Double?
+    fun getOptimalRakeHeight(): Float?{
+        var optimalRakeHeight: Float?
         sensorData.apply {
             optimalRakeHeight = getOptimalRakeHeight()
         }
@@ -42,16 +42,16 @@ object PreferenceManager {
         return optimalRakeHeight
     }
 
-    fun getOptimalRakeRpm(): Double?{
-        var optimalRakeRpm: Double?
+    fun getOptimalRakeRpm(): Float?{
+        var optimalRakeRpm: Float?
         sensorData.apply {
             optimalRakeRpm = getOptimalRakeRPM()
         }
         return optimalRakeRpm
     }
 
-    fun getBushHeight(): Double?{
-        var bushHeightData: Double?
+    fun getBushHeight(): Float?{
+        var bushHeightData: Float?
         sensorData.apply {
             bushHeightData = getBushHeight()
         }
@@ -61,8 +61,8 @@ object PreferenceManager {
         return bushHeightData
     }
 
-    fun getSpeed(): Double?{
-        var speedData: Double?
+    fun getSpeed(): Float?{
+        var speedData: Float?
         sensorData.apply {
             speedData = getSpeed()
         }
@@ -72,21 +72,29 @@ object PreferenceManager {
         return speedData
     }
 
-    fun getRpm(): Double?{
-        var rpmData: Double?
-        sensorData.apply {
-            rpmData = getRPM()
-        }
-        return rpmData
+    fun getRpm(): Float {
+        //Logic to get data from JSON Object - Testing Purposes
+//        var rpmData: Float?
+//        sensorData.apply {
+//            rpmData = getRPM()
+//        }
+        return sharedPreferences.getFloat(
+            PreferenceKeys.CURRENT_RPM.toString(),
+            0F
+        )
     }
 
-    fun getRakeHeight(): Double?{
-        var rakeHeightData: Double?
-        sensorData.apply {
-            rakeHeightData = getRakeHeight()
-        }
+    fun getRakeHeight(): Float {
+        //Logic to get data from JSON Object - Testing Purposes
+//        var rakeHeightData: Double?
+//        sensorData.apply {
+//            rakeHeightData = getRakeHeight()
+//        }
+        var rakeHeightData = sharedPreferences.getFloat(
+            PreferenceKeys.CURRENT_HEIGHT.toString(),
+            0F)
         if (!getSelectedUnit()){
-            rakeHeightData = UnitConverter.convertHeightToImperial(rakeHeightData)
+            rakeHeightData = UnitConverter.convertHeightToImperial(rakeHeightData)!!
         }
         return rakeHeightData
     }
@@ -147,7 +155,7 @@ object PreferenceManager {
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
             50)
         if (!getSelectedUnit()){
-            maxHeight = UnitConverter.convertHeightToImperial(maxHeight.toDouble())!!.toInt()
+            maxHeight = UnitConverter.convertHeightToImperial(maxHeight.toFloat())!!.toInt()
         }
         return maxHeight
     }
@@ -214,6 +222,17 @@ object PreferenceManager {
 
     // Setters ----------------------------------------------------------
 
+    fun setCurrentRpm(value: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.CURRENT_RPM.toString(),
+            value).apply()
+    }
+
+    fun setCurrentHeight(value: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.CURRENT_HEIGHT.toString(),
+            value).apply()
+    }
     /**
      * Sets the selected color position in SharedPreferences.
      *

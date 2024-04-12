@@ -22,12 +22,12 @@ class UnitConverter {
          * @return The converted height value in imperial units (inches) formatted to two decimal places,
          * or null if the input value is null.
          */
-        fun convertHeightToImperial(currentValue: Double?): Double? {
+        fun convertHeightToImperial(currentValue: Float?): Float? {
             val cmToInch = UnitConstants.CM_TO_INCH.value
             return if (currentValue != null) {
                 // Replace commas with periods and limit to two decimal places
                 val formattedValue = currentValue.times(cmToInch)
-                String.format("%.2f", formattedValue).replace(",", ".").toDouble()
+                String.format("%.2f", formattedValue).replace(",", ".").toFloat()
             } else {
                 null
             }
@@ -41,12 +41,12 @@ class UnitConverter {
          * @return The converted speed value in imperial units (miles per hour) formatted to two decimal places,
          * or null if the input value is null.
          */
-        fun convertSpeedToImperial(currentValue: Double?): Double? {
+        fun convertSpeedToImperial(currentValue: Float?): Float? {
             val mphToKmh = UnitConstants.MPH_TO_KMH.value
 
             return if (currentValue != null) {
                 val formattedValue = currentValue.times(mphToKmh)
-                String.format("%.2f", formattedValue).replace(",", ".").toDouble()
+                String.format("%.2f", formattedValue).replace(",", ".").toFloat()
             } else {
                 null
             }

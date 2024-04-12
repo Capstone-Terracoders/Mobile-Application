@@ -25,7 +25,7 @@ class MaxHeightDisplayListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.maxHeightDisplayedTitle)
-    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toFloat()
 
     //Current Value
     private val unitToggle = PreferenceManager.getSelectedUnit()

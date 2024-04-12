@@ -117,19 +117,19 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     //Initializer for Drawing Speedometer
     init {
         //Logic for notifications:
-        if (currentRpm!! > maxRpmDisplayed) {
-            currentRpm = maxRpmDisplayed.toDouble()
+        if (currentRpm > maxRpmDisplayed) {
+            currentRpm = maxRpmDisplayed.toFloat()
             //Allows us to continue seeing the preview in split mode
             if (!isInEditMode) {
                 PreferenceManager.setNotification(maxRPMDisplayedReachedNotification)
             }
-        } else if (currentRpm!! > maxRakeRpm) {
+        } else if (currentRpm > maxRakeRpm) {
             if (!isInEditMode) {
                 PreferenceManager.setNotification(maxRPMReachedNotification)
             }
-        } else if (currentRpm!! < 0) {
+        } else if (currentRpm < 0) {
             if (!isInEditMode) {
-                currentRpm = 0.0
+                currentRpm = 0.0F
                 PreferenceManager.setNotification(rpmBelowZeroNotification)
             }
         }
@@ -142,7 +142,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         needleRotationAnimator = ObjectAnimator.ofFloat(
             this,
             "needleRotation",
-            currentRpm!!.toFloat()
+            currentRpm
         ).apply {
             duration = ANIMATION_DURATION // Animation duration in milliseconds
             repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
@@ -238,8 +238,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         )
 
         //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
-        val angle = if (maxRpmDisplayed != 0 && currentRpm != null) {
-            START_ANGLE + (currentRpm!! / maxRpmDisplayed) * SWEEP_ANGLE
+        val angle: Double = if (maxRpmDisplayed != 0) {
+            (START_ANGLE + (currentRpm / maxRpmDisplayed) * SWEEP_ANGLE).toDouble()
         } else {
             0.0
         }

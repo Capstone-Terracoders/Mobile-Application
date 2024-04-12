@@ -18,7 +18,7 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
      *
      * @return The RPM data value as a Double.
      */
-    fun getRPM(): Double? {
+    fun getRPM(): Float? {
         val rpmString = jsonObject.optString("RPM", "") // Retrieve RPM as a string
         return convertNumericValue(rpmString) // Convert string to Double
     }
@@ -28,7 +28,7 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
      *
      * @return The rake height data value as a Double.
      */
-    fun getRakeHeight(): Double? {
+    fun getRakeHeight(): Float? {
         val rakeHeightString = jsonObject.optString("rakeHeight", "") // Retrieve rake height as a string
         return convertNumericValue(rakeHeightString) // Convert string to Double
     }
@@ -38,7 +38,7 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
      *
      * @return The bush height data value as a Double.
      */
-    fun getBushHeight(): Double? {
+    fun getBushHeight(): Float? {
         val bushHeightString = jsonObject.optString("bushHeight", "") // Retrieve bush height as a string
         return convertNumericValue(bushHeightString) // Convert string to Double
     }
@@ -48,17 +48,17 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
      *
      * @return The linear speed data value as a Double.
      */
-    fun getSpeed(): Double? {
+    fun getSpeed(): Float? {
         val speedString = jsonObject.optString("speed", "") // Retrieve speed as a string
         return convertNumericValue(speedString) // Convert string to Double
     }
 
-    fun getOptimalRakeHeight(): Double? {
+    fun getOptimalRakeHeight(): Float? {
         val optimalRakeHeightString = jsonObject.optString("optimalRakeHeight", "") // Retrieve optimal rake height as a string
         return convertNumericValue(optimalRakeHeightString) // Convert string to Double
     }
 
-    fun getOptimalRakeRPM(): Double? {
+    fun getOptimalRakeRPM(): Float? {
         val optimalRakeRpmString = jsonObject.optString("optimalRakeRPM", "") // Retrieve optimal rake height as a string
         return convertNumericValue(optimalRakeRpmString) // Convert string to Double
     }
@@ -85,9 +85,9 @@ class ReadJSONObject(private val jsonObject: JSONObject) {
             }
         }
 
-        private fun convertNumericValue(value: String): Double? {
+        private fun convertNumericValue(value: String): Float? {
             val formattedValue = value.replace(",", ".") // Replace commas with periods
-            return formattedValue.toDoubleOrNull() // Parse the string to a Double
+            return formattedValue.toFloatOrNull() // Parse the string to a Double
         }
     }
 }

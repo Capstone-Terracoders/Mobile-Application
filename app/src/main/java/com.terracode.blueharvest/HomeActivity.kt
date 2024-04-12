@@ -35,20 +35,8 @@ import java.util.UUID
  * Last Updated: 3/2/2024
  *
  */
-//{"OptRakeHeight": #,"OptRakeRPM": #}
-//{"RPM": , "Rake Height": , "Bush Height": , "Speed": }
-//{"Raw RPM": , "Raw Rake Height": , "Raw Bush Height": , "Raw Speed": }
-//post processing current height
-val sensorDataCharacteristicUUID = UUID.fromString("00002a37-0000-1000-8000-00805f9b34fb")
-//pre prosessing
-val sensorRawDataCharacteristicUUID = UUID.fromString("0000c0de-0000-1000-8000-00805f9b34fb")
-//config is what we are sending back
-val configurationCharacteristicUUID = UUID.fromString("0000beef-0000-1000-8000-00805f9b34fb")
-//height and rpm
-val optimalOperationCharacteristicUUID = UUID.fromString("0000fade-0000-1000-8000-00805f9b34fb")
 
 val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
-val Sensor2uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dd")
 
 class HomeActivity : AppCompatActivity() {
 
@@ -62,7 +50,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
     private lateinit var currentRPMTextView: TextView
-    private lateinit var currentHeightTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
     private lateinit var serviceIntent: Intent
@@ -72,9 +59,6 @@ class HomeActivity : AppCompatActivity() {
     private var inch = "in"
     private var kmph = "km/h"
     private var mph = "mph"
-
-    private lateinit var currentOperation: String
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,7 +106,6 @@ class HomeActivity : AppCompatActivity() {
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
         currentRPMTextView = findViewById(R.id.currentRpmValue)
-        currentHeightTextView = findViewById(R.id.currentHeightValue)
         recordButton = findViewById(R.id.recordButton)
         notificationBellIcon = findViewById(R.id.notifications)
 
@@ -134,7 +117,6 @@ class HomeActivity : AppCompatActivity() {
 
         //Read data from mock values/bluetooth, which we locate in the preference manager
         val rpmData = PreferenceManager.getRpm()
-        val rakeHeightData = PreferenceManager.getRakeHeight()
         val bushHeightData = PreferenceManager.getBushHeight()
         val speedData = PreferenceManager.getSpeed()
         val optimalRakeHeight = PreferenceManager.getOptimalRakeHeight()
@@ -142,21 +124,14 @@ class HomeActivity : AppCompatActivity() {
 
 
         //CurrentValueTitles
-        val maxHeightValue = PreferenceManager.getMaxHeightDisplayedInput()
-        val minHeightSafetyValue = PreferenceManager.getMinRakeHeightInput()
         val maxRpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
         val optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
-        val optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
 
         //Configure lower and upper ranges for optimal height and rpm
         val rpmUpperRange = optimalRakeRpm?.plus(optimalRpmRange)
         val rpmLowerRange = optimalRakeRpm?.minus(optimalRpmRange)
 
-        val heightUpperRange = optimalRakeHeight?.plus(optimalHeightRange)
-        val heightLowerRange = optimalRakeHeight?.minus(optimalHeightRange)
-
         //Setting Titles
-        val currentHeightTitle = getString(R.string.currentHeightTitle)
         val currentRpmTitle = getString(R.string.currentRPMTitle)
         val currentRpmText = "$currentRpmTitle $rpmData"
         currentRPMTextView.text = currentRpmText
@@ -166,19 +141,9 @@ class HomeActivity : AppCompatActivity() {
         val blackColor = ContextCompat.getColor(this, R.color.black)
         val darkGreenColor = ContextCompat.getColor(this, R.color.dark_green)
 
-        //Current value text color logic - Height
-        if (rakeHeightData != null) {
-            if (rakeHeightData > maxHeightValue || rakeHeightData < minHeightSafetyValue) {
-                currentHeightTextView.setTextColor(redColor)
-            } else if (rakeHeightData > heightLowerRange!! && rakeHeightData < heightUpperRange!!) {
-                currentHeightTextView.setTextColor(darkGreenColor)
-            } else {
-                currentHeightTextView.setTextColor(blackColor)
-            }
-        }
 
         //Current value text color logic - RPM
-        if (rpmData!! > maxRpmSafetyValue || rpmData < 0) {
+        if (rpmData > maxRpmSafetyValue || rpmData < 0) {
             currentRPMTextView.setTextColor(redColor)
         } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
             currentRPMTextView.setTextColor(darkGreenColor)
@@ -197,8 +162,6 @@ class HomeActivity : AppCompatActivity() {
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $kmph"
             currentSpeedTextView.text = currentSpeedText
-            val currentHeightText = "$currentHeightTitle $rakeHeightData $cm"
-            currentHeightTextView.text = currentHeightText
 
         } else {
             val optimalRakeHeightText = "$optimalRakeHeight $inch"
@@ -209,8 +172,6 @@ class HomeActivity : AppCompatActivity() {
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $mph"
             currentSpeedTextView.text = currentSpeedText
-            val currentHeightText = "$currentHeightTitle $rakeHeightData $inch"
-            currentHeightTextView.text = currentHeightText
 
         }
     }
@@ -243,7 +204,7 @@ class HomeActivity : AppCompatActivity() {
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
-            var myGatt = myBLEService.getGatt()
+            val myGatt = myBLEService.getGatt()
             val services = myGatt?.services                          //See if the service discovery was successful
             Log.d("alex log ", "servicessssssss home activity: $services")
             // val services = gatt?.services

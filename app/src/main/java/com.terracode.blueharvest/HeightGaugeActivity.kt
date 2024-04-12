@@ -1,14 +1,21 @@
 package com.terracode.blueharvest
 
 import com.terracode.blueharvest.utils.objects.Notifications
-import android.animation.ObjectAnimator
+//import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
+import android.animation.ValueAnimator.INFINITE
+import android.animation.ValueAnimator.REVERSE
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Paint
+import android.text.StaticLayout
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.utils.PreferenceManager
+import android.text.Layout
+import android.text.TextPaint
+
 
 @Suppress("PrivatePropertyName")
 class HeightGaugeActivity @JvmOverloads constructor(
@@ -23,6 +30,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         PreferenceManager.init(context)
     }
 
+
     //Constants
     private val BAR_WIDTH_OFFSET = 0.3F
     private val BAR_HEIGHT_OFFSET = 0.8f
@@ -36,15 +44,19 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private val BIG_TICK_LENGTH = 15f
     private val BIG_TICK_WIDTH = 5f
 
-    private val ANIMATION_DURATION = 1000L
+    private val ANIMATION_DURATION = 20000L
+    //Change this back to 2000L for quicker animation speed
 
 
     //Data
     private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
     private var minHeight = PreferenceManager.getMinRakeHeightInput()
     private var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
-    private var optimalHeight = PreferenceManager.getOptimalRakeHeight()?.toFloat()
-    private var currentHeight = PreferenceManager.getRakeHeight()?.toFloat()
+    private var optimalHeight = PreferenceManager.getOptimalRakeHeight()
+    private var currentHeight = PreferenceManager.getRakeHeight()
+    private val heightUpperRange = optimalHeight?.plus(optimalHeightRange)
+    private val heightLowerRange = optimalHeight?.minus(optimalHeightRange)
+    private val unitToggle = PreferenceManager.getSelectedUnit()
 
     //Colors
     private val lightGreyColor = ContextCompat.getColor(context, R.color.lightGrey)
@@ -52,19 +64,25 @@ class HeightGaugeActivity @JvmOverloads constructor(
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val redColor = ContextCompat.getColor(context, R.color.red)
     private val greenColor = ContextCompat.getColor(context, R.color.green)
+    private val darkGreenColor = ContextCompat.getColor(context, R.color.dark_green)
+
 
     //Labels
     private var labelTextSize = PreferenceManager.getSelectedTextSize()
+    private var currentHeightTitle = context.getString(R.string.currentHeightTitle)
     private var rakeHeightTitle = ""
     private var heightBarTitleText = ""
 
-    //com.terracode.blueharvest.utils.objects.Notifications
-    private val heightAboveMaxNotificationWarning = Notifications.getMaxHeightReachedNotification(context)
-    private val heightBelowMinNotificationWarning = Notifications.getMinHeightReachedNotification(context)
-    private val heightBelowZeroNotificationError = Notifications.getHeightBelowZeroNotification(context)
+    //Notifications
+    private val heightAboveMaxNotificationWarning =
+        Notifications.getMaxHeightReachedNotification(context)
+    private val heightBelowMinNotificationWarning =
+        Notifications.getMinHeightReachedNotification(context)
+    private val heightBelowZeroNotificationError =
+        Notifications.getHeightBelowZeroNotification(context)
 
     //Animator
-    private var gaugeAnimator: ObjectAnimator? = null
+    //private var gaugeAnimator: ObjectAnimator? = null
 
     //Create different paints for various components
     private val barPaint = Paint().apply {
@@ -87,6 +105,33 @@ class HeightGaugeActivity @JvmOverloads constructor(
         style = Paint.Style.FILL
     }
 
+    private val darkGreenTextPaint = TextPaint().apply {
+        color = darkGreenColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
+    private val redTextPaint = TextPaint().apply {
+        color = redColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
+    private val blackTextPaint = TextPaint().apply {
+        color = blackColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
     private val blackOutlinePaint = Paint().apply {
         color = blackColor
         style = Paint.Style.STROKE
@@ -107,38 +152,52 @@ class HeightGaugeActivity @JvmOverloads constructor(
     }
 
     init {
+        //Old Needle Animation
+//        gaugeAnimator = currentHeight?.let {
+//            ObjectAnimator.ofFloat(
+//                this,
+//                "needleRotation",
+//                it
+//            ).apply {
+//                duration = ANIMATION_DURATION // Animation duration in milliseconds
+//                repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
+//                repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+//            }
+//        }
+
+        //Symposium Needle Animation
+        val rpmAnimator = ValueAnimator.ofFloat(0F, maxHeight).apply {
+            duration = ANIMATION_DURATION
+            repeatCount = INFINITE
+            repeatMode = REVERSE
+            addUpdateListener { valueAnimator ->
+                currentHeight = valueAnimator.animatedValue as Float
+                PreferenceManager.setCurrentHeight(currentHeight)
+                invalidate() // Redraw the view to reflect the updated RPM
+            }
+        }
+        rpmAnimator.start()
+
         //Logic for notifications:
-        if (currentHeight!! > maxHeight){
+        if (currentHeight > maxHeight) {
             PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
             currentHeight = maxHeight
-        } else if (currentHeight!! < minHeight && currentHeight!! > 0){
+        } else if (currentHeight < minHeight && currentHeight > 0) {
             PreferenceManager.setNotification(heightBelowMinNotificationWarning)
-        } else if (currentHeight!! < 0){
+        } else if (currentHeight < 0) {
             PreferenceManager.setNotification(heightBelowZeroNotificationError)
             currentHeight = 0f
         }
 
-        if (optimalHeight!! > maxHeight){
+        if (optimalHeight!! > maxHeight) {
             optimalHeight = maxHeight
-        }
-
-        //Needle Animation
-        gaugeAnimator = currentHeight?.let {
-            ObjectAnimator.ofFloat(
-                this,
-                "needleRotation",
-                it
-            ).apply {
-                duration = ANIMATION_DURATION // Animation duration in milliseconds
-                repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
-                repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
-            }
         }
 
         //Allows us to still see the preview in the split screen
         if (!isInEditMode) {
             rakeHeightTitle = ContextCompat.getString(context, R.string.currentHeightTitle)
             heightBarTitleText = ContextCompat.getString(context, R.string.heightBarTitle)
+            currentHeightTitle = context.getString(R.string.currentHeightTitle)
         }
     }
 
@@ -193,13 +252,13 @@ class HeightGaugeActivity @JvmOverloads constructor(
         val lowerTickHeightRatio = (lowerTickRangeValue) / maxHeight // Height ratio
 
         //Error logic for if optimal value && range > maxHeight
-        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight){
+        val upperTickYCoordinate = if (upperTickRangeValue > maxHeight) {
             startYCoordinate
         } else {
             startYCoordinate + barHeight - (upperTickHeightRatio * barHeight)
         }
 
-        val lowerTickYCoordinate = if (lowerTickRangeValue < 0){
+        val lowerTickYCoordinate = if (lowerTickRangeValue < 0) {
             endYCoordinate
         } else {
             startYCoordinate + barHeight - (lowerTickHeightRatio * barHeight)
@@ -229,9 +288,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
         //Y-Coordinate for the top left coordinate for the minimum safety height
         val safetyValueRatio = minHeight / maxHeight // Height ratio
-        var minHeightStartYCoordinate = startYCoordinate + barHeight - (safetyValueRatio * barHeight)
+        var minHeightStartYCoordinate =
+            startYCoordinate + barHeight - (safetyValueRatio * barHeight)
 
-        if (minHeight > maxHeight){
+        if (minHeight > maxHeight) {
             minHeightStartYCoordinate = startYCoordinate
         }
 
@@ -268,12 +328,14 @@ class HeightGaugeActivity @JvmOverloads constructor(
         )
 
         //Y-Coordinate for the top left coordinate for the height indicator
-        val heightRatio = currentHeight!! / maxHeight // Height ratio
-        val heightIndicatorStartYCoordinate = startYCoordinate + barHeight - (heightRatio * barHeight) - (HEIGHT_INDICATOR_HEIGHT/2)
+        val heightRatio = currentHeight / maxHeight // Height ratio
+        val heightIndicatorStartYCoordinate =
+            startYCoordinate + barHeight - (heightRatio * barHeight) - (HEIGHT_INDICATOR_HEIGHT / 2)
 
         //Y-Coordinate for the bottom right coordinate for the height indicator
         val heightIndicatorEndXCoordinate = startXCoordinate + barWidth
-        val heightIndicatorEndYCoordinate = heightIndicatorStartYCoordinate + HEIGHT_INDICATOR_HEIGHT
+        val heightIndicatorEndYCoordinate =
+            heightIndicatorStartYCoordinate + HEIGHT_INDICATOR_HEIGHT
 
         // Draw rounded rectangle for height indicator
         canvas.drawRoundRect(
@@ -296,6 +358,55 @@ class HeightGaugeActivity @JvmOverloads constructor(
             cornerRadius,
             blackOutlinePaint
         )
+
+        // Draw the current height value title box
+        val currentValueText = String.format("%.1f", currentHeight) // Format to one decimal place
+        val currentHeightText: String = if (unitToggle) {
+            "$currentHeightTitle \n $currentValueText cm"
+        } else {
+            "$currentHeightTitle \n $currentValueText in"
+        }
+
+        //Current value text color logic - Height
+        val textColor: TextPaint = if (currentHeight > maxHeight || currentHeight < minHeight) {
+            redTextPaint
+        } else if (currentHeight > heightLowerRange!! && currentHeight < heightUpperRange!!) {
+            darkGreenTextPaint
+        } else {
+            blackTextPaint
+        }
+
+// Calculate current value text coordinates
+        val currentValueTextXCoordinate = endXCoordinate + 50f
+        val currentValueTextYCoordinate = startYCoordinate + (barHeight / 2)
+        val currentValueTextWidth = width - currentValueTextXCoordinate.toInt()
+
+
+// Create StaticLayout for text wrapping
+        val textLayout = StaticLayout.Builder.obtain(currentHeightText, 0, currentHeightText.length, textColor, currentValueTextWidth)
+            .setAlignment(Layout.Alignment.ALIGN_CENTER) // Update alignment to ALIGN_CENTER
+            .setLineSpacing(0f, 1f)
+            .setIncludePad(true)
+            .build()
+
+
+// Draw the text using StaticLayout
+        canvas.save()
+        canvas.translate(currentValueTextXCoordinate, currentValueTextYCoordinate)
+        textLayout.draw(canvas)
+        canvas.restore()
+
+        // Draw the background drawable for the title box
+        val textBoxPadding = 20f
+
+        val drawable = ContextCompat.getDrawable(context, R.drawable.blue_bordered_box)
+        drawable?.setBounds(
+            currentValueTextXCoordinate.toInt(),                             // Box start x
+            (currentValueTextYCoordinate - textBoxPadding).toInt(),                            // Adjusted top to match text
+            width,                                                          // Box end x
+            (currentValueTextYCoordinate + textLayout.height + textBoxPadding).toInt()      // Bottom below the current value text
+        )
+        drawable?.draw(canvas)
     }
 
     //Function to draw the ticks and the labels for the big ticks
@@ -306,7 +417,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
         barHeight: Float,
         numTicks: Int,
         tickSpacingInterval: Float
-    ){
+    ) {
 
         //Initialize tick length and width
         val smallTickLength = BIG_TICK_LENGTH / 2     // Length of the smaller ticks
@@ -329,13 +440,14 @@ class HeightGaugeActivity @JvmOverloads constructor(
                 endXCoordinate,
                 tickYCoordinate,
                 tickPaint.apply {
-                strokeWidth = tickWidth
-            })
+                    strokeWidth = tickWidth
+                })
 
             // Draw label for big ticks only
             if (isBigTick) {
                 // Calculate label position and label value
-                val tickValue = ((maxHeight * 10) / (numTicks - 1) * i) / 10 // Using integer arithmetic to maintain accuracy
+                val tickValue =
+                    ((maxHeight * 10) / (numTicks - 1) * i) / 10 // Using integer arithmetic to maintain accuracy
                 val labelText = String.format("%.1f", tickValue) // Format to one decimal place
 
                 val textWidth = labelTextPaint.measureText(labelText)
@@ -349,14 +461,10 @@ class HeightGaugeActivity @JvmOverloads constructor(
                     labelText,
                     labelXCoordinate,
                     labelYCoordinate,
-                    labelTextPaint)
+                    labelTextPaint
+                )
             }
         }
-    }
-
-    @Suppress("unused")
-    fun setNeedleRotation(rotation: Float) {
-        invalidate()
     }
 }
 
