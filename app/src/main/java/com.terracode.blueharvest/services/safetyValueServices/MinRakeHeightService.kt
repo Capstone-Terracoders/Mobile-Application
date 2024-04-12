@@ -10,7 +10,7 @@ object MinRakeHeightService {
         PreferenceManager.init(activity)
 
         val minRakeHeightListener = MinRakeHeightListener(activity, minRakeHeightInput)
-        val maxRakeRPM: Int = PreferenceManager.getMinRakeHeightInput()
+        val maxRakeRPM: Float = PreferenceManager.getMinRakeHeightInput()
 
         maxRakeRPM.let {
             // Convert the Int value to String since setText() expects a String

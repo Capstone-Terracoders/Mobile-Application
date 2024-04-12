@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
@@ -27,15 +26,11 @@ class OptimalHeightRangeListener(
     private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toFloat()
 
     //Current Value
-    private val unitToggle = PreferenceManager.getSelectedUnit()
     private val currentValue = PreferenceManager.getOptimalRakeRpm()
 
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
-        if (!unitToggle){
-            maxUserInput = UnitConverter.convertHeightToImperial(maxUserInput)!!
-        }
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {

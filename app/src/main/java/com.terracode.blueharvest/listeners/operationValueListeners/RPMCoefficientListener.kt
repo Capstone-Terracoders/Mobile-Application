@@ -36,7 +36,7 @@ class RPMCoefficientListener(
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
-                val value = input.toIntOrNull()
+                val value = input.toFloatOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
                     if (it > maxUserInput){

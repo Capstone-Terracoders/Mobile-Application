@@ -49,7 +49,7 @@ class HeightGaugeActivity @JvmOverloads constructor(
 
 
     //Data
-    private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput().toFloat()
+    private var maxHeight = PreferenceManager.getMaxHeightDisplayedInput()
     private var minHeight = PreferenceManager.getMinRakeHeightInput()
     private var optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
     private var optimalHeight = PreferenceManager.getOptimalRakeHeight()

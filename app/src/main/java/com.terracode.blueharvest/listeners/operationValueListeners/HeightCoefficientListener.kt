@@ -7,7 +7,6 @@ import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.ConfigurationSettingsActivity
 import com.terracode.blueharvest.R
 import com.terracode.blueharvest.utils.PreferenceManager
-import com.terracode.blueharvest.utils.UnitConverter
 import com.terracode.blueharvest.utils.constants.MaxUserInputInt
 import com.terracode.blueharvest.utils.objects.CustomToasts
 import com.terracode.blueharvest.utils.objects.Notifications
@@ -25,13 +24,8 @@ class HeightCoefficientListener(
     private val configName = ContextCompat.getString(activity, R.string.coefficientHeightTitle)
     private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toFloat()
 
-    //Current Value
-    private val unitToggle = PreferenceManager.getSelectedUnit()
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
-        if (!unitToggle){
-            maxUserInput = UnitConverter.convertHeightToImperial(maxUserInput)!!
-        }
     }
 
     override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -42,7 +36,7 @@ class HeightCoefficientListener(
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
-                val value = input.toIntOrNull()
+                val value = input.toFloatOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
                     if (it > maxUserInput){

@@ -33,6 +33,17 @@ class UnitConverter {
             }
         }
 
+        fun convertHeightToMetric(currentValue: Float?): Float? {
+            val inchToCm = UnitConstants.INCH_TO_CM.value
+            return if (currentValue != null) {
+                // Replace commas with periods and limit to two decimal places
+                val formattedValue = currentValue.times(inchToCm)
+                String.format("%.2f", formattedValue).replace(",", ".").toFloat()
+            } else {
+                null
+            }
+        }
+
         /**
          * Function to convert speed data values from metric to imperial.
          * It multiplies the current value by the conversion factor for miles per hour to kilometers per hour.

@@ -135,7 +135,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         }
 
         if (maxRakeRpm > maxRpmDisplayed){
-            maxRakeRpm = maxRpmDisplayed
+            maxRakeRpm = maxRpmDisplayed.toFloat()
         }
 
         //Needle Animation

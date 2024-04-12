@@ -3,6 +3,7 @@ package com.terracode.blueharvest.listeners.accessibilityListeners
 import android.widget.CompoundButton
 import com.terracode.blueharvest.AccessibilitySettingsActivity
 import com.terracode.blueharvest.utils.PreferenceManager
+import com.terracode.blueharvest.utils.UnitConverter
 
 /**
  * Listener for handling changes in unit toggle switch in the accessibility settings screen.
@@ -27,5 +28,24 @@ class UnitToggleListener(private val activity: AccessibilitySettingsActivity) :
 
         // Update the value of unit toggle switch in SharedPreferences
         PreferenceManager.setSelectedUnit(isChecked)
+
+        //Convert all data to correct unit here
+        var rakeHeight = PreferenceManager.getRakeHeight()
+        var maxHeightDisplayed = PreferenceManager.getMaxHeightDisplayedInput()
+        var minRakeHeight = PreferenceManager.getMinRakeHeightInput()
+
+        if (isChecked){
+            rakeHeight = UnitConverter.convertHeightToMetric(rakeHeight)!!
+            maxHeightDisplayed = UnitConverter.convertHeightToMetric(maxHeightDisplayed)!!
+            minRakeHeight = UnitConverter.convertHeightToMetric(minRakeHeight)!!
+        } else {
+            rakeHeight = UnitConverter.convertHeightToImperial(rakeHeight)!!
+            maxHeightDisplayed = UnitConverter.convertHeightToImperial(maxHeightDisplayed)!!
+            minRakeHeight = UnitConverter.convertHeightToImperial(minRakeHeight)!!
+        }
+
+        PreferenceManager.setCurrentHeight(rakeHeight)
+        PreferenceManager.setMaxHeightDisplayedInput(maxHeightDisplayed)
+        PreferenceManager.setMinRakeHeightInput(minRakeHeight)
     }
 }

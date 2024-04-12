@@ -10,7 +10,7 @@ object MaxRakeRPMService {
         PreferenceManager.init(activity)
 
         val maxRakeRPMListener = MaxRakeRPMListener(activity, maxRakeRPMInput)
-        val maxRakeRPM: Int = PreferenceManager.getMaxRakeRPMInput()
+        val maxRakeRPM: Float = PreferenceManager.getMaxRakeRPMInput()
 
         maxRakeRPM.let {
             // Convert the Int value to String since setText() expects a String

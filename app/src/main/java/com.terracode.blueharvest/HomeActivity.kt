@@ -153,11 +153,11 @@ class HomeActivity : AppCompatActivity() {
 
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
+        optimalRakeRPMValueTextView.text = optimalRakeRpm.toString()
+
         if (toggleValue) {
             val optimalRakeHeightText = "$optimalRakeHeight $cm"
             optimalRakeHeightTextView.text = optimalRakeHeightText
-            val optimalRakeRpmText = "$optimalRakeRpm $cm"
-            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "$bushHeightData $cm"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $kmph"
@@ -166,8 +166,6 @@ class HomeActivity : AppCompatActivity() {
         } else {
             val optimalRakeHeightText = "$optimalRakeHeight $inch"
             optimalRakeHeightTextView.text = optimalRakeHeightText
-            val optimalRakeRpmText = "$optimalRakeRpm $inch"
-            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "$bushHeightData $inch"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $mph"

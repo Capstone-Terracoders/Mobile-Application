@@ -52,12 +52,12 @@ class MaxRPMDisplayListener(
                         CustomToasts.maximumValueRpmAndCoefficientToast(activity)
                         //Create notification
                         val maxValueNotification =
-                            Notifications.getMaxInputDefaultNotification(activity, configName, it)
+                            Notifications.getMaxInputDefaultNotification(activity, configName, it.toFloat())
                         PreferenceManager.setNotification(maxValueNotification)
 
                     //Else if value is below 5
                     } else if (it < 5){
-                        val inputBelowFiveNotification = Notifications.inputBelowFiveNotification(activity, configName, it)
+                        val inputBelowFiveNotification = Notifications.inputBelowFiveNotification(activity, configName, it.toFloat())
                         PreferenceManager.setNotification(inputBelowFiveNotification)
                         //Make border and text color orange
                         maxRPMDisplayedInput.setTextColor(orangeColor)
@@ -80,7 +80,7 @@ class MaxRPMDisplayListener(
 
                     } else if (it < rpmSafetyValue){
                         val displayedValueLessThanSafetyValueNotification =
-                            Notifications.displayedValueLessThanSafetyValueNotification(activity, configName, it)
+                            Notifications.displayedValueLessThanSafetyValueNotification(activity, configName, it.toFloat())
                         PreferenceManager.setNotification(displayedValueLessThanSafetyValueNotification)
 
                         //Make border and text color orange
