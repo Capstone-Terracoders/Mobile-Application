@@ -17,7 +17,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
-import androidx.core.content.ContextCompat
 import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
@@ -49,7 +48,6 @@ class HomeActivity : AppCompatActivity() {
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
-    private lateinit var currentRPMTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
     private lateinit var serviceIntent: Intent
@@ -105,7 +103,6 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
-        currentRPMTextView = findViewById(R.id.currentRpmValue)
         recordButton = findViewById(R.id.recordButton)
         notificationBellIcon = findViewById(R.id.notifications)
 
@@ -116,40 +113,10 @@ class HomeActivity : AppCompatActivity() {
         val toggleValue = PreferenceManager.getSelectedUnit()
 
         //Read data from mock values/bluetooth, which we locate in the preference manager
-        val rpmData = PreferenceManager.getRpm()
         val bushHeightData = PreferenceManager.getBushHeight()
         val speedData = PreferenceManager.getSpeed()
         val optimalRakeHeight = PreferenceManager.getOptimalRakeHeight()
         val optimalRakeRpm = PreferenceManager.getOptimalRakeRpm()
-
-
-        //CurrentValueTitles
-        val maxRpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
-        val optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
-
-        //Configure lower and upper ranges for optimal height and rpm
-        val rpmUpperRange = optimalRakeRpm?.plus(optimalRpmRange)
-        val rpmLowerRange = optimalRakeRpm?.minus(optimalRpmRange)
-
-        //Setting Titles
-        val currentRpmTitle = getString(R.string.currentRPMTitle)
-        val currentRpmText = "$currentRpmTitle $rpmData"
-        currentRPMTextView.text = currentRpmText
-
-        //Settings colors
-        val redColor = ContextCompat.getColor(this, R.color.red)
-        val blackColor = ContextCompat.getColor(this, R.color.black)
-        val darkGreenColor = ContextCompat.getColor(this, R.color.dark_green)
-
-
-        //Current value text color logic - RPM
-        if (rpmData > maxRpmSafetyValue || rpmData < 0) {
-            currentRPMTextView.setTextColor(redColor)
-        } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
-            currentRPMTextView.setTextColor(darkGreenColor)
-        } else {
-            currentRPMTextView.setTextColor(blackColor)
-        }
 
 
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
