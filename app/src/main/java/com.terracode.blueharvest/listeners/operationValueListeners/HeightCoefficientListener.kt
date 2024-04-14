@@ -22,7 +22,7 @@ class HeightCoefficientListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.coefficientHeightTitle)
-    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toFloat()
+    private var maxUserInput = MaxUserInputInt.MAX_DEFAULT_INPUT.value.toFloat()
 
     override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
         PreferenceManager.init(activity)
