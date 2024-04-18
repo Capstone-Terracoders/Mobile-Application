@@ -65,15 +65,11 @@ class HomeActivity : AppCompatActivity() {
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
 
-     //   PreferenceManager.setMyBleService(false)
-
         //start the activity
         serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
-        //initialize and bind to service
 
         if(!PreferenceManager.getMyBleStarted()) {
             startService(Intent(this@HomeActivity, serviceBLE::class.java))
-            Log.d("alex log", "start service call from home Activity")
             PreferenceManager.setMyBleStarted(true)
 
         }
@@ -143,12 +139,10 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onStart() {
         super.onStart()
-        Log.d("alex log", " Home Activity Attempting to bind to serviceBLE")
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
     }
     override fun onStop() {
         unbindService(connection)
-        Log.d("alex log", " Home Activity unBind LOG!")
         super.onStop()
     }
 
@@ -156,7 +150,6 @@ class HomeActivity : AppCompatActivity() {
         unbindService(connection)
         myBLEService.stopService(serviceIntent)
         super.onDestroy()
-        Log.d("alex log", " Home Activity unBind LOG!")
 
 
         //todo stop the service
@@ -165,48 +158,36 @@ class HomeActivity : AppCompatActivity() {
     private val connection = object : ServiceConnection {
         //is called on service bind, idk how android magic I think
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Log.d("alex log", " Home Activity connection object called ")
             // We've bound to LocalService, cast the IBinder and get LocalService instance.
             val binder = service as serviceBLE.LocalBinder
             myBLEService = binder.getService()
             val myGatt = myBLEService.getGatt()
-            val services = myGatt?.services                          //See if the service discovery was successful
-            Log.d("alex log ", "servicessssssss home activity: $services")
-            // val services = gatt?.services
+            val services = myGatt?.services          //See if the service discovery was successful
 
 
-            if (services == null) { Log.d("alex log", "services null onServiceConnected home act") }
             if (services != null) {
                 for (service in services) {
                     val characteristics = service.characteristics
 
                     for (characteristic in characteristics) {
                         if (characteristic.uuid.equals(Sensor1uuid) ) {
-                            Log.d("alex log", " characteristic match onServiceConnected home act")
 
 
                             val readListener = object : serviceBLE.ReadListener {
                                 override fun onValueObtained(characteristic: BluetoothGattCharacteristic, value: ByteArray) {
-                                    // Handle the read value
+                                    // Handle the read value - Warning does not work.
                                     val stringValue = String(value, Charsets.UTF_8)
-                                    Log.d("alex log", " $characteristic val: ${value.size}")
                                 }
                             }
                             // Call readCharacteristic with the defined listener
                             myBLEService.readCharacteristic(characteristic, readListener)
 
                         }
-                      //  Log.d("alex log", characteristic.uuid.toString()+ "    stuff ${service.uuid}"  )
                     }
                 }
             }
         }
-//            val characteristic = myBLEService.getSelectedCharacteristic()
-//            if (characteristic != null) {
-//                Log.d("alex Log", "kslejghfosiehgno")
-//                myBLEService.readCharacteristic(characteristic)
-//            }
-//            myBLEBound = true
+
         override fun onServiceDisconnected(className: ComponentName) {
             myBLEBound = false
         }
