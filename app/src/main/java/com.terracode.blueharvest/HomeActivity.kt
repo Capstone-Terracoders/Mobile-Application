@@ -227,6 +227,7 @@ class HomeActivity : AppCompatActivity() {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
                 NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                Log.d("HomeActivity-NotificationItem", "You selected notifications!")
                 true
             }
             R.id.configurationSettings -> {

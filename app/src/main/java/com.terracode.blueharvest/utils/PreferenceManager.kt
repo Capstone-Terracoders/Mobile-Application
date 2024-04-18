@@ -190,6 +190,18 @@ object PreferenceManager {
             0F)
     }
 
+    fun getWheelRadiusInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.WHEEL_RADIUS.toString(),
+            0F)
+    }
+
+    fun getRakeRadiusInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.RAKE_RADIUS.toString(),
+            0F)
+    }
+
     fun getRecordButtonStatus(): Boolean {
         return sharedPreferences.getBoolean(
             HomeKeys.RECORD_BUTTON.toString(),
@@ -316,6 +328,18 @@ object PreferenceManager {
     fun setHeightCoefficientInput(input: Float) {
         sharedPreferences.edit().putFloat(
             PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setWheelRadiusInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.WHEEL_RADIUS.toString(),
+            input).apply()
+    }
+
+    fun setRakeRadiusInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.RAKE_RADIUS.toString(),
             input).apply()
     }
 

@@ -178,6 +178,16 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         }
         rpmAnimator.start()
 
+        if (maxRakeRpm > maxRpmDisplayed){
+            maxRakeRpm = maxRpmDisplayed.toFloat()
+        }
+    }
+
+
+    override fun onDraw(canvas: Canvas) {
+        //Draw canvas
+        super.onDraw(canvas)
+
         //Logic for notifications:
         if (currentRpm > maxRpmDisplayed) {
             currentRpm = maxRpmDisplayed.toFloat()
@@ -195,16 +205,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                 PreferenceManager.setNotification(rpmBelowZeroNotification)
             }
         }
-
-        if (maxRakeRpm > maxRpmDisplayed){
-            maxRakeRpm = maxRpmDisplayed.toFloat()
-        }
-    }
-
-
-    override fun onDraw(canvas: Canvas) {
-        //Draw canvas
-        super.onDraw(canvas)
 
         // Declare & initialize ark parameters:
         val radiusOffset = 0.7f

@@ -14,6 +14,9 @@ import com.terracode.blueharvest.utils.constants.MaxUserInputString
 object CustomToasts {
     private val defaultMaxInput = MaxUserInputString.MAX_DEFAULT_INPUT.value
     private val heightMaxInput = MaxUserInputString.MAX_HEIGHT_INPUT.value
+    private val wheelMaxInputMetric = MaxUserInputString.MAX_WHEEL_INPUT_METRIC.value
+    private val wheelMaxInputImperial = MaxUserInputString.MAX_WHEEL_INPUT_IMPERIAL.value
+    private lateinit var maxValueString: String
     fun maximumValueRpmAndCoefficientToast(context: Context) {
         val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
         val layout = inflater.inflate(R.layout.error_toast, null)
@@ -43,6 +46,32 @@ object CustomToasts {
         val toastText = context.getString(
             R.string.maximumValueToast,
             heightMaxInput
+        )
+        textView.text = toastText
+
+        with(Toast(context)) {
+            // Set custom layout to the Toast's view
+            view = layout
+            duration = Toast.LENGTH_LONG
+            show()
+        }
+    }
+
+    fun maximumValueWheelToast(context: Context, toggle: Boolean) {
+        val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        val layout = inflater.inflate(R.layout.error_toast, null)
+
+        maxValueString = if (toggle){
+            wheelMaxInputMetric
+        } else {
+            wheelMaxInputImperial
+        }
+
+        // Find the TextView in the inflated layout
+        val textView = layout.findViewById<TextView>(R.id.toastText)
+        val toastText = context.getString(
+            R.string.maximumValueToast,
+            maxValueString
         )
         textView.text = toastText
 

@@ -59,6 +59,12 @@
     <string name="safetyValueTitle"> Safety Values</string>
     <string name="optimizationValueTitle"> Optimization Values</string>
 
+    <!-- Strings used for Wheel Radius Parameters Settings Card-->
+
+    <string name="rakeRadiusTitle">Rake Head Radius</string>
+    <string name="wheelRadiusTitle">Harvester Wheel Radius</string>
+    <string name="wheelParametersTitle">Wheel Values</string>
+
     <!-- Strings used for Menus -->
 
     <string name="backButtonTitle">Back Button</string>

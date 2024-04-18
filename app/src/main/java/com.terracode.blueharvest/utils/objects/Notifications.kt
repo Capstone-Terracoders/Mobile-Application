@@ -11,6 +11,9 @@ import com.terracode.blueharvest.utils.constants.MaxUserInputString
 object Notifications {
     private val defaultMaxInput = MaxUserInputString.MAX_DEFAULT_INPUT.value
     private val heightMaxInput = MaxUserInputString.MAX_HEIGHT_INPUT.value
+    private val wheelMaxInputMetric = MaxUserInputString.MAX_WHEEL_INPUT_METRIC.value
+    private val wheelMaxInputImperial = MaxUserInputString.MAX_WHEEL_INPUT_IMPERIAL.value
+    private lateinit var maxValueString: String
 
     //Current value notifications
     fun getMaxRPMDisplayedReachedNotification(context: Context): Notification {
@@ -140,6 +143,27 @@ object Notifications {
             value,
             inputName,
             heightMaxInput
+        )
+
+        return Notification(
+            NotificationTypes.WARNING,
+            notificationMessage,
+            DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
+        )
+    }
+
+    fun getMaxWheelNotificationFloat(context: Context, inputName: String, value: Float, toggle: Boolean): Notification {
+        maxValueString = if (toggle){
+            wheelMaxInputMetric
+        } else {
+            wheelMaxInputImperial
+        }
+
+        val notificationMessage = context.getString(
+            R.string.maxInputFloatNotification,
+            value,
+            inputName,
+            maxValueString
         )
 
         return Notification(

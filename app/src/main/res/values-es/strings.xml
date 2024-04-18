@@ -33,6 +33,9 @@
     <string name="currentSpeed">"Velocidad (KPH) "</string>
     <string name="currentBushHeight">" Altura del arbusto (CM)"</string>
     <string name="optimalRangeValuesTitle">"Valores de rango óptimo "</string>
+    <string name="rakeRadiusTitle">"Radio del cabezal del rastrillo "</string>
+    <string name="wheelRadiusTitle">"Radio de la rueda de la cosechadora "</string>
+    <string name="wheelParametersTitle">Valores de las ruedas</string>
     <string name="safetyValueTitle">"Valores de seguridad "</string>
     <string name="optimizationValueTitle">"Valores de optimización "</string>
     <string name="currentRPMTitle">RPM del rastrillo</string>

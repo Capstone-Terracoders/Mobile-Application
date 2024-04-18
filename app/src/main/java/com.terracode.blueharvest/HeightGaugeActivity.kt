@@ -178,17 +178,6 @@ class HeightGaugeActivity @JvmOverloads constructor(
         }
         rpmAnimator.start()
 
-        //Logic for notifications:
-        if (currentHeight > maxHeight) {
-            PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
-            currentHeight = maxHeight
-        } else if (currentHeight < minHeight && currentHeight > 0) {
-            PreferenceManager.setNotification(heightBelowMinNotificationWarning)
-        } else if (currentHeight < 0) {
-            PreferenceManager.setNotification(heightBelowZeroNotificationError)
-            currentHeight = 0f
-        }
-
         if (optimalHeight!! > maxHeight) {
             optimalHeight = maxHeight
         }
@@ -204,6 +193,17 @@ class HeightGaugeActivity @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         //Draw canvas
         super.onDraw(canvas)
+
+        //Logic for notifications:
+        if (currentHeight > maxHeight) {
+            PreferenceManager.setNotification(heightAboveMaxNotificationWarning)
+            currentHeight = maxHeight
+        } else if (currentHeight < minHeight && currentHeight > 0) {
+            PreferenceManager.setNotification(heightBelowMinNotificationWarning)
+        } else if (currentHeight < 0) {
+            PreferenceManager.setNotification(heightBelowZeroNotificationError)
+            currentHeight = 0f
+        }
 
         //Create values for the blue bar width, height, and corner radius
         val barWidth = width.toFloat() * BAR_WIDTH_OFFSET

@@ -16,6 +16,8 @@ import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalHeigh
 import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalRPMRangeService
 import com.terracode.blueharvest.services.operationValueServices.HeightCoefficientService
 import com.terracode.blueharvest.services.operationValueServices.RPMCoefficientService
+import com.terracode.blueharvest.services.optimalRangeValueServices.RakeRadiusService
+import com.terracode.blueharvest.services.optimalRangeValueServices.WheelRadiusService
 import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
 import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
 import com.terracode.blueharvest.services.toolbarServices.BackButtonService
@@ -44,6 +46,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
 
     private lateinit var rpmCoefficientInput: EditText
     private lateinit var heightCoefficientInput: EditText
+
+    private lateinit var wheelRadiusInput: EditText
+    private lateinit var rakeRadiusInput: EditText
 
     private lateinit var notificationBellIcon: View
     private lateinit var backButton: Button
@@ -88,6 +93,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         rpmCoefficientInput = findViewById(R.id.coefficientRPMNumber)
         heightCoefficientInput = findViewById(R.id.coefficientHeightNumber)
 
+        wheelRadiusInput = findViewById(R.id.wheelRadiusNumber)
+        rakeRadiusInput = findViewById(R.id.rakeRadiusNumber)
+
         //Toolbar items
         backButton = findViewById(R.id.backButton)
         notificationBellIcon = findViewById(R.id.notifications)
@@ -106,6 +114,10 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         //Initialize Operation Param Services
         RPMCoefficientService.setup(rpmCoefficientInput, this)
         HeightCoefficientService.setup(heightCoefficientInput, this)
+
+        //Initialize Operation Param Services - Radius
+        WheelRadiusService.setup(wheelRadiusInput, this)
+        RakeRadiusService.setup(rakeRadiusInput, this)
 
         //Back Button Service
         BackButtonService.setup(backButton, this)

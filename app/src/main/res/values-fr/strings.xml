@@ -33,6 +33,9 @@
     <string name="currentSpeed">Vitesse (km/h)</string>
     <string name="currentBushHeight">"Hauteur de Bush (CM) "</string>
     <string name="optimalRangeValuesTitle">"Valeurs de plage optimales "</string>
+    <string name="rakeRadiusTitle">"Rayon de la tête de coupe "</string>
+    <string name="wheelRadiusTitle">Rayon de roue de moissonneuse</string>
+    <string name="wheelParametersTitle">Valeurs des roues</string>
     <string name="safetyValueTitle">"Valeurs de sécurité "</string>
     <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
     <string name="currentRPMTitle">Râteau/tr/min</string>
