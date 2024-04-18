@@ -24,7 +24,7 @@ class MinRakeHeightListener(
 
     //Constants
     private val configName = ContextCompat.getString(activity, R.string.minRakeHeightTitle)
-    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toDouble()
+    private var maxUserInput = MaxUserInputInt.MAX_HEIGHT_INPUT.value.toFloat()
 
     //Current Value
     private val unitToggle = PreferenceManager.getSelectedUnit()
@@ -47,7 +47,7 @@ class MinRakeHeightListener(
         editable?.let { it ->
             val input = it.toString()
             if (input.isNotEmpty()) {
-                val value = input.toIntOrNull()
+                val value = input.toFloatOrNull()
                 value?.let {
                     //If user input > what we defined as a maximum user input
                     if (it > maxUserInput){

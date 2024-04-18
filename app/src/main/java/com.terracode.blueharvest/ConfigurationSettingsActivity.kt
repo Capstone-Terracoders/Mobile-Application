@@ -9,12 +9,15 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
 import com.terracode.blueharvest.services.displayValueServices.MaxHeightDisplayedService
 import com.terracode.blueharvest.services.displayValueServices.MaxRPMDisplayedService
 import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalHeightRangeService
 import com.terracode.blueharvest.services.optimalRangeValueServices.OptimalRPMRangeService
 import com.terracode.blueharvest.services.operationValueServices.HeightCoefficientService
 import com.terracode.blueharvest.services.operationValueServices.RPMCoefficientService
+import com.terracode.blueharvest.services.optimalRangeValueServices.RakeRadiusService
+import com.terracode.blueharvest.services.optimalRangeValueServices.WheelRadiusService
 import com.terracode.blueharvest.services.safetyValueServices.MaxRakeRPMService
 import com.terracode.blueharvest.services.safetyValueServices.MinRakeHeightService
 import com.terracode.blueharvest.services.toolbarServices.BackButtonService
@@ -43,6 +46,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
 
     private lateinit var rpmCoefficientInput: EditText
     private lateinit var heightCoefficientInput: EditText
+
+    private lateinit var wheelRadiusInput: EditText
+    private lateinit var rakeRadiusInput: EditText
 
     private lateinit var notificationBellIcon: View
     private lateinit var backButton: Button
@@ -87,6 +93,9 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         rpmCoefficientInput = findViewById(R.id.coefficientRPMNumber)
         heightCoefficientInput = findViewById(R.id.coefficientHeightNumber)
 
+        wheelRadiusInput = findViewById(R.id.wheelRadiusNumber)
+        rakeRadiusInput = findViewById(R.id.rakeRadiusNumber)
+
         //Toolbar items
         backButton = findViewById(R.id.backButton)
         notificationBellIcon = findViewById(R.id.notifications)
@@ -105,6 +114,10 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
         //Initialize Operation Param Services
         RPMCoefficientService.setup(rpmCoefficientInput, this)
         HeightCoefficientService.setup(heightCoefficientInput, this)
+
+        //Initialize Operation Param Services - Radius
+        WheelRadiusService.setup(wheelRadiusInput, this)
+        RakeRadiusService.setup(rakeRadiusInput, this)
 
         //Back Button Service
         BackButtonService.setup(backButton, this)
@@ -135,6 +148,12 @@ class ConfigurationSettingsActivity : AppCompatActivity() {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
                 NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                true
+            }
+
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
                 true
             }
 

@@ -10,7 +10,7 @@ object RPMCoefficientService {
         PreferenceManager.init(activity)
 
         val rpmCoefficientListener = RPMCoefficientListener(activity, rpmCoefficientInput)
-        val rpmCoefficient: Int = PreferenceManager.getRPMCoefficientInput()
+        val rpmCoefficient: Float = PreferenceManager.getRPMCoefficientInput()
 
         rpmCoefficient.let {
             // Convert the Int value to String since setText() expects a String

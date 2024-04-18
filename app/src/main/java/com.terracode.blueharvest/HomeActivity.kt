@@ -1,7 +1,14 @@
 package com.terracode.blueharvest
 
+import android.bluetooth.BluetoothGattCharacteristic
+import android.content.ComponentName
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.content.ServiceConnection
+import android.os.IBinder
+import android.util.Log
+
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -9,32 +16,41 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.content.ContextCompat
+import com.terracode.blueharvest.BluetoothBle.BluetoothBLEActivity
+import com.terracode.blueharvest.BluetoothBle.serviceBLE
 import com.terracode.blueharvest.services.toolbarServices.RecordButtonService
 import com.terracode.blueharvest.utils.PreferenceManager
 import com.terracode.blueharvest.utils.viewManagers.LocaleManager
 import com.terracode.blueharvest.utils.viewManagers.NotificationManager
 import com.terracode.blueharvest.utils.viewManagers.TextSizeManager
 import com.terracode.blueharvest.utils.viewManagers.ThemeManager
+import java.util.UUID
+
 
 /**
  * Activity class for the Accessibility Settings Page
  *
- * @authors MacKenzie Young
+ * @authors MacKenzie Young, Alexandra Gale, Dharani Singaram, Anthony Caccese
  * Last Updated: 3/2/2024
  *
  */
+
+val Sensor1uuid = UUID.fromString("5a4ed7f3-221d-47c3-991b-09cca7ea00dc")
+
 class HomeActivity : AppCompatActivity() {
+
+    //Declaring service to start
+    private lateinit var myBLEService: serviceBLE
+    private var myBLEBound: Boolean = false
 
     //Declaring the TextViews for the data values as TextView type.
     private lateinit var optimalRakeHeightTextView: TextView
     private lateinit var optimalRakeRPMValueTextView: TextView
     private lateinit var currentBushHeightTextView: TextView
     private lateinit var currentSpeedTextView: TextView
-    private lateinit var currentRPMTextView: TextView
-    private lateinit var currentHeightTextView: TextView
     private lateinit var recordButton: Button
     private lateinit var notificationBellIcon: View
+    private lateinit var serviceIntent: Intent
 
     //Declare value types
     private var cm = "cm"
@@ -48,6 +64,15 @@ class HomeActivity : AppCompatActivity() {
 
         //Initialize the sharedPreferences
         PreferenceManager.init(this)
+
+        //start the activity
+        serviceIntent = Intent(this@HomeActivity, serviceBLE::class.java)
+
+        if(!PreferenceManager.getMyBleStarted()) {
+            startService(Intent(this@HomeActivity, serviceBLE::class.java))
+            PreferenceManager.setMyBleStarted(true)
+
+        }
 
         //Set setting values before setting the content view
         val currentTheme = ThemeManager.getCurrentTheme(this)
@@ -74,8 +99,6 @@ class HomeActivity : AppCompatActivity() {
         optimalRakeRPMValueTextView = findViewById(R.id.optimalRakeRPMValue)
         currentBushHeightTextView = findViewById(R.id.currentBushHeightValue)
         currentSpeedTextView = findViewById(R.id.currentSpeedValue)
-        currentRPMTextView = findViewById(R.id.currentRpmValue)
-        currentHeightTextView = findViewById(R.id.currentHeightValue)
         recordButton = findViewById(R.id.recordButton)
         notificationBellIcon = findViewById(R.id.notifications)
 
@@ -86,87 +109,90 @@ class HomeActivity : AppCompatActivity() {
         val toggleValue = PreferenceManager.getSelectedUnit()
 
         //Read data from mock values/bluetooth, which we locate in the preference manager
-        val rpmData = PreferenceManager.getRpm()
-        val rakeHeightData = PreferenceManager.getRakeHeight()
         val bushHeightData = PreferenceManager.getBushHeight()
         val speedData = PreferenceManager.getSpeed()
         val optimalRakeHeight = PreferenceManager.getOptimalRakeHeight()
         val optimalRakeRpm = PreferenceManager.getOptimalRakeRpm()
 
 
-        //CurrentValueTitles
-        val maxHeightValue = PreferenceManager.getMaxHeightDisplayedInput()
-        val minHeightSafetyValue = PreferenceManager.getMinRakeHeightInput()
-        val maxRpmSafetyValue = PreferenceManager.getMaxRakeRPMInput()
-        val optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
-        val optimalHeightRange = PreferenceManager.getOptimalHeightRangeInput()
-
-        //Configure lower and upper ranges for optimal height and rpm
-        val rpmUpperRange = optimalRakeRpm?.plus(optimalRpmRange)
-        val rpmLowerRange = optimalRakeRpm?.minus(optimalRpmRange)
-
-        val heightUpperRange = optimalRakeHeight?.plus(optimalHeightRange)
-        val heightLowerRange = optimalRakeHeight?.minus(optimalHeightRange)
-
-        //Setting Titles
-        val currentHeightTitle = getString(R.string.currentHeightTitle)
-        val currentRpmTitle = getString(R.string.currentRPMTitle)
-        val currentRpmText = "$currentRpmTitle $rpmData"
-        currentRPMTextView.text = currentRpmText
-
-        //Settings colors
-        val redColor = ContextCompat.getColor(this, R.color.red)
-        val blackColor = ContextCompat.getColor(this, R.color.black)
-        val darkGreenColor = ContextCompat.getColor(this, R.color.dark_green)
-
-        //Current value text color logic - Height
-        if (rakeHeightData != null) {
-            if (rakeHeightData > maxHeightValue || rakeHeightData < minHeightSafetyValue) {
-                currentHeightTextView.setTextColor(redColor)
-            } else if (rakeHeightData > heightLowerRange!! && rakeHeightData < heightUpperRange!!) {
-                currentHeightTextView.setTextColor(darkGreenColor)
-            } else {
-                currentHeightTextView.setTextColor(blackColor)
-            }
-        }
-
-        //Current value text color logic - RPM
-        if (rpmData!! > maxRpmSafetyValue || rpmData < 0) {
-            currentRPMTextView.setTextColor(redColor)
-        } else if (rpmData > rpmLowerRange!! && rpmData < rpmUpperRange!!) {
-            currentRPMTextView.setTextColor(darkGreenColor)
-        } else {
-            currentRPMTextView.setTextColor(blackColor)
-        }
-
-
         //Set the value of the text on the XML file equal to the data values depending on if the toggle is switched.
+        optimalRakeRPMValueTextView.text = optimalRakeRpm.toString()
+
         if (toggleValue) {
             val optimalRakeHeightText = "$optimalRakeHeight $cm"
             optimalRakeHeightTextView.text = optimalRakeHeightText
-            val optimalRakeRpmText = "$optimalRakeRpm $cm"
-            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "$bushHeightData $cm"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $kmph"
             currentSpeedTextView.text = currentSpeedText
-            val currentHeightText = "$currentHeightTitle $rakeHeightData $cm"
-            currentHeightTextView.text = currentHeightText
 
         } else {
             val optimalRakeHeightText = "$optimalRakeHeight $inch"
             optimalRakeHeightTextView.text = optimalRakeHeightText
-            val optimalRakeRpmText = "$optimalRakeRpm $inch"
-            optimalRakeRPMValueTextView.text = optimalRakeRpmText
             val currentBushHeightText = "$bushHeightData $inch"
             currentBushHeightTextView.text = currentBushHeightText
             val currentSpeedText = "$speedData $mph"
             currentSpeedTextView.text = currentSpeedText
-            val currentHeightText = "$currentHeightTitle $rakeHeightData $inch"
-            currentHeightTextView.text = currentHeightText
 
         }
     }
+
+    override fun onStart() {
+        super.onStart()
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
+    }
+    override fun onStop() {
+        unbindService(connection)
+        super.onStop()
+    }
+
+    override fun onDestroy() {
+        unbindService(connection)
+        myBLEService.stopService(serviceIntent)
+        super.onDestroy()
+
+
+        //todo stop the service
+    }
+    //connection object for bluetooth service
+    private val connection = object : ServiceConnection {
+        //is called on service bind, idk how android magic I think
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            // We've bound to LocalService, cast the IBinder and get LocalService instance.
+            val binder = service as serviceBLE.LocalBinder
+            myBLEService = binder.getService()
+            val myGatt = myBLEService.getGatt()
+            val services = myGatt?.services          //See if the service discovery was successful
+
+
+            if (services != null) {
+                for (service in services) {
+                    val characteristics = service.characteristics
+
+                    for (characteristic in characteristics) {
+                        if (characteristic.uuid.equals(Sensor1uuid) ) {
+
+
+                            val readListener = object : serviceBLE.ReadListener {
+                                override fun onValueObtained(characteristic: BluetoothGattCharacteristic, value: ByteArray) {
+                                    // Handle the read value - Warning does not work.
+                                    val stringValue = String(value, Charsets.UTF_8)
+                                }
+                            }
+                            // Call readCharacteristic with the defined listener
+                            myBLEService.readCharacteristic(characteristic, readListener)
+
+                        }
+                    }
+                }
+            }
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            myBLEBound = false
+        }
+        }
+
 
     //Inflates the menu in the toolbar.
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -182,6 +208,7 @@ class HomeActivity : AppCompatActivity() {
                 // Sample notifications (replace with your actual notifications)
                 val notifications = PreferenceManager.getNotifications()
                 NotificationManager.showNotificationList(this, notificationBellIcon, notifications)
+                Log.d("HomeActivity-NotificationItem", "You selected notifications!")
                 true
             }
             R.id.configurationSettings -> {
@@ -192,6 +219,11 @@ class HomeActivity : AppCompatActivity() {
             R.id.accessibilitySettings -> {
                 val accessibilitySettings = Intent(this, AccessibilitySettingsActivity::class.java)
                 startActivity(accessibilitySettings)
+                true
+            }
+            R.id.bluetoothBLE -> {
+                val bluetoothBLEActivity = Intent(this, BluetoothBLEActivity::class.java)
+                startActivity(bluetoothBLEActivity)
                 true
             }
             else -> false

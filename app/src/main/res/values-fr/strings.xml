@@ -33,6 +33,9 @@
     <string name="currentSpeed">Vitesse (km/h)</string>
     <string name="currentBushHeight">"Hauteur de Bush (CM) "</string>
     <string name="optimalRangeValuesTitle">"Valeurs de plage optimales "</string>
+    <string name="rakeRadiusTitle">"Rayon de la tête de coupe "</string>
+    <string name="wheelRadiusTitle">Rayon de roue de moissonneuse</string>
+    <string name="wheelParametersTitle">Valeurs des roues</string>
     <string name="safetyValueTitle">"Valeurs de sécurité "</string>
     <string name="optimizationValueTitle">"Valeurs d'optimisation "</string>
     <string name="currentRPMTitle">Râteau/tr/min</string>
@@ -54,12 +57,12 @@
     <string name="homeButtonText">Maison</string>
     <string name="rangeOutOfBoundsToast">"L'entrée de plage optimale permet d'obtenir des valeurs optimales hors des limites de la zone de visualisation. "</string>
     <string name="maximumValueToast">"L'entrée ne doit pas dépasser %1$s."</string>
-    <string name="maxInputNotification">AVERTISSEMENT : Entrée : %1$d pour %2$s non enregistré. Veuillez entrer un nombre inférieur à %3$s</string>
+    <string name="maxInputNotification">AVERTISSEMENT : Entrée : %1$.2f pour %2$s non enregistré. Veuillez entrer un nombre inférieur à %3$s</string>
     <string name="maxInputFloatNotification">AVERTISSEMENT : Entrée : %1$.2f pour %2$s non enregistré. Veuillez entrer un nombre inférieur à %3$s</string>
-    <string name="safetyValueGreaterThanDisplayValueNotification">"AVERTISSEMENT : Entrée : %1$d pour %2$s est supérieur à la valeur affichée. "</string>
+    <string name="safetyValueGreaterThanDisplayValueNotification">"AVERTISSEMENT : Entrée : %1$.2f pour %2$s est supérieur à la valeur affichée. "</string>
     <string name="rangeOutOfBoundsNotification">"AVERTISSEMENT : Entrée : %1$.2f pour %2$s crée des valeurs optimales en dehors des limites de la zone de visualisation."</string>
     <string name="notDivisibleByFiveNotification">"AVERTISSEMENT : Saisie : %1$d pour %2$s n'est pas divisible par 5. Veuillez saisir un nombre divisible par 5 pour une visualisation facile. "</string>
-    <string name="inputBelowFiveNotification">"AVERTISSEMENT : Entrée : %1$d pour %2$s est supérieur à 5. Veuillez saisir un nombre inférieur à 5."</string>
+    <string name="inputBelowFiveNotification">"AVERTISSEMENT : Entrée : %1$.2f pour %2$s est supérieur à 5. Veuillez saisir un nombre inférieur à 5."</string>
     <string name="bluetoothDeviceConnectedNotificationToast">"Périphérique Bluetooth : %1$s connecté. "</string>
     <string name="bluetoothDeviceDisconnectedNotificationToast">"Périphérique Bluetooth : %1$s déconnecté. "</string>
 
@@ -75,7 +78,7 @@
         <item>Sombre</item>
         <item>Daltonien</item>
     </string-array>
-    <string name="displayedValueLessThanSafetyValueNotification">"AVERTISSEMENT : Entrée : %1$d pour %2$s est inférieur à la valeur de sécurité enregistrée. Cela peut provoquer un comportement indésirable avec les animations de valeur actuelle sur l'écran d'accueil. "</string>
+    <string name="displayedValueLessThanSafetyValueNotification">"AVERTISSEMENT : Entrée : %1$.2f pour %2$s est inférieur à la valeur de sécurité enregistrée. Cela peut provoquer un comportement indésirable avec les animations de valeur actuelle sur l'écran d'accueil. "</string>
     <string name="displayedValueLessThanSafetyValueToast">"La valeur affichée saisie est inférieure à la valeur de sécurité enregistrée. "</string>
 
 </resources>

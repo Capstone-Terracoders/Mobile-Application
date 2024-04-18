@@ -10,7 +10,7 @@ object MaxHeightDisplayedService {
         PreferenceManager.init(activity)
 
         val maxHeightDisplayedListener = MaxHeightDisplayListener(activity, maxHeightDisplayedInput)
-        val maxHeightDisplayed: Int = PreferenceManager.getMaxHeightDisplayedInput()
+        val maxHeightDisplayed: Float = PreferenceManager.getMaxHeightDisplayedInput()
 
         maxHeightDisplayed.let {
             // Convert the Int value to String since setText() expects a String

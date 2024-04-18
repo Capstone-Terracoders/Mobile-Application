@@ -11,9 +11,10 @@ package com.terracode.blueharvest.utils.constants
  * @value CM_TO_INCH Conversion factor from centimeters to inches.
  * @value MPH_TO_KMH Conversion factor from miles per hour to kilometers per hour.
  */
-enum class UnitConstants(val value: Double) {
-    CM_TO_INCH(0.3937),
-    MPH_TO_KMH(0.621371),
+enum class UnitConstants(val value: Float) {
+    CM_TO_INCH(0.3937F),
+    INCH_TO_CM(2.54F),
+    MPH_TO_KMH(0.621371F),
 }
 
 /**
@@ -50,7 +51,19 @@ enum class PreferenceKeys {
 
     //---Operation Parameters---//
     RPM_COEFFICIENT,
-    HEIGHT_COEFFICIENT
+    HEIGHT_COEFFICIENT,
+
+    //---Operation Parameters---//
+    WHEEL_RADIUS,
+    RAKE_RADIUS,
+
+    //---Bluetooth---//
+    MY_BLE_STARTED,
+
+    //---Symposium Parameters---//
+    CURRENT_HEIGHT,
+    CURRENT_RPM
+
 }
 
 enum class HomeKeys {
@@ -66,10 +79,16 @@ enum class NotificationTypes {
 
 enum class MaxUserInputInt(val value: Int) {
     MAX_DEFAULT_INPUT(100000),
-    MAX_HEIGHT_INPUT(300)
+    MAX_HEIGHT_INPUT(300),
+    //For these, convert 10 meters to metric (cm) or imperial (in)
+    MAX_WHEEL_INPUT_METRIC(1000),
+    MAX_WHEEL_INPUT_IMPERIAL(400)
+
 }
 
 enum class MaxUserInputString(val value: String) {
     MAX_DEFAULT_INPUT("100,000"),
-    MAX_HEIGHT_INPUT("300")
+    MAX_HEIGHT_INPUT("300"),
+    MAX_WHEEL_INPUT_METRIC("1000"),
+    MAX_WHEEL_INPUT_IMPERIAL("400")
 }

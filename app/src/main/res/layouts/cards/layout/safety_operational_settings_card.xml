@@ -45,7 +45,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:hint="@string/numberHint"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:textSize="16sp" />
 
             <TextView
@@ -69,7 +69,7 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="30dp"
                 android:hint="@string/numberHint"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:textSize="16sp" />
 
             <TextView
@@ -105,7 +105,7 @@
                 android:layout_marginTop="30dp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/numberHint"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:textSize="16sp" />
 
             <TextView
@@ -130,7 +130,68 @@
                 android:layout_marginBottom="30dp"
                 android:layout_gravity="center_horizontal"
                 android:hint="@string/numberHint"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/wheelParametersTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="@string/wheelParametersTitle"
+                android:textAllCaps="true"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                android:textSize="20sp"/>
+
+            <TextView
+                android:id="@+id/wheelRadiusTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="@string/wheelRadiusTitle"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/wheelRadiusNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="coefficientRPMNumber"
+                android:background="@drawable/edit_text_normal"
+                android:ems="10"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/numberHint"
+                android:inputType="number|numberDecimal"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/rakeRadiusTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="50dp"
+                android:gravity="center"
+                android:text="@string/rakeRadiusTitle"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/rakeRadiusNumber"
+                android:layout_width="125dp"
+                android:layout_height="48dp"
+                android:autofillHints="coefficientHeightNumber"
+                android:background="@drawable/edit_text_normal"
+                android:ems="10"
+                android:gravity="center"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="30dp"
+                android:layout_gravity="center_horizontal"
+                android:hint="@string/numberHint"
+                android:inputType="number|numberDecimal"
                 android:textSize="16sp" />
 
         </LinearLayout>

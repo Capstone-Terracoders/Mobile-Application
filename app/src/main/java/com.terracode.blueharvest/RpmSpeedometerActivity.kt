@@ -2,10 +2,14 @@ package com.terracode.blueharvest
 
 import com.terracode.blueharvest.utils.objects.Notifications
 import android.animation.ObjectAnimator
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.text.Layout
+import android.text.StaticLayout
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -51,7 +55,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var NUM_SMALL_TICKS = 5
 
     //Animation duration in milliseconds
-    private var ANIMATION_DURATION = 1000L
+    private var ANIMATION_DURATION = 20000L
+    //Change this back to 2000L for quicker animation speed
 
     //Data
     private var currentRpm = PreferenceManager.getRpm()
@@ -59,15 +64,19 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     private var maxRpmDisplayed = PreferenceManager.getMaxRPMDisplayedInput()
     private var maxRakeRpm = PreferenceManager.getMaxRakeRPMInput()
     private var optimalRpmRange = PreferenceManager.getOptimalRPMRangeInput()
+    private var lowerRange = optimalRpm!!.toFloat() - optimalRpmRange
+    private var upperRange = optimalRpm!!.toFloat() + optimalRpmRange
 
     //Colors
     private val blueBerryColor = ContextCompat.getColor(context, R.color.blueBerry)
     private val blackColor = ContextCompat.getColor(context, R.color.black)
     private val redColor = ContextCompat.getColor(context, R.color.red)
     private val greenColor = ContextCompat.getColor(context, R.color.green)
+    private val darkGreenColor = ContextCompat.getColor(context, R.color.dark_green)
 
     //Labels
-    private val normalTextSize = PreferenceManager.getSelectedTextSize()
+    private val labelTextSize = PreferenceManager.getSelectedTextSize()
+    private var currentRpmTitle = context.getString(R.string.currentRPMTitle)
 
     //com.terracode.blueharvest.utils.objects.Notifications
     private val maxRPMDisplayedReachedNotification = Notifications.getMaxRPMDisplayedReachedNotification(context)
@@ -109,44 +118,68 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
 
     private val tickLabelTextPaint: Paint = Paint().apply {
         color = Color.BLACK
-        textSize = normalTextSize
+        textSize = labelTextSize
         textAlign = Paint.Align.CENTER
         isAntiAlias = true
     }
 
+    private val darkGreenTextPaint = TextPaint().apply {
+        color = darkGreenColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
+    private val redTextPaint = TextPaint().apply {
+        color = redColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
+    private val blackTextPaint = TextPaint().apply {
+        color = blackColor
+        style = Paint.Style.FILL
+        strokeWidth = 2f // Adjust the width of the stroke as needed
+        isAntiAlias = true // Enable anti-aliasing for smoother edges
+        textSize = labelTextSize
+        isFakeBoldText = true // Make the text bold
+    }
+
+
     //Initializer for Drawing Speedometer
     init {
-        //Logic for notifications:
-        if (currentRpm!! > maxRpmDisplayed) {
-            currentRpm = maxRpmDisplayed.toDouble()
-            //Allows us to continue seeing the preview in split mode
-            if (!isInEditMode) {
-                PreferenceManager.setNotification(maxRPMDisplayedReachedNotification)
-            }
-        } else if (currentRpm!! > maxRakeRpm) {
-            if (!isInEditMode) {
-                PreferenceManager.setNotification(maxRPMReachedNotification)
-            }
-        } else if (currentRpm!! < 0) {
-            if (!isInEditMode) {
-                currentRpm = 0.0
-                PreferenceManager.setNotification(rpmBelowZeroNotification)
+
+//        //Old Needle Animation
+//        needleRotationAnimator = ObjectAnimator.ofFloat(
+//            this,
+//            "needleRotation",
+//            currentRpm
+//        ).apply {
+//            duration = ANIMATION_DURATION // Animation duration in milliseconds
+//            repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
+//            repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+//        }
+
+        //Symposium Needle Animation
+        val rpmAnimator = ValueAnimator.ofFloat(0F, maxRpmDisplayed.toFloat()).apply {
+            duration = ANIMATION_DURATION
+            repeatCount = ValueAnimator.INFINITE
+            repeatMode = ValueAnimator.REVERSE
+            addUpdateListener { valueAnimator ->
+                currentRpm = valueAnimator.animatedValue as Float
+                PreferenceManager.setCurrentHeight(currentRpm)
+                invalidate() // Redraw the view to reflect the updated RPM
             }
         }
+        rpmAnimator.start()
 
         if (maxRakeRpm > maxRpmDisplayed){
-            maxRakeRpm = maxRpmDisplayed
-        }
-
-        //Needle Animation
-        needleRotationAnimator = ObjectAnimator.ofFloat(
-            this,
-            "needleRotation",
-            currentRpm!!.toFloat()
-        ).apply {
-            duration = ANIMATION_DURATION // Animation duration in milliseconds
-            repeatCount = ObjectAnimator.INFINITE // Repeat indefinitely
-            repeatMode = ObjectAnimator.REVERSE // Reverse animation direction when repeating
+            maxRakeRpm = maxRpmDisplayed.toFloat()
         }
     }
 
@@ -154,6 +187,24 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas) {
         //Draw canvas
         super.onDraw(canvas)
+
+        //Logic for notifications:
+        if (currentRpm > maxRpmDisplayed) {
+            currentRpm = maxRpmDisplayed.toFloat()
+            //Allows us to continue seeing the preview in split mode
+            if (!isInEditMode) {
+                PreferenceManager.setNotification(maxRPMDisplayedReachedNotification)
+            }
+        } else if (currentRpm > maxRakeRpm) {
+            if (!isInEditMode) {
+                PreferenceManager.setNotification(maxRPMReachedNotification)
+            }
+        } else if (currentRpm < 0) {
+            if (!isInEditMode) {
+                currentRpm = 0.0F
+                PreferenceManager.setNotification(rpmBelowZeroNotification)
+            }
+        }
 
         // Declare & initialize ark parameters:
         val radiusOffset = 0.7f
@@ -188,19 +239,16 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             radius)
 
         //Draw arc for optimal rpm
-        var lowerRange = optimalRpm!!.toFloat() - optimalRpmRange
-        var upperRange = optimalRpm!!.toFloat() + optimalRpmRange
-
         if (lowerRange < 0){
             lowerRange = 0f
         }
 
         if (upperRange > maxRakeRpm){
-            upperRange = maxRakeRpm.toFloat()
+            upperRange = maxRakeRpm
         }
 
         if (lowerRange > maxRakeRpm){
-            lowerRange = maxRakeRpm.toFloat()
+            lowerRange = maxRakeRpm
         }
 
         val optimalRangeValueRatioStart = (lowerRange) / maxRpmDisplayed.toFloat()
@@ -222,7 +270,7 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         )
 
     //Draw arc for safety max rpm
-        val safetyValueRatio = maxRakeRpm.toFloat() / maxRpmDisplayed.toFloat()
+        val safetyValueRatio = maxRakeRpm / maxRpmDisplayed.toFloat()
         val maxRpmStartAngle = START_ANGLE + (safetyValueRatio) * SWEEP_ANGLE
         val maxRpmEndAngle = (START_ANGLE + SWEEP_ANGLE) - maxRpmStartAngle
 
@@ -238,8 +286,8 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
         )
 
         //Sets the angle of the needle based off the currentSpeed and handles currentRpm > maxRpm
-        val angle = if (maxRpmDisplayed != 0 && currentRpm != null) {
-            START_ANGLE + (currentRpm!! / maxRpmDisplayed) * SWEEP_ANGLE
+        val angle: Double = if (maxRpmDisplayed != 0) {
+            (START_ANGLE + (currentRpm / maxRpmDisplayed) * SWEEP_ANGLE).toDouble()
         } else {
             0.0
         }
@@ -258,6 +306,55 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
             needlePaint)
 
         needleRotationAnimator?.start()
+
+        // Draw the current height value title box
+        val currentValueText = String.format("%.1f", currentRpm) // Format to one decimal place
+        val currentHeightText = "$currentRpmTitle \n $currentValueText"
+
+        //Current value text color logic - Height
+        val textColor: TextPaint = if (currentRpm > maxRakeRpm || currentRpm < 0) {
+            redTextPaint
+        } else if (currentRpm > lowerRange && currentRpm < upperRange) {
+            darkGreenTextPaint
+        } else {
+            blackTextPaint
+        }
+
+// Calculate current value text coordinates
+        val currentValueTextYCoordinate = arcEndYCoordinate + 100
+        val currentValueTextWidth = (width - centerXCoordinate).toInt()
+
+// Calculate the left and right coordinates of the box
+        val boxLeft = (centerXCoordinate - currentValueTextWidth / 2).toInt()
+        val boxRight = (centerXCoordinate + currentValueTextWidth / 2).toInt()
+        val textStartXCoordinate = (boxRight - boxLeft) / 2
+
+
+// Create StaticLayout for text wrapping
+        val textLayout = StaticLayout.Builder.obtain(currentHeightText, 0, currentHeightText.length, textColor, currentValueTextWidth)
+            .setAlignment(Layout.Alignment.ALIGN_CENTER) // Update alignment to ALIGN_CENTER
+            .setLineSpacing(0f, 1f)
+            .setIncludePad(true)
+            .build()
+
+
+// Draw the text using StaticLayout
+        canvas.save()
+        canvas.translate(textStartXCoordinate.toFloat(), currentValueTextYCoordinate)
+        textLayout.draw(canvas)
+        canvas.restore()
+
+        // Draw the background drawable for the title box
+        val textBoxPadding = 20f
+
+        val drawable = ContextCompat.getDrawable(context, R.drawable.blue_bordered_box)
+        drawable?.setBounds(
+            boxLeft,                             // Box start x
+            (currentValueTextYCoordinate - textBoxPadding).toInt(),          // Adjusted top to match text
+            boxRight,                                                          // Box end x
+            (currentValueTextYCoordinate + textLayout.height + textBoxPadding).toInt()      // Bottom below the current value text
+        )
+        drawable?.draw(canvas)
     }
 
 
@@ -322,10 +419,6 @@ class RpmSpeedometerActivity @JvmOverloads constructor(
                     tickLabelTextPaint)
             }
         }
-    }
-    @Suppress("unused")
-    fun setNeedleRotation(rotation: Float) {
-        invalidate()
     }
 }
 

@@ -10,7 +10,7 @@ object HeightCoefficientService {
         PreferenceManager.init(activity)
 
         val heightCoefficientListener = HeightCoefficientListener(activity, heightCoefficientInput)
-        val heightCoefficient: Int = PreferenceManager.getHeightCoefficientInput()
+        val heightCoefficient: Float = PreferenceManager.getHeightCoefficientInput()
 
         heightCoefficient.let {
             // Convert the Int value to String since setText() expects a String

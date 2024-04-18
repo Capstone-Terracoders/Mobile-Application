@@ -31,8 +31,8 @@ object PreferenceManager {
 
     // Getters ----------------------------------------------------------
 
-    fun getOptimalRakeHeight(): Double?{
-        var optimalRakeHeight: Double?
+    fun getOptimalRakeHeight(): Float?{
+        var optimalRakeHeight: Float?
         sensorData.apply {
             optimalRakeHeight = getOptimalRakeHeight()
         }
@@ -42,16 +42,16 @@ object PreferenceManager {
         return optimalRakeHeight
     }
 
-    fun getOptimalRakeRpm(): Double?{
-        var optimalRakeRpm: Double?
+    fun getOptimalRakeRpm(): Float?{
+        var optimalRakeRpm: Float?
         sensorData.apply {
             optimalRakeRpm = getOptimalRakeRPM()
         }
         return optimalRakeRpm
     }
 
-    fun getBushHeight(): Double?{
-        var bushHeightData: Double?
+    fun getBushHeight(): Float?{
+        var bushHeightData: Float?
         sensorData.apply {
             bushHeightData = getBushHeight()
         }
@@ -61,8 +61,8 @@ object PreferenceManager {
         return bushHeightData
     }
 
-    fun getSpeed(): Double?{
-        var speedData: Double?
+    fun getSpeed(): Float?{
+        var speedData: Float?
         sensorData.apply {
             speedData = getSpeed()
         }
@@ -72,23 +72,28 @@ object PreferenceManager {
         return speedData
     }
 
-    fun getRpm(): Double?{
-        var rpmData: Double?
-        sensorData.apply {
-            rpmData = getRPM()
-        }
-        return rpmData
+    fun getRpm(): Float {
+        //Logic to get data from JSON Object - Testing Purposes
+//        var rpmData: Float?
+//        sensorData.apply {
+//            rpmData = getRPM()
+//        }
+        return sharedPreferences.getFloat(
+            PreferenceKeys.CURRENT_RPM.toString(),
+            0F
+        )
     }
 
-    fun getRakeHeight(): Double?{
-        var rakeHeightData: Double?
-        sensorData.apply {
-            rakeHeightData = getRakeHeight()
-        }
-        if (!getSelectedUnit()){
-            rakeHeightData = UnitConverter.convertHeightToImperial(rakeHeightData)
-        }
-        return rakeHeightData
+    fun getRakeHeight(): Float {
+        //Logic to get data from JSON Object - Testing Purposes
+//        var rakeHeightData: Double?
+//        sensorData.apply {
+//            rakeHeightData = getRakeHeight()
+//        }
+        return sharedPreferences.getFloat(
+            PreferenceKeys.CURRENT_HEIGHT.toString(),
+            0F
+        )
     }
 
     /**
@@ -142,14 +147,11 @@ object PreferenceManager {
             100)
     }
 
-    fun getMaxHeightDisplayedInput(): Int {
-        var maxHeight = sharedPreferences.getInt(
+    fun getMaxHeightDisplayedInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
-            50)
-        if (!getSelectedUnit()){
-            maxHeight = UnitConverter.convertHeightToImperial(maxHeight.toDouble())!!.toInt()
-        }
-        return maxHeight
+            50F
+        )
     }
 
     fun getOptimalRPMRangeInput(): Float {
@@ -164,28 +166,40 @@ object PreferenceManager {
             0f)
     }
 
-    fun getMaxRakeRPMInput(): Int {
-        return sharedPreferences.getInt(
+    fun getMaxRakeRPMInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.MAX_RAKE_RPM.toString(),
-            40)
+            40F)
     }
 
-    fun getMinRakeHeightInput(): Int {
-        return sharedPreferences.getInt(
+    fun getMinRakeHeightInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
-            0)
+            0F)
     }
 
-    fun getRPMCoefficientInput(): Int {
-        return sharedPreferences.getInt(
+    fun getRPMCoefficientInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.RPM_COEFFICIENT.toString(),
-            0)
+            0F)
     }
 
-    fun getHeightCoefficientInput(): Int {
-        return sharedPreferences.getInt(
+    fun getHeightCoefficientInput(): Float {
+        return sharedPreferences.getFloat(
             PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
-            0)
+            0F)
+    }
+
+    fun getWheelRadiusInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.WHEEL_RADIUS.toString(),
+            0F)
+    }
+
+    fun getRakeRadiusInput(): Float {
+        return sharedPreferences.getFloat(
+            PreferenceKeys.RAKE_RADIUS.toString(),
+            0F)
     }
 
     fun getRecordButtonStatus(): Boolean {
@@ -206,8 +220,25 @@ object PreferenceManager {
         } ?: emptyList()
     }
 
+    fun getMyBleStarted(): Boolean {
+        return sharedPreferences.getBoolean(
+            PreferenceKeys.MY_BLE_STARTED.toString(),
+            false)
+    }
+
     // Setters ----------------------------------------------------------
 
+    fun setCurrentRpm(value: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.CURRENT_RPM.toString(),
+            value).apply()
+    }
+
+    fun setCurrentHeight(value: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.CURRENT_HEIGHT.toString(),
+            value).apply()
+    }
     /**
      * Sets the selected color position in SharedPreferences.
      *
@@ -258,8 +289,8 @@ object PreferenceManager {
             input).apply()
     }
 
-    fun setMaxHeightDisplayedInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setMaxHeightDisplayedInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.MAX_HEIGHT_DISPLAYED_INPUT.toString(),
             input).apply()
     }
@@ -276,27 +307,39 @@ object PreferenceManager {
             input).apply()
     }
 
-    fun setMaxRakeRPMInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setMaxRakeRPMInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.MAX_RAKE_RPM.toString(),
             input).apply()
     }
 
-    fun setMinRakeHeightInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setMinRakeHeightInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.MIN_RAKE_HEIGHT.toString(),
             input).apply()
     }
 
-    fun setRPMCoefficientInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setRPMCoefficientInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.RPM_COEFFICIENT.toString(),
             input).apply()
     }
 
-    fun setHeightCoefficientInput(input: Int) {
-        sharedPreferences.edit().putInt(
+    fun setHeightCoefficientInput(input: Float) {
+        sharedPreferences.edit().putFloat(
             PreferenceKeys.HEIGHT_COEFFICIENT.toString(),
+            input).apply()
+    }
+
+    fun setWheelRadiusInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.WHEEL_RADIUS.toString(),
+            input).apply()
+    }
+
+    fun setRakeRadiusInput(input: Float) {
+        sharedPreferences.edit().putFloat(
+            PreferenceKeys.RAKE_RADIUS.toString(),
             input).apply()
     }
 
@@ -314,6 +357,16 @@ object PreferenceManager {
         sharedPreferences.edit().putStringSet(HomeKeys.NOTIFICATION.toString(), notificationsSet)
             .apply()
     }
+
+
+    fun setMyBleStarted(isChecked: Boolean) {
+        sharedPreferences.edit().putBoolean(
+            PreferenceKeys.MY_BLE_STARTED.toString(),
+            isChecked).apply()
+    }
+
+
+
 
     /**
      * Clears all notifications from SharedPreferences.

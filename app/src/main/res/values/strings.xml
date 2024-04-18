@@ -59,6 +59,12 @@
     <string name="safetyValueTitle"> Safety Values</string>
     <string name="optimizationValueTitle"> Optimization Values</string>
 
+    <!-- Strings used for Wheel Radius Parameters Settings Card-->
+
+    <string name="rakeRadiusTitle">Rake Head Radius</string>
+    <string name="wheelRadiusTitle">Harvester Wheel Radius</string>
+    <string name="wheelParametersTitle">Wheel Values</string>
+
     <!-- Strings used for Menus -->
 
     <string name="backButtonTitle">Back Button</string>
@@ -69,6 +75,15 @@
 
     <!-- Extra Strings -->
     <string name="numberHint">Enter a number</string>
+
+
+    <!--  BleActivity strings -->
+    //todo add translation
+    <string name="Bluetooth_Functionality" translatable="false">Bluetooth Functionality</string>
+    <string name="btn_start_scan_text" translatable="false">Start Scan</string>
+    <string name="tw_scan_results_title" translatable="false">Scan Results</string>
+    <string name="ble_permission_rationale" translatable="false">This app needs to access bluetooth and location in order to scan for BLE devices.</string>
+    <string name="ble_permissions_denied_message" translatable="false">Some permissions were not granted, please grant them and try again</string>
 
     <!-- Strings used for Optimal Operation Card-->
     <string name="optimalOperationTitle">Optimal Operation</string>
@@ -97,15 +112,15 @@
     <string name="heightBelowZeroNotification">"ERROR: Current rake height is below zero, please refer to user manual!"</string>
     <string name="startedRecordingNotification">Started Recording Data.</string>
     <string name="stoppedRecordingNotification">Stopped Recording Data.</string>
-    <string name="maxInputNotification">WARNING: Input: %1$d for %2$s not saved. Please enter a number smaller than %3$s</string>
+    <string name="maxInputNotification">WARNING: Input: %1$.2f for %2$s not saved. Please enter a number smaller than %3$s</string>
     <string name="maxInputFloatNotification">WARNING: Input: %1$.2f for %2$s not saved. Please enter a number smaller than %3$s</string>
-    <string name="safetyValueGreaterThanDisplayValueNotification">"WARNING: Input: %1$d for %2$s is greater than Display Value."</string>
+    <string name="safetyValueGreaterThanDisplayValueNotification">"WARNING: Input: %1$.2f for %2$s is greater than Display Value."</string>
     <string name="rangeOutOfBoundsNotification">"WARNING: Input: %1$.2f for %2$s makes optimal values out of bounds of viewing area."</string>
     <string name="notDivisibleByFiveNotification">"WARNING: Input: %1$d for %2$s is not divisible by 5. Please enter a number divisible by 5 for easy viewing."</string>
-    <string name="inputBelowFiveNotification">"WARNING: Input: %1$d for %2$s is greater than 5. Please enter a number less than 5."</string>
+    <string name="inputBelowFiveNotification">"WARNING: Input: %1$.2f for %2$s is greater than 5. Please enter a number less than 5."</string>
     <string name="bluetoothDeviceConnectedNotificationToast">Bluetooth Device: %1$s connected.</string>
     <string name="bluetoothDeviceDisconnectedNotificationToast">Bluetooth Device: %1$s disconnected.</string>
-    <string name="displayedValueLessThanSafetyValueNotification">WARNING: Input: %1$d for %2$s is less than the safety value saved. This can cause unwanted behavior with the current value animations on the home screen.</string>
+    <string name="displayedValueLessThanSafetyValueNotification">WARNING: Input: %1$.2f for %2$s is less than the safety value saved. This can cause unwanted behavior with the current value animations on the home screen.</string>
 
 
 
