@@ -60,8 +60,8 @@ class MaxRPMDisplayListener(
                         val inputBelowFiveNotification = Notifications.inputBelowFiveNotification(activity, configName, it.toFloat())
                         PreferenceManager.setNotification(inputBelowFiveNotification)
                         //Make border and text color orange
-                        maxRPMDisplayedInput.setTextColor(orangeColor)
-                        maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_orange_border)
+                        maxRPMDisplayedInput.setTextColor(redColor)
+                        maxRPMDisplayedInput.setBackgroundResource(R.drawable.edit_text_red_border)
                         //Create warning toast
                         CustomToasts.inputBelowFiveToast(activity)
 

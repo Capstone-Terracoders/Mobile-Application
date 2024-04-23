@@ -53,7 +53,7 @@
     <string name="heightBelowZeroNotification">"ERROR: La altura actual del rastrillo es inferior a cero; consulte el manual del usuario. "</string>
     <string name="safetyValueGreaterThanMaximumDisplayedValueToast">Valor de seguridad mayor que el valor máximo mostrado.</string>
     <string name="notDivisibleByFiveToast">"Por favor ingresa un número divisible por 5. "</string>
-    <string name="inputBelowFiveToast">Por favor ingrese un número menor a 5.</string>
+    <string name="inputBelowFiveToast">Por favor ingrese un número mayor a 5.</string>
     <string name="homeButtonText">Hogar</string>
     <string name="rangeOutOfBoundsToast">"La entrada de rango óptimo hace que los valores óptimos estén fuera de los límites del área de visualización. "</string>
     <string name="maximumValueToast">"La entrada no debe exceder %1$s."</string>
@@ -62,7 +62,7 @@
     <string name="safetyValueGreaterThanDisplayValueNotification">"ADVERTENCIA: Entrada: %1$.2f para %2$s es mayor que el valor mostrado. "</string>
     <string name="rangeOutOfBoundsNotification">"ADVERTENCIA: La entrada: %1$.2f para %2$s genera valores óptimos fuera de los límites del área de visualización."</string>
     <string name="notDivisibleByFiveNotification">"ADVERTENCIA: Entrada: %1$d para %2$s no es divisible por 5. Ingrese un número divisible por 5 para verlo fácilmente. "</string>
-    <string name="inputBelowFiveNotification">"ADVERTENCIA: Entrada: %1$.2f para %2$s es mayor que 5. Ingrese un número menor que 5."</string>
+    <string name="inputBelowFiveNotification">"ADVERTENCIA: Entrada: %1$.2f para %2$s no guardado. Ingrese un número mayor que 5."</string>
     <string name="bluetoothDeviceConnectedNotificationToast">"Dispositivo Bluetooth: %1$s conectados. "</string>
     <string name="bluetoothDeviceDisconnectedNotificationToast">"Dispositivo Bluetooth: %1$s desconectado. "</string>
 
