@@ -101,7 +101,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
@@ -116,7 +116,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
@@ -131,7 +131,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
@@ -146,7 +146,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
@@ -167,7 +167,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
@@ -223,7 +223,7 @@ object Notifications {
         )
 
         return Notification(
-            NotificationTypes.WARNING,
+            NotificationTypes.ERROR,
             notificationMessage,
             DateTimeFormatter.ISO_INSTANT.format(Instant.now()).toString()
         )
